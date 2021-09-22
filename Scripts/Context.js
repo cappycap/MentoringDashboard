@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import { set, get, getTTL, ttl } from './Storage.js'
 
-const userContext = React.createContext(get('Coach'));
+const userContext = React.createContext(get('User'));
 const { Provider, Consumer } = userContext;
 
 export { Provider };

@@ -8,7 +8,7 @@ import { TextInput } from 'react-native-web';
 
 import userContext from './Context.js'
 
-export default function Empty() {
+export default function Topics() {
     
   const user = useContext(userContext)
   const linkTo = useLinkTo()
