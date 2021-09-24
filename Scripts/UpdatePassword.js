@@ -8,7 +8,7 @@ import { TextInput } from 'react-native-web';
 
 import userContext from './Context.js'
 
-export default function LogIn() {
+export default function UpdatePassword() {
     
   const user = useContext(userContext)
   const linkTo = useLinkTo()
