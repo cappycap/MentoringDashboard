@@ -8,14 +8,16 @@ import { colors, app } from './Scripts/Styles.js'
 import { Provider } from './Scripts/Context.js'
 import { useFonts } from 'expo-font'
 
+import userContext from './Scripts/Context.js'
+
 // URL linking configuration.
 const linking = {
   prefixes: ['http://mentorship.cs.wwu.edu'],
   config: {
     screens: {
       Welcome: 'welcome',
-      LogIn: 'log-in',
       ForgotPassword: 'forgot-password',
+      UpdatePassword: 'update-password',
       Main: {
         screens: {
           Home: {
@@ -43,6 +45,8 @@ import Welcome from './Scripts/Welcome.js'
 import ForgotPassword from './Scripts/ForgotPassword.js'
 import UpdatePassword from './Scripts/UpdatePassword.js'
 
+const Stack = createStackNavigator()
+
 export default function App() {
 
   const user = useContext(userContext)
@@ -68,10 +72,10 @@ export default function App() {
   return (<Provider value={user}>
     <NavigationContainer linking={linking} theme={MyTheme}>
       <Stack.Navigator headerMode='none'>
-        <Stack.Screen name="Welcome" component={Welcome} options={{title:'Welcome - MentoringDashboard'}} />
-        <Stack.Screen name="Main" component={Main} options={{title:'Home - MentoringDashboard'}} />
-        <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{title:'Forgot Password - MentoringDashboard'}} />
-        <Stack.Screen name="UpdatePassword" component={UpdatePassword} options={{title:'Update Password - MentoringDashboard'}} />
+        <Stack.Screen name="Welcome" component={Welcome} options={{title:'Welcome - CS/M Dashboard'}} />
+        <Stack.Screen name="Main" component={Main} options={{title:'Home - CS/M Dashboard'}} />
+        <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{title:'Forgot Password - CS/M Dashboard'}} />
+        <Stack.Screen name="UpdatePassword" component={UpdatePassword} options={{title:'Update Password - CS/M Dashboard'}} />
       </Stack.Navigator>
     </NavigationContainer>
   </Provider>)

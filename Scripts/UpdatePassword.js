@@ -22,7 +22,7 @@ export default function UpdatePassword() {
   useEffect(() => {
     document.title = 'MentoringDashboard';
     if (coach == null) {
-        linkTo('welcome')
+        linkTo('/welcome')
     }
   })
 
