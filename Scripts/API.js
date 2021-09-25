@@ -5,7 +5,7 @@ import { View, Text, StyleSheet } from 'react-native'
 
 // API information.
 export const url = 'https://mentorship.cs.wwu.edu'
-export const key = 'c75c8309094b9bcc21fbcabeb17e0f7a1a4c4f547f041376bfdb71826bcc84db'
+export const key = '364ec08dac33889d5ee1e15c86c0194bf91916938c5b64ea5055ac2fe6f281b5'
 
 // Helper functions
 export const monthNames = ["January", "February", "March", "April", "May", "June",
@@ -181,7 +181,7 @@ export async function check() {
 
 export async function loginCheck(email, password) {
 
-  var ret = false
+  var ret = {success:false}
 
   // Encrypt Password.
   var pw = await Crypto.digestStringAsync(
@@ -192,7 +192,8 @@ export async function loginCheck(email, password) {
   var arr = {Email:email, Password:pw, Token:key}
 
   console.log('Checking login credentials...')
-  const res = await fetch(url + '', {
+  console.log('Login arr:',arr)
+  const res = await fetch(url + '/admin/verify-login', {
     method:'POST',
     body: JSON.stringify(arr),
     headers: {
@@ -202,10 +203,10 @@ export async function loginCheck(email, password) {
   })
 
   const payload = await res.json()
-
+  console.log('Returning payload:',payload)
   if (payload.success == true) {
     console.log('Login successful!')
-    ret = true
+    ret = payload
   } else {
     console.log('Login failed!')
   }

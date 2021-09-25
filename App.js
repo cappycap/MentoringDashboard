@@ -30,6 +30,12 @@ const linking = {
               Pairs: 'pairs',
               Users: 'users',
             }
+          },
+          Settings: {
+            screens: {
+              AppSettings: 'app-settings',
+              UserSettings: 'user-settings'
+            }
           }
         }
       }
