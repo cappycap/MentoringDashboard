@@ -8,26 +8,24 @@ import { TextInput } from 'react-native-web';
 
 import userContext from './Context.js'
 
-export default function Topics() {
+export default function Empty() {
     
   const user = useContext(userContext)
   const linkTo = useLinkTo()
 
-  const [userData, setUserData] = useState(user)
+  const [coach, setCoach] = useState(user)
   
   const [refreshing, setRefreshing] = useState(true)
   const [styles, setStyles] = useState(empty)
   const [colors, setColors] = useState(colors)
 
   useEffect(() => {
-
-    if (userData == null) {
-        console.log('is null')
-        //linkTo('/welcome')
+    document.title = 'MentoringDashboard';
+    if (coach == null) {
+        linkTo('/welcome')
     }
   })
 
   return (<View style={styles.container}>
-    Hello
   </View>)
 }

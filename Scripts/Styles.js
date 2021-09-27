@@ -99,6 +99,18 @@ export const main = StyleSheet.create({
   }
 })
 
+export const home = StyleSheet.create({
+  container: {
+    flex:1
+  }
+})
+
+export const innerDrawer = StyleSheet.create({
+  container: {
+    flex:1
+  }
+})
+
 export const welcome = StyleSheet.create({
   container: {
     flex:1,

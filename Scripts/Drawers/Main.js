@@ -7,11 +7,12 @@ import { createStackNavigator } from '@react-navigation/stack'
 import { NavigationContainer, useLinkTo, Link, useRoute } from '@react-navigation/native'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import { Icon } from 'react-native-elements'
-import { main, colors } from '../Styles.js'
+import { main, colors, logo } from '../Styles.js'
 
 // Sub Drawers.
 import Home from './Home.js'
 import UserManagement from './UserManagement.js'
+import Settings from './Settings.js'
 
 import userContext from '../Context.js'
 
@@ -43,7 +44,7 @@ export default function Main() {
   useEffect(() => {
 
     getRoute()
-
+    console.log('userData:',userData)
     if (userData != null) {
       var name = userData.FirstName + ' ' + userData.LastName.charAt(0) + '.'
       setUserName(name)
@@ -63,25 +64,13 @@ export default function Main() {
 
   }
 
-  return (<>{showMain && (<View style={{flex:1}} ref={ref}>
+  return (<>{showMain && (<View style={{flex:1}}>
     <View style={styles.header}>
       <View style={styles.headerLogoContainer}>
-        <Animated.Image
-            onLoad={onLoad}
-            source={navLogo}
+        <Image
+            source={logo}
             resizeMode="contain"
             style={[
-              {
-                opacity: opacity,
-                transform: [
-                  {
-                    scale: opacity.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [0.85, 1],
-                    })
-                  },
-                ],
-              },
               styles.headerLogo
             ]}
         />
@@ -91,17 +80,14 @@ export default function Main() {
       </View>
       <View style={styles.headerMain}>
         <View style={styles.headerUser}>
-          <TouchableOpacity style={styles.headerUserBox} onPress={toggleUserDropdown}>
-            <Animated.Image
-                onLoad={onLoad}
-                source={{ uri: userData.Avatar }}
-                resizeMode="contain"
-                style={styles.headerAvatar}
-            />
-            <View style={styles.headerUserBoxText}>
-              <Text style={styles.headerUserName}>{userName}</Text>
-            </View>
-          </TouchableOpacity>
+          <Image
+            source={{ uri: userData.Avatar }}
+            resizeMode="contain"
+            style={styles.headerAvatar}
+          />
+          <View style={styles.headerUserBoxText}>
+            <Text style={styles.headerUserName}>{userName}</Text>
+          </View>
         </View>
       </View>
       

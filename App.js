@@ -3,7 +3,6 @@ import React, { useState, useEffect, createContext, useContext } from 'react';
 import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack'
 import { NavigationContainer, useLinkTo } from '@react-navigation/native'
-import { createDrawerNavigator } from '@react-navigation/drawer'
 import { colors, app } from './Scripts/Styles.js'
 import { Provider } from './Scripts/Context.js'
 import { useFonts } from 'expo-font'
