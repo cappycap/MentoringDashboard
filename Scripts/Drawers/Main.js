@@ -66,7 +66,7 @@ export default function Main() {
 
   }
 
-  return (<>{showMain && (<View style={{flex:1}}>
+  return (<>{showMain && (<View style={styles.headerContainer}>
     <View style={styles.header}>
       <View style={styles.headerLogoContainer}>
         <Image

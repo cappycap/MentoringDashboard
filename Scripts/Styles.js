@@ -100,6 +100,9 @@ export const main = StyleSheet.create({
     backgroundColor:'',
     borderWidth:0,
   },
+  headerContainer: {
+    flex:1,
+  },
   header: {
     flexDirection:'row',
     backgroundColor:colors.mainBackground
@@ -172,7 +175,6 @@ export const main = StyleSheet.create({
     fontSize:14,
     lineHeight:14,
     fontFamily:'Poppins',
-
     color:colors.mainTextColor,
   },
   headerUserName: {
