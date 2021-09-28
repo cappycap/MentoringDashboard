@@ -14,16 +14,9 @@ export const btnColors = {
   lightBackground: '#FAFAFA',
 }
 
-var user = get('User')
-if (user == null) {
-  user = {}
-  user.PrimaryHighlight = '#003f87'
-  user.SecondaryHighlight = '#007ac8'
-}
-
 export const colors = {
-  primaryHighlight: user.PrimaryHighlight,
-  secondaryHighlight: user.SecondaryHighlight,
+  primaryHighlight: '#003f87',
+  secondaryHighlight: '#007ac8',
   secondaryBackground: '#ebeef6',
   mainTextColor: '#1c2023',
   secondaryTextColor: '#667986',
@@ -94,9 +87,158 @@ export const app = StyleSheet.create({
 })
 
 export const main = StyleSheet.create({
-  container: {
-    flex:1
-  }
+  drawer: {
+    backgroundColor:colors.secondaryHighlight,
+    padding:0,
+    margin:0,
+    width:80,
+    borderWidth:0,
+  },
+  drawerItem: {
+    padding:0,
+    margin:0,
+    backgroundColor:'',
+    borderWidth:0,
+  },
+  header: {
+    flexDirection:'row',
+    backgroundColor:colors.mainBackground
+  },
+  headerLogoContainer: {
+    width:80,
+    borderRightColor:colors.mainBackground,
+    borderRightWidth:1,
+    backgroundColor:colors.secondaryHighlight,
+  },
+  headerLogo: {
+    width:80,
+    height:80,
+    tintColor:colors.mainBackground,
+  },
+  headerTextContainer: {
+    paddingLeft:10,
+    paddingRight:10,
+    borderBottomWidth:1,
+    borderBottomColor:colors.headerBorder,
+    justifyContent:'center',
+    alignItems:'center',
+    flexDirection:'row'
+  },
+  headerText: {
+    fontFamily:'PoppinsSemiBold',
+    fontSize:19,
+    textAlign:'center',
+    lineHeight:25,
+    marginRight:3,
+  },
+  headerMain: {
+    flex:1,
+    backgroundColor:colors.header,
+    flexDirection:'row',
+    justifyContent:'flex-end',
+    alignItems:'center',
+    paddingRight:20,
+  },
+  headerUser: {
+    flexDirection:'row',
+    justifyContent:'flex-end',
+    alignItems:'center',
+    height:80
+  },
+  headerIcon: {
+    justifyContent:'center',
+    alignItems:'center',
+    marginRight:10,
+    padding:5,
+    width:40,
+    height:40,
+    borderRadius:10,
+    backgroundColor:colors.secondaryBackground
+  },
+  headerUserBox: {
+    height:40,
+    flexDirection:'row',
+    justifyContent:'center',
+    alignItems:'flex-end',
+    paddingRight:10,
+    width:200,
+  },
+  headerUserBoxText: {
+    justifyContent:'center',
+    alignItems:'flex-end',
+    height:40
+  },
+  headerUserNameTitle: {
+    fontSize:14,
+    lineHeight:14,
+    fontFamily:'Poppins',
+
+    color:colors.mainTextColor,
+  },
+  headerUserName: {
+    fontSize:14,
+    lineHeight:14,
+    fontFamily:'PoppinsSemiBold',
+    color:colors.mainTextColor,
+  },
+  headerLogout: {
+    fontSize:14,
+    lineHeight:14,
+    fontFamily:'PoppinsSemiBold',
+    color:btnColors.danger,
+    marginLeft:20,
+  },
+  headerPlan: {
+    fontSize:12,
+    lineHeight:14,
+    fontFamily:'Poppins'
+  },
+  headerAvatar: {
+    width:40,
+    height:40,
+    borderRadius:10,
+    backgroundColor:colors.secondaryBackground,
+    marginRight:10,
+  },
+  messagesContainer: {
+    width:80,
+    height:80,
+    backgroundColor:colors.header,
+    borderLeftColor:colors.headerBorder,
+    borderLeftWidth:1,
+    justifyContent:'center',
+    alignItems:'center'
+  },
+  dropdownBox: {
+    padding:15,
+    position:'absolute',
+    right:20,
+    top:70,
+    width:200,
+    borderRadius:10,
+    backgroundColor:colors.mainBackground,
+    borderWidth:1,
+    borderColor:colors.headerBorder
+  },
+  dropdownBoxText: {
+    fontFamily:'Poppins',
+    fontSize:14,
+    paddingBottom:4,
+    borderBottomColor:colors.headerBorder,
+    borderBottomWidth:1,
+    color:colors.mainTextColor
+  },
+  dropdownBoxLogoutContainer: {
+    paddingTop:4,
+    flexDirection:'row',
+    alignItems:'center'
+  },
+  dropdownBoxLogout: {
+    fontFamily:'Poppins',
+    fontSize:14,
+    color:btnColors.danger,
+    marginLeft:3
+  },
 })
 
 export const home = StyleSheet.create({
@@ -106,8 +248,51 @@ export const home = StyleSheet.create({
 })
 
 export const innerDrawer = StyleSheet.create({
-  container: {
-    flex:1
+  drawer: {
+    backgroundColor:colors.mainBackground,
+    height:'100%',
+    width:200,
+  },
+  drawerTop: {
+    backgroundColor:colors.mainBackground,
+    width:200,
+    paddingLeft:20,
+    paddingRight:20,
+    paddingTop:23,
+    height:60,
+    paddingBottom:0,
+  },
+  drawerTopTitle: {
+    fontSize:22,
+    fontFamily:'PoppinsSemiBold',
+    borderBottomWidth:2,
+    color:colors.mainTextColor,
+    borderBottomColor:colors.mainTextColor
+  },
+  pageInfo: {
+    width:200,
+    borderTopWidth:2,
+    borderTopColor:colors.headerBorder,
+    marginTop:'auto',
+    padding:10,
+  },
+  pageInfoHeader: {
+    flexDirection:'row',
+    alignItems:'center',
+  },
+  pageInfoHeaderText: {
+    fontFamily:'Poppins',
+    fontSize:18,
+    marginLeft:6,
+    color:colors.mainTextColor
+  },
+  pageInfoBody: {
+    padding:3,
+  },
+  pageInfoBodyText: {
+    fontFamily:'Poppins',
+    fontSize:14,
+    color:colors.mainTextColor
   }
 })
 

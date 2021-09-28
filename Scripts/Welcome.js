@@ -29,9 +29,14 @@ export default function Welcome() {
   const [showError, setShowError] = useState(false)
 
   useEffect(() => {
-    if (userData != null) {
-        linkTo('/home')
-    }
+    
+    setTimeout(() => {
+      console.log('userData welcome:',userData)
+      if (userData != null) {
+        console.log('made it here')
+        linkTo('/topics')
+      }
+    }, 100)
   })
 
   const updateEmail = (t) => {
@@ -49,8 +54,11 @@ export default function Welcome() {
     var check = await loginCheck(email, password)
     if (check.success) {
       console.log('User:',check.Admin)
-      //set('User', check.Admin, ttl)
-      linkTo('/topics')
+      set('User', check.Admin, ttl)
+      setTimeout(() => {
+        linkTo('/topics')
+        window.location.reload()
+      }, 100)
     } else {
       setShowError(true)
     }

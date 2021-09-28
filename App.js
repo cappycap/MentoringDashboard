@@ -78,7 +78,7 @@ export default function App() {
     <NavigationContainer linking={linking} theme={MyTheme}>
       <Stack.Navigator headerMode='none'>
         <Stack.Screen name="Welcome" component={Welcome} options={{title:'Welcome - CS/M Dashboard'}} />
-        <Stack.Screen name="Main" component={Main} options={{title:'Home - CS/M Dashboard'}} />
+        <Stack.Screen name="Main" component={Main} options={{title:'Main - CS/M Dashboard'}} />
         <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{title:'Forgot Password - CS/M Dashboard'}} />
         <Stack.Screen name="UpdatePassword" component={UpdatePassword} options={{title:'Update Password - CS/M Dashboard'}} />
       </Stack.Navigator>

@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/display-name */
 import { StatusBar } from 'expo-status-bar'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import { home, colors, innerDrawer } from '../Styles.js'
 import { useLinkTo } from '@react-navigation/native'
@@ -16,9 +16,10 @@ const Drawer = createDrawerNavigator()
 import Topics from '../Topics.js'
 
 export default function Home() {
+  
   const [refreshing, setRefreshing] = useState(true)
   const [styles, setStyles] = useState(home)
-  const [colors, setColors] = useState(colors)
+
   const [drawerStyles, setDrawerStyles] = useState(innerDrawer)
 
   useEffect(() => {

@@ -2,12 +2,13 @@
 /* eslint-disable react/prop-types */
 import { StatusBar } from 'expo-status-bar'
 import React, { useState, useEffect, createContext, useContext, createRef } from 'react'
-import { TouchableOpacity, Animated, StyleSheet, Text, View } from 'react-native'
+import { TouchableOpacity, Animated, StyleSheet, Text, View, Image } from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { NavigationContainer, useLinkTo, Link, useRoute } from '@react-navigation/native'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import { Icon } from 'react-native-elements'
 import { main, colors, logo } from '../Styles.js'
+import { set, get, ttl } from '../Storage.js'
 
 // Sub Drawers.
 import Home from './Home.js'
@@ -27,12 +28,10 @@ export default function Main() {
   const [routeData] = useState({})
 
   const [styles, setStyles] = useState(main)
-  const [colors, setColors] = useState(colors)
 
   const [userData, setUserData] = useState(user)
   const [userName, setUserName] = useState('')
-  
-  const [fromWelcome, setFromWelcome] = useState(false)
+
   const [showMain, setMain] = useState(false)
 
   const getRoute = () => {
@@ -43,15 +42,18 @@ export default function Main() {
 
   useEffect(() => {
 
-    getRoute()
-    console.log('userData:',userData)
-    if (userData != null) {
-      var name = userData.FirstName + ' ' + userData.LastName.charAt(0) + '.'
-      setUserName(name)
-      setMain(true)
-    } else {
-      linkTo('/welcome')
-    }
+    setTimeout(() => {
+      getRoute()
+      console.log('userData:', userData)
+      if (userData != null) {
+        var name = userData.FirstName + ' ' + userData.LastName.charAt(0) + '.'
+        setUserName(name)
+        setMain(true)
+      } else {
+        linkTo('/welcome')
+      }
+
+    }, 100)
 
   }, [])
 
@@ -80,14 +82,13 @@ export default function Main() {
       </View>
       <View style={styles.headerMain}>
         <View style={styles.headerUser}>
-          <Image
-            source={{ uri: userData.Avatar }}
-            resizeMode="contain"
-            style={styles.headerAvatar}
-          />
           <View style={styles.headerUserBoxText}>
+            <Text style={styles.headerUserNameTitle}>Logged in as</Text>
             <Text style={styles.headerUserName}>{userName}</Text>
           </View>
+          <TouchableOpacity onPress={logout}>
+            <Text style={styles.headerLogout}>Logout</Text>
+          </TouchableOpacity>
         </View>
       </View>
       
@@ -100,7 +101,8 @@ export default function Main() {
         style: {
         },
         contentContainerStyle: {
-          margin:0,padding:0,
+          margin:0,
+          padding:0,
         },
         labelStyle: {
           borderWidth:0,
