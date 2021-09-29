@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useContext } from 'react';
 import { Linking, Animated, Image, StyleSheet, Text, View } from 'react-native';
 import { useLinkTo, Link } from '@react-navigation/native';
 import { empty, colors } from '../Scripts/Styles.js';

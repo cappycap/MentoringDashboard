@@ -78,7 +78,7 @@ export default function Main() {
         />
       </View>
       <View style={styles.headerTextContainer}>
-        <Text style={styles.headerText}>MentoringDashboard</Text>
+        <Text style={styles.headerText}>CS/M Dashboard</Text>
       </View>
       <View style={styles.headerMain}>
         <View style={styles.headerUser}>

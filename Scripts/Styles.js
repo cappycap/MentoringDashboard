@@ -211,36 +211,6 @@ export const main = StyleSheet.create({
     justifyContent:'center',
     alignItems:'center'
   },
-  dropdownBox: {
-    padding:15,
-    position:'absolute',
-    right:20,
-    top:70,
-    width:200,
-    borderRadius:10,
-    backgroundColor:colors.mainBackground,
-    borderWidth:1,
-    borderColor:colors.headerBorder
-  },
-  dropdownBoxText: {
-    fontFamily:'Poppins',
-    fontSize:14,
-    paddingBottom:4,
-    borderBottomColor:colors.headerBorder,
-    borderBottomWidth:1,
-    color:colors.mainTextColor
-  },
-  dropdownBoxLogoutContainer: {
-    paddingTop:4,
-    flexDirection:'row',
-    alignItems:'center'
-  },
-  dropdownBoxLogout: {
-    fontFamily:'Poppins',
-    fontSize:14,
-    color:btnColors.danger,
-    marginLeft:3
-  },
 })
 
 export const home = StyleSheet.create({
@@ -270,31 +240,6 @@ export const innerDrawer = StyleSheet.create({
     borderBottomWidth:2,
     color:colors.mainTextColor,
     borderBottomColor:colors.mainTextColor
-  },
-  pageInfo: {
-    width:200,
-    borderTopWidth:2,
-    borderTopColor:colors.headerBorder,
-    marginTop:'auto',
-    padding:10,
-  },
-  pageInfoHeader: {
-    flexDirection:'row',
-    alignItems:'center',
-  },
-  pageInfoHeaderText: {
-    fontFamily:'Poppins',
-    fontSize:18,
-    marginLeft:6,
-    color:colors.mainTextColor
-  },
-  pageInfoBody: {
-    padding:3,
-  },
-  pageInfoBodyText: {
-    fontFamily:'Poppins',
-    fontSize:14,
-    color:colors.mainTextColor
   }
 })
 

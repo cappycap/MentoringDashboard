@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/display-name */
 import { StatusBar } from 'expo-status-bar'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import { home, colors, innerDrawer } from '../Styles.js'
 import { useLinkTo } from '@react-navigation/native'
@@ -18,8 +18,9 @@ import Users from '../Users.js'
 
 export default function UserManagement() {
   const [refreshing, setRefreshing] = useState(true)
+
   const [styles, setStyles] = useState(home)
-  const [colors, setColors] = useState(colors)
+
   const [drawerStyles, setDrawerStyles] = useState(innerDrawer)
 
   useEffect(() => {
@@ -28,7 +29,7 @@ export default function UserManagement() {
 
   return (<View style={{height:'100%'}}>
     <View style={drawerStyles.drawerTop}>
-      <Text style={drawerStyles.drawerTopTitle}>User Management</Text>
+      <Text style={drawerStyles.drawerTopTitle}>Students</Text>
     </View>
     <Drawer.Navigator
       drawerType='permanent'

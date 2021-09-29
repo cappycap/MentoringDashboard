@@ -17,9 +17,10 @@ import AppSettings from '../AppSettings.js'
 import UserSettings from '../UserSettings.js'
 
 export default function Settings() {
+  
   const [refreshing, setRefreshing] = useState(true)
   const [styles, setStyles] = useState(home)
-  const [colors, setColors] = useState(colors)
+
   const [drawerStyles, setDrawerStyles] = useState(innerDrawer)
 
   useEffect(() => {
