@@ -119,13 +119,12 @@ export const main = StyleSheet.create({
     tintColor:colors.mainBackground,
   },
   headerTextContainer: {
-    paddingLeft:10,
-    paddingRight:10,
     borderBottomWidth:1,
     borderBottomColor:colors.headerBorder,
     justifyContent:'center',
     alignItems:'center',
-    flexDirection:'row'
+    flexDirection:'row',
+    width:200
   },
   headerText: {
     fontFamily:'PoppinsSemiBold',
