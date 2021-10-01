@@ -74,12 +74,6 @@ export const messageBox = StyleSheet.create({
   }
 });
 
-export const empty = StyleSheet.create({
-  container: {
-    flex:1
-  }
-})
-
 export const app = StyleSheet.create({
   container: {
     flex:1,
@@ -308,5 +302,17 @@ export const welcome = StyleSheet.create({
     fontFamily:'Poppins',
     color:btnColors.primary,
     marginLeft:5,
+  }
+})
+
+export const topics = StyleSheet.create({
+  container: {
+    flex:1,
+  }
+})
+
+export const empty = StyleSheet.create({
+  container: {
+    flex:1
   }
 })
