@@ -308,6 +308,67 @@ export const welcome = StyleSheet.create({
 export const topics = StyleSheet.create({
   container: {
     flex:1,
+    flexDirection:'row'
+  },
+  topics: {
+    flex:3,
+    margin:20,
+  },
+  addTopicContainer: {
+    borderRadius:10,
+    padding:35,
+    borderWidth:2,
+    borderStyle:'dashed',
+    borderColor:btnColors.primary,
+  },
+  addTopicContainerText: {
+    fontSize:24,
+    color:btnColors.primary,
+    fontFamily:'Poppins',
+    textAlign: 'center',
+    
+  },
+  topic: {
+    borderRadius:10,
+    padding:20,
+    marginBottom:20,
+    backgroundColor:colors.mainBackground,
+  },
+  topicHeader: {
+
+  },
+  topicHeaderText: {
+
+  },
+  topicStats: {
+    width:'25%',
+    alignSelf:'flex-start',
+    marginTop:20,
+    marginRight:20,
+    marginBottom:20,
+    borderRadius:10,
+    padding:20,
+    backgroundColor:colors.mainBackground,
+  },
+  topicStatsHeader: {
+    fontSize:22,
+    fontFamily:'PoppinsSemiBold',
+    color:colors.mainTextColor,
+  },
+  topicStatsRow: {
+    flexDirection:'row',
+    alignItems: 'flex-end'
+  },
+  topicStatsNum: {
+    fontSize:24,
+    color:colors.mainTextColor,
+    fontFamily:'PoppinsSemiBold',
+    marginRight:5,
+  },
+  topicStatsText: {
+    fontSize:24,
+    color:colors.mainTextColor,
+    fontFamily:'Poppins',
   }
 })
 

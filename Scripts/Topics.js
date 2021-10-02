@@ -54,7 +54,7 @@ export default function Topics() {
     <View style={styles.topicStats}>
       <Text style={styles.topicStatsHeader}>Statistics</Text>
       <View style={styles.topicStatsRow}>
-        <Text style={styles.topicStatsNum}>{topics.length}</Text>
+        <Text style={styles.topicStatsNum}>{topicsData.length}</Text>
         <Text style={styles.topicStatsText}>Topics</Text>
       </View>
     </View>
