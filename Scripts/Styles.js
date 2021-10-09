@@ -308,25 +308,27 @@ export const welcome = StyleSheet.create({
 export const topics = StyleSheet.create({
   container: {
     flex:1,
-    flexDirection:'row'
+    margin:20
+  },
+  activityIndicatorContainer: {
+    padding:20
   },
   topics: {
-    flex:3,
-    margin:20,
+    flex:1,
   },
   addTopicContainer: {
     borderRadius:10,
-    padding:35,
+    padding:20,
     borderWidth:2,
     borderStyle:'dashed',
     borderColor:btnColors.primary,
+    marginBottom:20
   },
   addTopicContainerText: {
     fontSize:24,
     color:btnColors.primary,
     fontFamily:'Poppins',
     textAlign: 'center',
-    
   },
   topic: {
     borderRadius:10,
@@ -334,42 +336,33 @@ export const topics = StyleSheet.create({
     marginBottom:20,
     backgroundColor:colors.mainBackground,
   },
-  topicHeader: {
-
-  },
-  topicHeaderText: {
-
-  },
-  topicStats: {
-    width:'25%',
-    alignSelf:'flex-start',
-    marginTop:20,
-    marginRight:20,
-    marginBottom:20,
-    borderRadius:10,
+  topicsHeader: {
+    flexDirection:'row',
+    alignItems:'center',
+    justifyContent: 'space-between',
     padding:20,
+    borderRadius:10,
+    marginBottom:20,
     backgroundColor:colors.mainBackground,
   },
-  topicStatsHeader: {
-    fontSize:22,
+  topicsHeaderText: {
     fontFamily:'PoppinsSemiBold',
+    fontSize:24,
     color:colors.mainTextColor,
   },
-  topicStatsRow: {
+  topicsHeaderButton: {
+
+  },
+  topicHeader: {
     flexDirection:'row',
-    alignItems: 'flex-end'
+    alignItems:'center',
+    justifyContent: 'space-between',
   },
-  topicStatsNum: {
-    fontSize:24,
-    color:colors.mainTextColor,
-    fontFamily:'PoppinsSemiBold',
-    marginRight:5,
-  },
-  topicStatsText: {
-    fontSize:24,
-    color:colors.mainTextColor,
+  topicHeaderText: {
     fontFamily:'Poppins',
-  }
+    fontSize:22,
+    color:colors.mainTextColor,
+  },
 })
 
 export const empty = StyleSheet.create({

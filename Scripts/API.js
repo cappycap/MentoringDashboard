@@ -179,6 +179,26 @@ export async function check() {
 
 */
 
+export async function getTopics(id, token) {
+
+  var ret = []
+
+  console.log('Getting topics...')
+  const res = await fetch(url + '/all-topics/admin/'+id+'/'+token, {
+    method:'GET'
+  })
+
+  const payload = await res.json()
+
+  if (payload.length > 0) {
+    console.log('Topics found!')
+    ret = payload
+  }
+
+  return ret
+
+}
+
 export async function loginCheck(email, password) {
 
   var ret = {success:false}
