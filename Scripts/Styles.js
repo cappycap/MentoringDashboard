@@ -351,18 +351,33 @@ export const topics = StyleSheet.create({
     color:colors.mainTextColor,
   },
   topicsHeaderButton: {
-
+    borderRadius:10,
+    backgroundColor:btnColors.primary,
   },
   topicHeader: {
     flexDirection:'row',
-    alignItems:'center',
+    alignItems:'flex-start',
     justifyContent: 'space-between',
+    marginBottom:10
   },
   topicHeaderText: {
-    fontFamily:'Poppins',
+    fontFamily:'PoppinsSemiBold',
     fontSize:22,
     color:colors.mainTextColor,
   },
+  topicHeaderTime: {
+    fontFamily:'Poppins',
+    fontSize:16,
+    color:colors.secondaryTextColor,
+  },
+  topicBody: {
+
+  },
+  topicBodyText: {
+    fontFamily:'Poppins',
+    fontSize:16,
+    color:colors.mainTextColor,
+  }
 })
 
 export const empty = StyleSheet.create({

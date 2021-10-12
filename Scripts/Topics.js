@@ -6,7 +6,10 @@ import { topics, colors } from './Styles.js'
 import { Button, Icon } from 'react-native-elements'
 import { TextInput } from 'react-native-web'
 import ActivityIndicatorView from './ActivityIndicatorView.js'
-import { getTopics } from './API.js'
+import { getTopics, getTimeSince, sqlToJsDate, parseSimpleDateText } from './API.js'
+import { Dropdown } from 'semantic-ui-react'
+import 'semantic-ui-css/semantic.min.css'
+import './StyleSheets/topics.css'
 
 import userContext from './Context.js'
 
@@ -23,6 +26,12 @@ export default function Topics() {
   const [refreshing, setRefreshing] = useState(true)
   const [styles, setStyles] = useState(topics)
 
+  const options = [
+    { key: 'edit', icon: 'edit', text: 'Edit Post', value: 'edit' },
+    { key: 'delete', icon: 'delete', text: 'Remove Post', value: 'delete' },
+    { key: 'hide', icon: 'hide', text: 'Hide Post', value: 'hide' },
+  ]
+
   const getData = async () => {
 
     //const newData = await getTopics(user.Token)
@@ -35,8 +44,8 @@ export default function Topics() {
         DueDate:'2021-10-31 08:00:00',
         Title:'October Discussion',
         Description:'Please talk with your mentor about what you\'d like to accomplish this year.',
-        Created:'2021-10-05 08:00:00',
-        LastUpdate:'2021-10-05 08:00:00',
+        Created:'2021-10-10 08:00:00',
+        LastUpdate:'2021-10-10 08:00:00',
         ActiveTopic:1,
       },
       {
@@ -50,6 +59,30 @@ export default function Topics() {
         ActiveTopic:0,
       }
     ]
+
+    // Calculate created display time variable.
+    for (var i = 0; i < newData.length; i++) {
+
+      var topic = newData[i]
+
+      var topicTimeStr = ''
+
+      var curTime = new Date()
+      var topicTime = sqlToJsDate(topic.Created)
+      var diff = curTime - topicTime
+
+      console.log('diff:',diff,'d1:',curTime,'d2:',topicTime)
+
+      // Is this post over 3 days old? seconds*ms
+      if (diff >= 259200*1000) {
+        topicTimeStr = parseSimpleDateText(topicTime)
+      } else {
+        topicTimeStr = getTimeSince(diff) + ' ago' 
+      }
+
+      newData[i].TimeString = topicTimeStr
+
+    }
 
     if (newData.length > 0) {
       setTopicsData(newData)
@@ -80,7 +113,7 @@ export default function Topics() {
       <Text style={styles.topicsHeaderText}>Topics</Text>
       <Button 
         title='Add New Topic'
-        buttonStyle={styles.topicHeaderButton}
+        buttonStyle={styles.topicsHeaderButton}
         onPress={addNewTopicTrigger}
       />
     </View>
@@ -89,14 +122,27 @@ export default function Topics() {
 
         return (<View style={styles.topic} key={'topic_'+index}>
           <View style={styles.topicHeader}>
-            <Text style={styles.topicHeaderText}>{topic.Title}</Text>
-            <Icon
-              name='ellipsis-horizontal-outline'
-              type='ionicon'
-              size={28}
-              color={colors.mainTextColor}
-              style={{}}
+            <View>
+              <Text style={styles.topicHeaderText}>{topic.Title}</Text>
+              <Text style={styles.topicHeaderTime}>{topic.TimeString}</Text>
+            </View>
+            <Dropdown
+              className='topicDropdown'
+              floating
+              pointing='right'
+              direction='left'
+              options={options}
+              trigger={<Icon
+                name='ellipsis-horizontal-outline'
+                type='ionicon'
+                size={28}
+                color={colors.mainTextColor}
+                style={{}}
+              />}
             />
+          </View>
+          <View style={styles.topicBody}>
+            <Text style={styles.topicBodyText}>{topic.Description}</Text>
           </View>
         </View>)
 
