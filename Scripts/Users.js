@@ -25,7 +25,6 @@ export default function Users() {
   const getData = async () => {
     const data = await getUsers(admin.Token)
     setUsersData(data)
-    console.log(data)
     setRefreshing(false)
   }
 
@@ -40,22 +39,30 @@ export default function Users() {
   }, [])
 
   return (<View style={styles.container}>
-    {refreshing && (<ActivityIndicatorView />) || (<View style={styles.usersList}>
-      {usersData.length > 0 && (<View>
+    {refreshing && (<ActivityIndicatorView />) || (<View style={styles.usersWrapper}>
+      {usersData.length > 0 && (<View style={styles.usersList}>
+
         {usersData.map((u, i) => {
-          return (<View style={styles.userContainer} key={'user_'+i}>
+          var paddingStyle = {paddingRight:20}
+          if (i+1 % 4 == 0) {
+            paddingStyle = {}
+          }
+
+          return (<View style={[styles.userContainer,paddingStyle]} key={'user_'+i}>
             <View style={styles.user}>
               <Image style={styles.userAvatar} source={u.Avatar} />
               <Text style={styles.userName}>{u.FirstName + ' ' + u.LastName}</Text>
               <View style={styles.userStats}>
-                <Text style={styles.text}>{u.Summaries.length} Summaries Written</Text>
-                <Text style={styles.text}>{u.MentorPairs.length} Mentor Pair{u.MentorPairs.length > 0 && 's'}</Text>
-                <Text style={styles.text}>{u.MenteePairs.length} Mentee Pair{u.MenteePairs.length > 0 && 's'}</Text>
+                <Text style={styles.text}>{u.Summaries.length} Summar{u.Summaries.length == 1 && 'y' || 'ies'} Written</Text>
+                <Text style={styles.text}>{u.MentorPairs.length} Mentor Pair{u.MentorPairs.length != 1 && 's'}</Text>
+                <Text style={styles.text}>{u.MenteePairs.length} Mentee Pair{u.MenteePairs.length != 1 && 's'}</Text>
               </View>
-              <Button title={'View'} />
+              <Button title={'View'} buttonStyle={styles.userButton} containerStyle={styles.userButtonContainer} />
             </View>
           </View>)
+
         })}
+
       </View>) || (<View>
         <Text style={styles.text}>No users have signed up yet.</Text>
       </View>)}

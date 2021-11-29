@@ -389,6 +389,47 @@ export const users = StyleSheet.create({
     fontSize:18,
     color:colors.mainTextColor,
     fontFamily:'Poppins',
+    textAlign: 'center'
+  },
+  usersList: {
+    flexDirection: 'row',
+    flexWrap:'wrap'
+  },
+  userContainer: {
+    width:'25%',
+    paddingBottom:20
+  },
+  user: {
+    backgroundColor:colors.mainBackground,
+    borderRadius:20,
+    padding:20,
+    alignItems:'center',
+  },
+  userAvatar: {
+    width:120,
+    height:120,
+    borderRadius:100,
+    borderWidth:4,
+    borderColor:colors.secondaryHighlight
+  },
+  userName: {
+    fontSize:22,
+    color:colors.mainTextColor,
+    fontFamily:'PoppinsSemiBold',
+    textAlign: 'center'
+  },
+  userStats: {
+    marginBottom:9
+  },
+  userButton: {
+    width:'100%',
+    flex:1,
+    borderRadius:20,
+    backgroundColor:colors.secondaryHighlight
+  },
+  userButtonContainer: {
+    width:'100%',
+    flex:1
   }
 })
 
