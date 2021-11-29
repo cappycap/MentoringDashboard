@@ -380,6 +380,18 @@ export const topics = StyleSheet.create({
   }
 })
 
+export const users = StyleSheet.create({
+  container: {
+    flex:1,
+    padding:20
+  },
+  text: {
+    fontSize:18,
+    color:colors.mainTextColor,
+    fontFamily:'Poppins',
+  }
+})
+
 export const empty = StyleSheet.create({
   container: {
     flex:1
