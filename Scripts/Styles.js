@@ -430,6 +430,103 @@ export const users = StyleSheet.create({
   userButtonContainer: {
     width:'100%',
     flex:1
+  },
+  selectedUserContainer: {
+    alignItems:'flex-start',
+  },
+  backRow: {
+    flexDirection:'row',
+    alignItems:'center',
+    paddingBottom:20
+  },
+  goBack: {
+    fontSize:18,
+    color:colors.mainTextColor,
+    fontFamily:'PoppinsSemiBold',
+  },
+  selectedUser: {
+    backgroundColor:colors.mainBackground,
+    borderRadius:20,
+    padding:20,
+    flex:1,
+    width:'100%'
+  },
+  selectedUserHeaderRow: {
+    flexDirection:'row',
+    justifyContent:'space-between',
+    alignItems:'center',
+    width:'100%'
+  },
+  selectedUserHeaderRowLeft: {
+    flexDirection:'row',
+    alignItems:'center',
+  },
+  selectedUserHeaderRowRight: {
+    alignItems:'flex-end'
+  },
+  selectedUserHeaderRowRightText: {
+    fontSize:16,
+    color:colors.mainTextColor,
+    fontFamily:'Poppins'
+  },
+  selectedUserAvatar: {
+    width:75,
+    height:75,
+    borderRadius:150,
+    borderWidth:4,
+    borderColor:colors.secondaryHighlight,
+    marginRight:20
+  },
+  selectedUserName: {
+    fontSize:28,
+    fontFamily:'PoppinsSemiBold',
+    color:colors.mainTextColor,
+  },
+  selectedUserCreated: {
+    fontSize:16,
+    fontFamily:'Poppins',
+    color:colors.mainTextColor,
+  },
+  selectedUserDataSection: {
+    flexDirection:'row',
+    width:'100%',
+    marginTop:20,
+  },
+  selectedUserSummariesContainer: {
+    flex:3,
+    marginRight:20,
+    backgroundColor:colors.mainBackground,
+    borderRadius:20,
+    padding:20,
+  },
+  selectedUserRelationships: {
+    backgroundColor:colors.mainBackground,
+    borderRadius:20,
+    padding:20,
+    flex:1,
+  },
+  noneText: {
+    fontSize:16,
+    color:colors.mainTextColor,
+    fontFamily:'Poppins',
+  },
+  selectedUserTitle: {
+    fontSize:22,
+    color:colors.mainTextColor,
+    fontFamily:'PoppinsSemiBold',
+  },
+  boldText: {
+    fontFamily:'PoppinsSemiBold',
+  },
+  summaryHeader: {
+    fontSize:22,
+    color:colors.mainTextColor,
+    fontFamily:'Poppins'
+  },
+  summaryText: {
+    fontSize:16,
+    color:colors.mainTextColor,
+    fontFamily:'Poppins'
   }
 })
 
