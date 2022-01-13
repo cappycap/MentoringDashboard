@@ -391,6 +391,38 @@ export const users = StyleSheet.create({
     fontFamily:'Poppins',
     textAlign: 'center'
   },
+  searchBarWrapper: {
+    backgroundColor:colors.mainBackground,
+    paddingTop:10,
+    paddingBottom:10,
+    paddingLeft:15,
+    paddingRight:1,
+    borderRadius:20,
+    marginBottom:20,
+  },
+  searchBarInner: {
+    flexDirection: 'row',
+    alignItems:'center'
+  },
+  searchBar: {
+    padding:10,
+    backgroundColor:colors.secondaryBackground,
+    borderRadius:20,
+    width:'50%',
+    marginRight:10,
+  },
+  searchClearButton: {
+    color:btnColors.primary,
+    borderRadius:20,
+  },
+  searchClearButtonContainer: {
+  },
+  searchBarText: {
+    fontSize:18,
+    color:colors.mainTextColor,
+    fontFamily:'PoppinsSemiBold',
+    marginRight:5,
+  },
   usersList: {
     flexDirection: 'row',
     flexWrap:'wrap'
@@ -495,6 +527,8 @@ export const users = StyleSheet.create({
   selectedUserSummariesContainer: {
     flex:3,
     marginRight:20,
+  },
+  selectedUserSummary: {
     backgroundColor:colors.mainBackground,
     borderRadius:20,
     padding:20,
@@ -527,7 +561,8 @@ export const users = StyleSheet.create({
     fontSize:16,
     color:colors.mainTextColor,
     fontFamily:'Poppins'
-  }
+  },
+  
 })
 
 export const empty = StyleSheet.create({

@@ -21,9 +21,13 @@ export default function Users() {
 
   const [usersData, setUsersData] = useState([])
   const [selectedUser, setSelectedUser] = useState(-1)
+  const [searchContent, setSearchContent] = useState('')
 
   const getData = async () => {
     const data = await getUsers(admin.Token)
+    for (var i = 0; i < data.length; i++) {
+      data[i].visible = true
+    }
     setUsersData(data)
     setRefreshing(false)
   }
@@ -46,6 +50,34 @@ export default function Users() {
     }, 300)
   }
 
+  const searchUsers = (t) => {
+    console.log(t, t.length)
+    if (t.length > 0) {
+      var data = JSON.parse(JSON.stringify(usersData))
+      for (var i = 0; i < data.length; i++) {
+        var name = data[i].FirstName + ' ' + data[i].LastName
+        if (name.includes(t)) {
+          data[i].visible = true
+        } else {
+          data[i].visible = false
+        }
+      }
+      setSearchContent(t)
+      setUsersData(data)
+    } else if (t.length == 0) {
+      clearSearch()
+    }
+  }
+
+  const clearSearch = () => {
+    var data = JSON.parse(JSON.stringify(usersData))
+    for (var i = 0; i < data.length; i++) {
+      data[i].visible = true
+    }
+    setSearchContent('')
+    setUsersData(data)
+  }
+
   const getRelationshipData = (id) => {
 
     var profile = {Id:-1}
@@ -64,6 +96,18 @@ export default function Users() {
   return (<View style={styles.container}>
     {refreshing && (<ActivityIndicatorView />) || (<View style={styles.usersWrapper}>
       {selectedUser == -1 && (<View>
+        <View style={styles.searchBarWrapper}>
+          <Text style={styles.searchBarText}>Search Users:</Text>
+          <View style={styles.searchBarInner}>
+            <TextInput value={searchContent} onChangeText={(t) => searchUsers(t)} style={styles.searchBar} />
+            <Button 
+              title={'Clear'}
+              buttonStyle={styles.searchClearButton}
+              containerStyle={styles.searchClearButtonContainer}
+              onPress={() => clearSearch()}
+            />
+          </View>
+        </View>
         {usersData.length > 0 && (<View style={styles.usersList}>
 
           {usersData.map((u, i) => {
@@ -72,26 +116,30 @@ export default function Users() {
               paddingStyle = {}
             }
 
-            return (<View style={[styles.userContainer,paddingStyle]} key={'user_'+i}>
-              <View style={styles.user}>
-                <Image style={styles.userAvatar} source={u.Avatar} />
-                <Text style={styles.userName}>{u.FirstName + ' ' + u.LastName}</Text>
-                <View style={styles.userStats}>
-                  <Text style={styles.text}>{u.Summaries.length} Summar{u.Summaries.length == 1 && 'y' || 'ies'} Written</Text>
-                  <Text style={styles.text}>
-                    {u.MentorPairs.length} Mentee{u.MentorPairs.length != 1 && 's'}
-                    <Text style={styles.boldText}> - </Text>
-                    {u.MenteePairs.length} Mentor{u.MenteePairs.length != 1 && 's'}
-                  </Text>
+            if (u.visible) {
+
+              return (<View style={[styles.userContainer,paddingStyle]} key={'user_'+i}>
+                <View style={styles.user}>
+                  <Image style={styles.userAvatar} source={u.Avatar} />
+                  <Text style={styles.userName}>{u.FirstName + ' ' + u.LastName}</Text>
+                  <View style={styles.userStats}>
+                    <Text style={styles.text}>{u.Summaries.length} Summar{u.Summaries.length == 1 && 'y' || 'ies'} Written</Text>
+                    <Text style={styles.text}>
+                      {u.MentorPairs.length} Mentee{u.MentorPairs.length != 1 && 's'}
+                      <Text style={styles.boldText}> - </Text>
+                      {u.MenteePairs.length} Mentor{u.MenteePairs.length != 1 && 's'}
+                    </Text>
+                  </View>
+                  <Button 
+                    title={'View'} 
+                    buttonStyle={styles.userButton} 
+                    containerStyle={styles.userButtonContainer} 
+                    onPress={() => selectUser(i)}
+                  />
                 </View>
-                <Button 
-                  title={'View'} 
-                  buttonStyle={styles.userButton} 
-                  containerStyle={styles.userButtonContainer} 
-                  onPress={() => selectUser(i)}
-                />
-              </View>
-            </View>)
+              </View>)
+
+            }
 
           })}
 
@@ -124,7 +172,7 @@ export default function Users() {
         </View>
         <View style={styles.selectedUserDataSection}>
           <View style={styles.selectedUserSummariesContainer}>
-            <Text style={styles.selectedUserTitle}>Summaries</Text>
+            <Text style={[styles.selectedUserTitle,{marginBottom:10}]}>Summaries</Text>
             {usersData[selectedUser].Summaries.length > 0 && (<View style={styles.selectedUserSummaries}>
               {usersData[selectedUser].Summaries.map((s, i) => {
 
