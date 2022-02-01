@@ -254,3 +254,75 @@ export async function loginCheck(email, password) {
   return ret
 
 }
+
+export async function markUsersForDeletion(token, password, ids) {
+
+  var ret = {success:false}
+
+  // Encrypt Password.
+  var pw = await Crypto.digestStringAsync(
+    Crypto.CryptoDigestAlgorithm.SHA256,
+    password
+  )
+
+  var arr = {Token:token, Password:pw, Ids:ids}
+
+  console.log('Marking users for deletion...')
+  console.log('Deletion arr:',arr)
+  const res = await fetch(url + '/admin/mark-users-for-deletion', {
+    method:'POST',
+    body: JSON.stringify(arr),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    }
+  })
+
+  const payload = await res.json()
+  console.log('Returning payload:',payload)
+  if (payload.success == true) {
+    console.log('Update successful!')
+    ret = payload
+  } else {
+    console.log('Update failed!')
+  }
+
+  return ret
+
+}
+
+export async function unmarkUsersForDeletion(token, password, ids) {
+
+  var ret = {success:false}
+
+  // Encrypt Password.
+  var pw = await Crypto.digestStringAsync(
+    Crypto.CryptoDigestAlgorithm.SHA256,
+    password
+  )
+
+  var arr = {Token:token, Password:pw, Ids:ids}
+
+  console.log('Unmarking users for deletion...')
+  console.log('Deletion arr:',arr)
+  const res = await fetch(url + '/admin/unmark-users-for-deletion', {
+    method:'POST',
+    body: JSON.stringify(arr),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    }
+  })
+
+  const payload = await res.json()
+  console.log('Returning payload:',payload)
+  if (payload.success == true) {
+    console.log('Update successful!')
+    ret = payload
+  } else {
+    console.log('Update failed!')
+  }
+
+  return ret
+
+}

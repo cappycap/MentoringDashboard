@@ -436,6 +436,7 @@ export const users = StyleSheet.create({
     borderRadius:20,
     padding:20,
     alignItems:'center',
+    borderWidth:2,
   },
   userAvatar: {
     width:120,
@@ -463,13 +464,40 @@ export const users = StyleSheet.create({
     width:'100%',
     flex:1
   },
+  upperRow: {
+    flexDirection: 'row',
+    alignItems:'center',
+    paddingBottom:20,
+    width:'100%',
+  },
+  deletionRow: {
+    flex:1,
+    flexDirection: 'column',
+    alignItems:'flex-end',
+    justifyContent: 'center'
+  },
+  innerDeletionRow: {
+    flexDirection:'row',
+    alignItems:'center',
+    justifyContent: 'flex-end'
+  },
+  deletionText: {
+    fontSize:16,
+    color:colors.mainTextColor,
+    fontFamily:'PoppinsSemiBold',
+  },
+  deletionInputPass: {
+    backgroundColor:colors.header,
+    padding:5,
+    borderRadius:5,
+    color:colors.mainTextColor,
+  },
   selectedUserContainer: {
     alignItems:'flex-start',
   },
   backRow: {
     flexDirection:'row',
     alignItems:'center',
-    paddingBottom:20
   },
   goBack: {
     fontSize:18,
