@@ -14,7 +14,7 @@ import './StyleSheets/topics.css'
 import userContext from './Context.js'
 
 export default function Topics() {
-    
+
   const user = useContext(userContext)
   const linkTo = useLinkTo()
 
@@ -34,7 +34,9 @@ export default function Topics() {
 
   const getData = async () => {
 
-    //const newData = await getTopics(user.Token)
+    console.log(user)
+
+    //const newData = await getTopics(user.Id, user.Token)
 
     // Temporary testing data.
     const newData = [
@@ -77,7 +79,7 @@ export default function Topics() {
       if (diff >= 259200*1000) {
         topicTimeStr = parseSimpleDateText(topicTime)
       } else {
-        topicTimeStr = getTimeSince(diff) + ' ago' 
+        topicTimeStr = getTimeSince(diff) + ' ago'
       }
 
       newData[i].TimeString = topicTimeStr
@@ -111,7 +113,7 @@ export default function Topics() {
     </View>) || (<View style={styles.container}>
     <View style={styles.topicsHeader}>
       <Text style={styles.topicsHeaderText}>Topics</Text>
-      <Button 
+      <Button
         title='Add New Topic'
         buttonStyle={styles.topicsHeaderButton}
         onPress={addNewTopicTrigger}

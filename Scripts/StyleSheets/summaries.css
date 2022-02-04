@@ -1,0 +1,8 @@
+.ui.right.pointing.dropdown>.menu {
+    right:20px !important;
+    top:-9px !important;
+}
+
+.ui.dropdown>.dropdown.icon {
+    opacity: 0 !important;
+}

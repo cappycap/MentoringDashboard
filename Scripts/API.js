@@ -4,7 +4,7 @@ const { DateTime } = require("luxon")
 import { View, Text, StyleSheet } from 'react-native'
 
 // API information.
-export const url = 'https://mentorship.cs.wwu.edu'
+export const url = 'https://mentorsapp.cs.wwu.edu'
 export const key = '364ec08dac33889d5ee1e15c86c0194bf91916938c5b64ea5055ac2fe6f281b5'
 
 // Helper functions
@@ -21,7 +21,7 @@ export function getTimezoneName() {
   const shortIndex = full.indexOf(short);
   if (shortIndex >= 0) {
     const trimmed = full.substring(0, shortIndex) + full.substring(shortIndex + short.length);
-    
+
     // by this time `trimmed` should be the timezone's name with some punctuation -
     // trim it from both sides
     return trimmed.replace(/^[\s,.\-:;]+|[\s,.\-:;]+$/g, '');
@@ -112,7 +112,7 @@ export function parseSimpleDateText(date) {
   const dateText = months[date.getMonth()] +
                           " " + date.getDate() +
                           ", " + date.getFullYear()
-  
+
   return dateText
 }
 
@@ -184,7 +184,7 @@ export async function getTopics(id, token) {
   var ret = []
 
   console.log('Getting topics...')
-  const res = await fetch(url + '/all-topics/admin/'+id+'/'+token, {
+  const res = await fetch(url + '/all-topics/'+id+'/'+token, {
     method:'GET'
   })
 
@@ -197,6 +197,60 @@ export async function getTopics(id, token) {
 
   return ret
 
+}
+
+export async function getSummaries(token) {
+  var ret = []
+
+  console.log('Getting summaries...')
+  const res = await fetch(url + '/all-summaries/'+token, {
+    method:'GET'
+  })
+
+  const payload = await res.json()
+
+  if (payload.length > 0) {
+    console.log('Summaries found!')
+    ret = payload
+  }
+
+  return ret
+}
+
+export async function getAppointments(token) {
+  var ret = []
+
+  console.log('Getting appointments...')
+  const res = await fetch(url + '/all-appointments/'+token, {
+    method:'GET'
+  })
+
+  const payload = await res.json()
+
+  if(payload.length > 0) {
+    console.log('Appointments found!')
+    ret = payload
+  }
+
+  return ret
+}
+
+export async function getUsers(token) {
+  var ret = []
+
+  console.log('Getting users...')
+  const res = await fetch(url + '/all-users/'+token, {
+    method:'GET'
+  })
+
+  const payload = await res.json()
+
+  if(payload.length > 0) {
+    console.log('Users found!')
+    ret = payload
+  }
+
+  return ret
 }
 
 export async function loginCheck(email, password) {
