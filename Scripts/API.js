@@ -56,6 +56,10 @@ export function sqlToJsDate(sqlDate) {
   return new Date(Date.UTC(t[0], t[1]-1, t[2], t[3], t[4], t[5], t[6]))
 }
 
+export function jsToSqlDate(jsDate) {
+  return jsDate.toISOString().slice(0, 19).replace('T', ' ')
+}
+
 export function parseDateText(date) {
 
     var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
@@ -179,6 +183,85 @@ export async function check() {
 
 */
 
+export async function createTopic(postedBy, dueDate, title, description, archived, activeTopic, notifyUsers, token) {
+
+  var ret = false
+  var arr = {Archived:archived, ActiveTopic:activeTopic, NotifyUsers:notifyUsers, PostedBy:postedBy, DueDate:dueDate, Title:title, Description:description, Token:token}
+
+  console.log('Creating topic...')
+  const res = await fetch(url + '/create-topic', {
+    method:'POST',
+    body: JSON.stringify(arr),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    }
+  })
+
+  const payload = await res.json()
+
+  if (payload.success) {
+    console.log('Posted!')
+    ret = true
+  }
+
+  return ret
+
+}
+
+export async function updateTopic(id, postedBy, dueDate, title, description, archived, activeTopic, notifyUsers, token) {
+
+  var ret = false
+  var arr = {ActiveTopic:activeTopic, NotifyUsers:notifyUsers, Id:id, PostedBy:postedBy, DueDate:dueDate, Title:title, Description:description, Token:token, Archived:archived}
+  console.log(arr)
+  console.log('Updating topic...')
+  const res = await fetch(url + '/update-topic', {
+    method:'POST',
+    body: JSON.stringify(arr),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    }
+  })
+
+  const payload = await res.json()
+
+  console.log(payload)
+  if (payload.success) {
+    console.log('Posted!')
+    ret = true
+  }
+
+  return ret
+
+}
+
+export async function deleteTopic(id, token) {
+
+  var ret = false
+  var arr = {Id:id, Token:token}
+
+  console.log('Deleting topic...')
+  const res = await fetch(url + '/delete-topic', {
+    method:'POST',
+    body: JSON.stringify(arr),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    }
+  })
+
+  const payload = await res.json()
+
+  if (Array.isArray(payload)) {
+    console.log('Deleted!')
+    ret = true
+  }
+
+  return ret
+
+}
+
 export async function getUsers(token) {
 
   var ret = false
@@ -199,12 +282,12 @@ export async function getUsers(token) {
 
 }
 
-export async function getTopics(id, token) {
+export async function getTopics(token) {
 
   var ret = []
 
   console.log('Getting topics...')
-  const res = await fetch(url + '/all-topics/admin/'+id+'/'+token, {
+  const res = await fetch(url + '/admin/all-topics/'+token, {
     method:'GET'
   })
 
@@ -213,6 +296,8 @@ export async function getTopics(id, token) {
   if (payload.length > 0) {
     console.log('Topics found!')
     ret = payload
+  } else {
+    console.log('No topics found.')
   }
 
   return ret

@@ -330,6 +330,36 @@ export const topics = StyleSheet.create({
     fontFamily:'Poppins',
     textAlign: 'center',
   },
+  noneText: {
+    fontSize:24,
+    color:colors.mainTextColor,
+    fontFamily:'Poppins',
+    textAlign: 'center',
+  },
+  successBox: {
+    backgroundColor:btnColors.success,
+    padding:10,
+    borderRadius:10,
+    marginBottom:20
+  },
+  successBoxText: {
+    fontSize:18,
+    color:colors.mainTextColor,
+    fontFamily:'Poppins',
+    textAlign: 'center',
+  },
+  activSig: {
+    fontSize:16,
+    color:btnColors.success,
+    fontFamily:'PoppinsSemiBold',
+    marginTop:10
+  },
+  errorText: {
+    fontSize:16,
+    color:btnColors.danger,
+    fontFamily:'Poppins',
+    marginRight:10
+  },
   topic: {
     borderRadius:10,
     padding:20,
@@ -377,7 +407,34 @@ export const topics = StyleSheet.create({
     fontFamily:'Poppins',
     fontSize:16,
     color:colors.mainTextColor,
-  }
+  },
+  entryTitle: {
+    fontFamily:'PoppinsSemiBold',
+    fontSize:16,
+    color:colors.mainTextColor,
+  },
+  input: {
+    padding:10,
+    backgroundColor:colors.secondaryBackground,
+    borderRadius:10,
+    marginBottom:10
+  },
+  submitButton: {
+    borderRadius:10,
+    backgroundColor:btnColors.primary,
+  },
+  submitButtonRow: {
+    flexDirection:'row',
+    marginTop:20
+  },
+  otherRow: {
+    flexDirection:'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  otherOption: {
+    flex:1,
+  },
 })
 
 export const users = StyleSheet.create({
