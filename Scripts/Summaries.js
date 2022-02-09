@@ -1,12 +1,13 @@
 import { StatusBar } from 'expo-status-bar'
-import React, { useEffect, useState, useCallback, useContext } from 'react'
+import React, { useEffect, useState, useCallback, useContext, useRef } from 'react'
+import { CSVLink } from 'react-csv'
 import { Linking, Animated, Image, StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native'
 import { useLinkTo, Link } from '@react-navigation/native'
 import { summaries, colors } from './Styles.js'
 import { Button, Icon } from 'react-native-elements'
 import { TextInput } from 'react-native-web'
 import ActivityIndicatorView from './ActivityIndicatorView.js'
-import { getSummaries, getAppointments, getTopics, getUsers, getTimeSince, sqlToJsDate, parseSimpleDateText } from './API.js'
+import { getSummaries, getAppointments, getTopics, getUsers, getTimeSince, sqlToJsDate, parseSimpleDateText, parseTime } from './API.js'
 import { Dropdown } from 'semantic-ui-react'
 import 'semantic-ui-css/semantic.min.css'
 import './StyleSheets/summaries.css'
@@ -28,14 +29,13 @@ export default function Summaries() {
   const [displaying, setDisplaying] = useState(false)
   const [summIndex, setSummIndex] = useState(0)
   const [updating, setUpdating] = useState(false)
+  const csvLink = useRef()
+  const [direc, setDirec] = useState(false)
 
-  const options = [
-    { key: 'edit', icon: 'edit', text: 'Edit Post', value: 'edit' },
-    { key: 'hide', icon: 'hide', text: 'Hide Post', value: 'hide' },
-    { key: 'delete', icon: 'delete', text: 'Remove Post', value: 'delete'}
+  const filterOptions = [
+    { key: 'new', text: 'Newest', value: 'new' },
+    { key: 'old', text: 'Oldest', value: 'old' },
   ]
-
-  const hiddenIds = []
 
   const getData = async () => {
 
@@ -50,7 +50,7 @@ export default function Summaries() {
         Topic:'Title1',
         SummaryText:'Met with mentor and decided to design a game this year.',
         Status:'Submitted',
-        Created:'2021-10-10 08:00:00',
+        Created:'2021-10-10 13:00:00',
         LastUpdate:'2021-10-10 08:00:00',
         ActiveTopic:1,
       },
@@ -126,6 +126,19 @@ export default function Summaries() {
       FirstName:'Elijah',
       LastName:'Gonzales',
     }
+
+    const userData = [
+      {
+        Id:1,
+        FirstName:'Elijah',
+        LastName:'Gonzales'
+      },
+      {
+        Id:2,
+        FirstName:'Christina',
+        LastName:'Heater'
+      }
+    ]
 
     const topicData = [
       {
@@ -276,17 +289,43 @@ export default function Summaries() {
       summ.MentorName = mentorData.FirstName + ' ' + mentorData.LastName
       summ.MenteeName = menteeData.FirstName + ' ' + menteeData.LastName
 
+      var uploaderFirstName = ''
+      var uploaderLastName = ''
+      for(var k = 0; k < userData.length; k++){
+        if(summ.UserID == userData[k].Id){
+          uploaderFirstName = userData[k].FirstName
+          uploaderLastName = userData[k].LastName
+        }
+      }
+      console.log(uploaderFirstName + ' ' + uploaderLastName)
+      summ.Uploader = uploaderFirstName + ' ' + uploaderLastName
+
       var summTimeStr = ''
 
       var curTime = new Date()
       var summTime = sqlToJsDate(summ.Created)
+      var summTimeHour = summ.Created.split(' ')[1]
+      var summTimeSplits = summTimeHour.split(':')
+      var timeOfDay = ''
+      if(summTimeSplits[0][0] == '0'){
+        timeOfDay = 'am'
+      } else if(parseInt(summTimeSplits[0]) > 12){
+        timeOfDay = 'pm'
+        var intHour = parseInt(summTimeSplits[0]) - 12
+        if(intHour < 10){
+          summTimeSplits[0] = '0' + intHour
+        } else{
+          summTimeSplits[0] = intHour + ''
+        }
+      }
+      var summTimeFinal = summTimeSplits[0] + ':' + summTimeSplits[1] + ' ' + timeOfDay
       var diff = curTime - summTime
 
       console.log('diff:',diff,'d1:',curTime,'d2:',summTime)
 
       // Is this post over 3 days old? seconds*ms
       if (diff >= 259200*1000) {
-        summTimeStr = parseSimpleDateText(summTime)
+        summTimeStr = parseSimpleDateText(summTime) + ' at ' + summTimeFinal
       } else {
         summTimeStr = getTimeSince(diff) + ' ago'
       }
@@ -300,6 +339,10 @@ export default function Summaries() {
       setRefreshing(false)
     }
 
+  }
+
+  const makeLink = () => {
+    return <CSVLink data={summData} filename={'my-file.csv'} className='btn btn-primary' target='blank'>Download</CSVLink>
   }
 
   useEffect(() => {
@@ -322,15 +365,53 @@ export default function Summaries() {
     setDisplaying(false)
   }
 
-  // const handleDropDownSelect = (index) => (event, data) => {
-  //  console.log(data.value)
-  //  console.log(index)
-  //  if(data.value == 'hide'){
-  //    //API call to remove summary after caution
-  //    setUpdating(true)
-  //    summData.splice(index, 1)
-  //  }
-  // }
+  const download = (event) => {
+    csvLink.current.link.click()
+  }
+
+  const displaySummaries = () => {
+    var summaryData = summData.map((x) => x)
+    if(direc){
+      return mapSummaries(summaryData.reverse())
+    } else{
+      return mapSummaries(summaryData)
+    }
+  }
+
+  const mapSummaries = (data) => {
+    return data.map((summ, index) => {
+
+      return (<View style={styles.summary} key={'summary_'+index}>
+        <View style={styles.summaryHeader}>
+          <View>
+            <Text style={styles.summaryHeaderText}>{summ.Topic}</Text>
+            <Text style={styles.summaryHeaderTime}>{'Uploaded by ' + summ.Uploader + ' on ' + summ.TimeString}</Text>
+          </View>
+        </View>
+        <View style={styles.summarBody}>
+          <Text style={styles.summaryBodyTopicText}>{'Topic: ' + summ.TopicDesc}</Text>
+          <Text style={styles.summaryBodyText}>{summ.SummaryText}</Text>
+        </View>
+        <View style={styles.summaryButton}>
+        <Button
+          title='View Summary'
+          buttonStyle={styles.summariesHeaderButton}
+          onPress={() => changeDisplay(index)}
+        />
+        </View>
+      </View>)
+
+    })
+  }
+
+  const handleDropDownSelect = (event, data) => {
+   console.log(data.value)
+   if(data.value == 'new'){
+     setDirec(true)
+   } else{
+     setDirec(false)
+   }
+  }
 
   if(displaying){
     return (<ScrollView>
@@ -370,64 +451,33 @@ export default function Summaries() {
     </ScrollView>)
   }
 
-  if(updating){
-    setUpdating(false)
-    return <View></View>
-  }
-
   return (<ScrollView>
     {refreshing && (<View style={styles.activityIndicatorContainer}>
       <ActivityIndicatorView />
     </View>) || (<View style={styles.container}>
     <View style={styles.summariesHeader}>
       <Text style={styles.summariesHeaderText}>Summaries</Text>
+      <Dropdown
+        className='summDropdown'
+        selection
+        floating
+        clearable
+        placeholder = 'Filter by...'
+        options={filterOptions}
+        onChange ={handleDropDownSelect}
+      />
+      <div>
+        <Button
+          title='Download All'
+          buttonStyle={styles.summariesHeaderButton}
+          onPress={download}
+        />
+        <CSVLink data={summData} filename={'summary-data.csv'} className='btn btn-primary' ref={csvLink} target='blank'/>
+      </div>
     </View>
     <View style={styles.summaries}>
-      {summData.map((summ, index) => {
-        // if(hiddenIds.includes(summ.Id)){
-        //   return;
-        //   console.log('Hid post')
-        // }
-
-        return (<View style={styles.summary} key={'summary_'+index}>
-          <View style={styles.summaryHeader}>
-            <View>
-              <Text style={styles.summaryHeaderText}>{summ.Topic}</Text>
-              <Text style={styles.summaryHeaderTime}>{summ.TimeString}</Text>
-            </View>
-          </View>
-          <View style={styles.summarBody}>
-            <Text style={styles.summaryBodyTopicText}>{'Topic: ' + summ.TopicDesc}</Text>
-            <Text style={styles.summaryBodyText}>{summ.SummaryText}</Text>
-          </View>
-          <View style={styles.summaryButton}>
-          <Button
-            title='View Summary'
-            buttonStyle={styles.summariesHeaderButton}
-            onPress={() => changeDisplay(index)}
-          />
-          </View>
-        </View>)
-
-      })}
+      {displaySummaries()}
     </View>
   </View>)}
   </ScrollView>)
 }
-
-
-// <Dropdown
-//   className='summDropdown'
-//   floating
-//   pointing='right'
-//   direction='left'
-//   options={options}
-//   trigger={<Icon
-//     name='ellipsis-horizontal-outline'
-//     type='ionicon'
-//     size={28}
-//     color={colors.mainTextColor}
-//     style={{}}
-//   />}
-//   onChange ={handleDropDownSelect(index)}
-// />

@@ -316,6 +316,7 @@ export const summaries = StyleSheet.create({
   },
   summaries: {
     flex:1,
+    zIndex:1,
   },
   addSummaryContainer: {
     borderRadius:10,
@@ -345,6 +346,7 @@ export const summaries = StyleSheet.create({
     borderRadius:10,
     marginBottom:20,
     backgroundColor:colors.mainBackground,
+    zIndex:5,
   },
   summariesHeaderText: {
     fontFamily:'PoppinsSemiBold',
