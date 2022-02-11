@@ -4,7 +4,7 @@ const { DateTime } = require("luxon")
 import { View, Text, StyleSheet } from 'react-native'
 
 // API information.
-export const url = 'https://mentorship.cs.wwu.edu'
+export const url = 'https://mentorsapp.cs.wwu.edu'
 export const key = '364ec08dac33889d5ee1e15c86c0194bf91916938c5b64ea5055ac2fe6f281b5'
 
 // Helper functions
@@ -179,6 +179,130 @@ export async function check() {
 
 */
 
+export async function getUsers(token) {
+
+  var ret = false
+
+  console.log('Getting all users...')
+  const res = await fetch(url + '/all-users/'+token, {
+    method:'GET'
+  })
+
+  const payload = await res.json()
+
+  if (payload.length > 0) {
+    console.log('User data found!')
+    ret = payload
+  }
+
+  return ret
+
+}
+
+export async function getPairs(token) {
+
+  var ret = false
+
+  console.log('Getting all Pairs...')
+  const res = await fetch(url + '/admin/all-pairs/'+token, {
+    method:'GET'
+  })
+
+  const payload = await res.json()
+
+  if (payload.length > 0) {
+    console.log('Pair data found!')
+    ret = payload
+  }
+
+  return ret
+
+}
+
+export async function createPair(mentorId, menteeId, token) {
+
+  var ret = false
+
+  console.log('Creating Pair..')
+  var arr = {MentorId:mentorId, MenteeId:menteeId, Token:token}
+
+  console.log('Creation arr:',arr)
+  const res = await fetch(url + '/create-pair', {
+    method:'POST',
+    body: JSON.stringify(arr),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    }
+  })
+
+  const payload = await res.json()
+  console.log('Returning payload:',payload)
+  // if (payload.success) {
+    if (payload.affectedRows == 1) {
+    console.log('Pair Created!')
+    ret = true
+  } else {
+    console.log('Pair Creation Failed!')
+  }
+
+  return ret
+
+}
+
+// export async function getPairs(userId, token) {
+
+//   var ret = []
+  
+//   console.log('Getting Pairs...')
+//   console.log('ID used:',userId)
+
+//   const res = await fetch(url + '/pair/'+userId+'/'+token, {
+//     method:'GET'
+//   })
+
+//   const payload = await res.json()
+
+//   if (payload.length > 0) {
+//     console.log('Pairs found!')
+//     ret = payload
+//   } else {
+//     console.log('Pairs NOT found!')
+//   }
+//   return ret
+// }
+
+export async function deletePair(Id, token) {
+
+  var ret = false
+
+  console.log('Deleting Pair..')
+  var arr = {Id:Id, Token:token}
+
+  console.log('Deletion arr:',arr)
+  const res = await fetch(url + '/delete-pair', {
+    method:'POST',
+    body: JSON.stringify(arr),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    }
+  })
+
+  const payload = await res.json()
+  console.log('Returning payload:',payload)
+  if (payload.success != false) {
+    console.log('Pair Deleted!')
+    ret = payload
+  } else {
+    console.log('Pair Deletion Failed!')
+  }
+
+  return ret
+
+}
+
+
 export async function getTopics(id, token) {
 
   var ret = []
@@ -229,6 +353,78 @@ export async function loginCheck(email, password) {
     ret = payload
   } else {
     console.log('Login failed!')
+  }
+
+  return ret
+
+}
+
+export async function markUsersForDeletion(token, password, ids) {
+
+  var ret = {success:false}
+
+  // Encrypt Password.
+  var pw = await Crypto.digestStringAsync(
+    Crypto.CryptoDigestAlgorithm.SHA256,
+    password
+  )
+
+  var arr = {Token:token, Password:pw, Ids:ids}
+
+  console.log('Marking users for deletion...')
+  console.log('Deletion arr:',arr)
+  const res = await fetch(url + '/admin/mark-users-for-deletion', {
+    method:'POST',
+    body: JSON.stringify(arr),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    }
+  })
+
+  const payload = await res.json()
+  console.log('Returning payload:',payload)
+  if (payload.success == true) {
+    console.log('Update successful!')
+    ret = payload
+  } else {
+    console.log('Update failed!')
+  }
+
+  return ret
+
+}
+
+export async function unmarkUsersForDeletion(token, password, ids) {
+
+  var ret = {success:false}
+
+  // Encrypt Password.
+  var pw = await Crypto.digestStringAsync(
+    Crypto.CryptoDigestAlgorithm.SHA256,
+    password
+  )
+
+  var arr = {Token:token, Password:pw, Ids:ids}
+
+  console.log('Unmarking users for deletion...')
+  console.log('Deletion arr:',arr)
+  const res = await fetch(url + '/admin/unmark-users-for-deletion', {
+    method:'POST',
+    body: JSON.stringify(arr),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    }
+  })
+
+  const payload = await res.json()
+  console.log('Returning payload:',payload)
+  if (payload.success == true) {
+    console.log('Update successful!')
+    ret = payload
+  } else {
+    console.log('Update failed!')
   }
 
   return ret
