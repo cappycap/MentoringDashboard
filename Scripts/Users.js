@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState, useCallback, useContext} from 'react';
-import { Linking, Animated, Image, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { Linking, Animated, Image, StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
 import { useLinkTo, Link } from '@react-navigation/native';
 import { users, colors, btnColors } from './Styles.js';
 import { Button, Icon } from 'react-native-elements';
@@ -145,7 +145,7 @@ export default function Users() {
     }
   }
 
-  return (<View style={styles.container}>
+  return (<ScrollView contentContainerStyle={styles.container}>
     {refreshing && (<ActivityIndicatorView />) || (<View style={styles.usersWrapper}>
       {selectedUser == -1 && (<View>
         <View style={styles.searchBarWrapper}>
@@ -326,5 +326,5 @@ export default function Users() {
         </View>
       </View>)}
     </View>)}
-  </View>)
+  </ScrollView>)
 }
