@@ -446,7 +446,7 @@ export const pairs= StyleSheet.create({
   },
   pairsBodyText: {
     fontFamily:'Poppins',
-    fontSize:16,
+    fontSize:18,
     color:colors.mainTextColor,
   },
   searchBarWrapperPairs: {

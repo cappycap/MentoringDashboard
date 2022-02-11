@@ -291,7 +291,7 @@ export async function deletePair(Id, token) {
 
   const payload = await res.json()
   console.log('Returning payload:',payload)
-  if (payload.success == true) {
+  if (payload.success != false) {
     console.log('Pair Deleted!')
     ret = payload
   } else {

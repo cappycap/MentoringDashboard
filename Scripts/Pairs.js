@@ -93,6 +93,33 @@ export default function Pairs() {
     }
   }
 
+  const searchPairs = (t) => {
+    if (t.length > 0) {
+      var data = JSON.parse(JSON.stringify(pairsData))
+      for (var i = 0; i < data.length; i++) {
+        var name = data[i].MentorName[0].FirstName + ' ' + data[i].MentorName[0].LastName
+        if (name.includes(t)) {
+          data[i].visible = true
+        } else {
+          data[i].visible = false
+        }
+      }
+      setSearchContent(t)
+      setPairsData(data)
+    } else if (t.length == 0) {
+      clearSearchPairs()
+    }
+  }
+
+  const clearSearchPairs = () => {
+    var data = JSON.parse(JSON.stringify(pairsData))
+    for (var i = 0; i < data.length; i++) {
+      data[i].visible = true
+    }
+    setSearchContent('')
+    setPairsData(data)
+  }
+
   const clearSearch = () => {
     var data = JSON.parse(JSON.stringify(usersData))
     for (var i = 0; i < data.length; i++) {
@@ -102,39 +129,22 @@ export default function Pairs() {
     setUsersData(data)
   }
 
-  // const checkPairs = async (u) => {
-  //   const data = await getPairs(u.Id, admin.Token)
-  //   for (var i = 0; i < data.length; i++) {
-  //     data[i].visible = true
-  //   }
-  //   if(pairsData.length == 0) {
-  //     setPairsData(data)
-  //   } else {
-  //     for (var i = 0; i < data.length; i++) {
-  //       pairsData.push(data[i])
-  //     }
-  //   }
-
-  const checkPairs = async () => {
-    for (var j = 0; j < usersData.length; j++) {
-      const data = await getPairs(u.Id, admin.Token)
-      for (var i = 0; i < data.length; i++) {
-        data[i].visible = true
-      }
-      if (pairsData.length == 0) {
-        setPairsData(data)
-      } else {
-        for (var i = 0; i < data.length; i++) {
-          pairsData.push(data[i])
-        }
-      }
-    }
-    setRefreshing(false)
-  }
-
   const createNewPair = async (u, i) => {
+    {
+      var uniquePair = true
+      pairsData.map((p, index) => {
+        if(p.MentorId == u.Id && p.MenteeId == i.Id) {
+           uniquePair = false;
+           console.log("HERE")
+        }
+    }
+    )}
+    console.log("Pair?:", uniquePair)
+    var create = false 
+    if(uniquePair == true && u.length != 0 && i.length != 0) {
+      create = await createPair(u.Id, i.Id, admin.Token)
+    } 
 
-    var create = await createPair(u.Id, i.Id, admin.Token)
     if (create == true) {
       getData()
       setCreationSuccess(true)
@@ -144,9 +154,8 @@ export default function Pairs() {
   }
 
   const removePair = async (p) => {
-
     var remove = await deletePair(p.Id, admin.Token)
-    if (remove == true) {
+    if (remove != false) {
       getData()
       setDeletionSuccess(true)
     } else {
@@ -154,145 +163,131 @@ export default function Pairs() {
     }
   }
 
-  const getRelationshipData = (id) => {
+  return (<ScrollView>
+    <View style={styles.container}>
+      {refreshing && (<ActivityIndicatorView />) || (<View style={styles.pairsWrapper}>
+        {newPairTrigger == -1 && (<View>
+          <ScrollView>
+            <View style={styles.searchBarWrapperPairs}>
+              <View style={styles.PairTopWrapper}>
+                <Text style={styles.searchBarText}>Search Users:</Text>
+                {creationSuccess && (<View>
+                  <Text style={styles.creationText}>Succesfully created pair!</Text>
+                </View>)}
+                {creationError && (<View>
+                  <Text style={styles.creationText}>Error: Failed to create pair!</Text>
+                </View>)}
 
-    var profile = { Id: -1 }
+              </View>
+              <View style={styles.searchBarInner}>
+                <TextInput value={searchContent} onChangeText={(t) => searchUsers(t)} style={styles.searchBar} />
+                <Text style={styles.selectMentText}>Mentor: {selectedMentor.FirstName} {selectedMentor.LastName}</Text>
+                <Text style={styles.selectMentText}>Mentee: {selectedMentee.FirstName} {selectedMentee.LastName}</Text>
 
-    for (var item in usersData) {
-      if (item.Id == id) {
-        profile = item
-        break
-      }
-    }
-
-    return profile
-
-  }
-
-  // const pairsData = [
-  //   {
-  //     mentorId: '2',
-  //     mentee: 'Ash',
-  //   },
-
-  //   {
-  //     mentorId: '3',
-  //     mentee: 'Josh',
-  //   },
-
-  //   {
-  //     mentorId: '4',
-  //     mentee: 'Rick',
-  //   }
-  // ]
-
-
-  return ( <ScrollView> <View style={styles.container}>
-    {refreshing && (<ActivityIndicatorView />) || (<View style={styles.pairsWrapper}>
-      {newPairTrigger == -1 && (<View>
-        <ScrollView>
-        <View style={styles.searchBarWrapperPairs}>
-          <View style={styles.PairTopWrapper}>
-            <Text style={styles.searchBarText}>Search Users:</Text>
-            {creationSuccess && (<View>
-              <Text style={styles.creationText}>Succesfully created pair!</Text>
-            </View>)}
-            {creationError && (<View>
-              <Text style={styles.creationText}>Failed to create pair!</Text>
-            </View>)}
-
+                <Button
+                  title={'Create New Pair'}
+                  buttonStyle={styles.createPairButton}
+                  containerStyle={styles.createPairButtonContainer}
+                  onPress={() => createNewPair(selectedMentor, selectedMentee)}
+                />
+              </View>
+            </View>
+          </ScrollView>
+          <View style={styles.upperRow}>
+            <TouchableOpacity style={styles.backRow} onPress={() => newPair(1)}>
+              <Icon
+                name='chevron-back'
+                type='ionicon'
+                size={32}
+              />
+              <Text style={styles.goBack}>Go Back</Text>
+            </TouchableOpacity>
           </View>
-          <View style={styles.searchBarInner}>
-            <TextInput value={searchContent} onChangeText={(t) => searchUsers(t)} style={styles.searchBar} />
-            <Text style={styles.selectMentText}>Mentor: {selectedMentor.FirstName} {selectedMentor.LastName}</Text>
-            <Text style={styles.selectMentText}>Mentee: {selectedMentee.FirstName} {selectedMentee.LastName}</Text>
+          {pairsData.length > 0 && (<View style={styles.pairsList}>
+          </View>)}
+          {usersData.length > 0 && (<View style={styles.pairsList}>
 
-            <Button
-              title={'Create New Pair'}
-              buttonStyle={styles.createPairButton}
-              containerStyle={styles.createPairButtonContainer}
-              onPress={() => createNewPair(selectedMentor, selectedMentee)}
-            />
-          </View>
-        </View>
-        </ScrollView>
-        <View style={styles.upperRow}>
-          <TouchableOpacity style={styles.backRow} onPress={() => newPair(1)}>
-            <Icon
-              name='chevron-back'
-              type='ionicon'
-              size={32}
-            />
-            <Text style={styles.goBack}>Go Back</Text>
-          </TouchableOpacity>
-        </View>
-        {pairsData.length > 0 && (<View style={styles.pairsList}>
-        </View>)}
-        {usersData.length > 0 && (<View style={styles.pairsList}>
+            {usersData.map((u, i) => {
+              console.log('u:', u)
+              var paddingStyle = { paddingRight: 20 }
+              if (i + 1 % 4 == 0) {
+                paddingStyle = {}
+              }
+              if (u.visible) {
 
-          {usersData.map((u, i) => {
-            console.log('u:', u)
-            var paddingStyle = { paddingRight: 20 }
-            if (i + 1 % 4 == 0) {
-              paddingStyle = {}
-            }
-            //checkPairs(u)
-            if (u.visible) {
-
-              return (<View style={[styles.pairContainer, paddingStyle]} key={'user_' + i}>
-                <View style={[styles.user]}>
-                  <Text style={styles.text}>{u.FirstName + ' ' + u.LastName}</Text>
-                  <View style={styles.userStats}>
-                    <Text style={styles.text}>
-                      {u.MentorPairs.length} Mentee{u.MentorPairs.length != 1 && 's'}
-                      <Text style={styles.boldText}> - </Text>
-                      {u.MenteePairs.length} Mentor{u.MenteePairs.length != 1 && 's'}
-                    </Text>
+                return (<View style={[styles.pairContainer, paddingStyle]} key={'user_' + i}>
+                  <View style={[styles.user]}>
+                    <Text style={styles.text}>{u.FirstName + ' ' + u.LastName}</Text>
+                    <View style={styles.userStats}>
+                      <Text style={styles.text}>
+                        {u.MentorPairs.length} Mentee{u.MentorPairs.length != 1 && 's'}
+                        <Text style={styles.boldText}> - </Text>
+                        {u.MenteePairs.length} Mentor{u.MenteePairs.length != 1 && 's'}
+                      </Text>
+                    </View>
+                    <Button
+                      title={'Mentor'}
+                      buttonStyle={styles.pairsButtonMentor}
+                      containerStyle={styles.parisButtonContainer}
+                      onPress={() => setMentor(u)}
+                    />
+                    <Button
+                      title={'Mentee'}
+                      buttonStyle={styles.pairsButtonMentee}
+                      containerStyle={styles.parisButtonContainer}
+                      onPress={() => setMentee(u)}
+                    />
                   </View>
-                  <Button
-                    title={'Mentor'}
-                    buttonStyle={styles.pairsButtonMentor}
-                    containerStyle={styles.parisButtonContainer}
-                    onPress={() => setMentor(u)}
-                  />
-                  <Button
-                    title={'Mentee'}
-                    buttonStyle={styles.pairsButtonMentee}
-                    containerStyle={styles.parisButtonContainer}
-                    onPress={() => setMentee(u)}
-                  />
-                </View>
-              </View>)
+                </View>)
+              }
+            })}
 
-            }
-
-          })}
-
+          </View>) || (<View>
+            <Text style={styles.text}>No users have signed up yet.</Text>
+          </View>)}
         </View>) || (<View>
-          <Text style={styles.text}>No users have signed up yet.</Text>
-        </View>)}
-      </View>) || (<View>
-        
-        <View style={styles.container}>
-          <View style={styles.pairsHeader}>
+          <View style={styles.searchBarWrapperPairs}>
+              <View style={styles.PairTopWrapper}>
+                {/* <Text style={styles.searchBarText}>Search Pairs:</Text> */}
+                {deletionSuccess && (<View>
+                  <Text style={styles.creationText}>Succesfully deleted pair!</Text>
+                </View>)}
+                {deletionError && (<View>
+                  <Text style={styles.creationText}>Error: Failed to delete pair!</Text>
+                </View>)}
+              </View>
+              <View style={styles.searchBarInner}>
+                {/* <TextInput value={searchContent} onChangeText={(t) => searchPairs(t)} style={styles.searchBar} /> */}
+                <Text style={styles.pairsHeaderText}>Pairs</Text>
+                <Button
+                  title={'Pair Creation'}
+                  buttonStyle={styles.createPairButton}
+                  containerStyle={styles.createPairButtonContainer}
+                  onPress={() => newPair(-1)}
+                />
+              </View>
+            </View>
+          <View style={styles.container}>
+            {/* <View style={styles.pairsHeader}>
             <Text style={styles.pairsHeaderText}>Pairs</Text>
             <Button
               title='Add new Pair'
               buttonStyle={styles.pairsHeaderButton}
               onPress={() => newPair(-1)}
             />
-          </View>
-          <View style={styles.selectedUserDataSection}>
+          </View> */}
+            
+            <View style={styles.selectedUserDataSection}>
 
-            {pairsData.map((p, index) => {
-              console.log('p:', p)
-              return (<View key={'pairs_' + index}>
-                <View style={styles.pairsHeader}>
-                  <View>
-                    <Text style={styles.pairsHeaderText}>{'Mentor: ' + p.MentorName[0].FirstName + ' ' + p.MentorName[0].LastName}</Text>
-                    <Text style={styles.pairsBodyText}>{'Mentee: ' + p.MenteeName[0].FirstName + ' ' + p.MenteeName[0].LastName}</Text>
-                  </View>
-                  {/* <Dropdown
+              {pairsData.map((p, index) => {
+                console.log('p:', p)
+                return (<View key={'pairs_' + index}>
+                  <View style={styles.pairsHeader}>
+                    <View>
+                      <Text style={styles.pairsBodyText}>{'Mentor: ' + p.MentorName[0].FirstName + ' ' + p.MentorName[0].LastName}</Text>
+                      <Text style={styles.pairsBodyText}>{'Mentee: ' + p.MenteeName[0].FirstName + ' ' + p.MenteeName[0].LastName}</Text>
+                    </View>
+                    {/* <Dropdown
                     className='topicDropdown'
                     floating
                     pointing='right'
@@ -305,22 +300,22 @@ export default function Pairs() {
                       style={{}}
                     />}
                   /> */}
-                  <Button
-                    title={'Delete Pair'}
-                    buttonStyle={styles.createPairButton}
-                    containerStyle={styles.createPairButtonContainer}
-                    onPress={() => removePair(p)}
-                  />
-                </View>
-                {<View style={styles.topicBody}>
-                </View>}
-              </View>)
-            })}
+                    <Button
+                      title={'Delete Pair'}
+                      buttonStyle={styles.createPairButton}
+                      containerStyle={styles.createPairButtonContainer}
+                      onPress={() => removePair(p)}
+                    />
+                  </View>
+                  {<View style={styles.topicBody}>
+                  </View>}
+                </View>)
+              })}
+            </View>
           </View>
-        </View>
-        
+
+        </View>)}
       </View>)}
-    </View>)}
-  </View>
+    </View>
   </ScrollView>)
 }
