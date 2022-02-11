@@ -530,8 +530,12 @@ export const topics = StyleSheet.create({
   },
 })
 
+<<<<<<< HEAD
 
 export const pairs = StyleSheet.create({
+=======
+export const pairs= StyleSheet.create({
+>>>>>>> 85e8b6cb80c904ab806c021de396b0928c0b7d22
   container: {
     flex:1,
     padding:20

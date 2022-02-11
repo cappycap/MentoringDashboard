@@ -208,6 +208,10 @@ export async function createTopic(postedBy, dueDate, title, description, archive
   return ret
 
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 85e8b6cb80c904ab806c021de396b0928c0b7d22
 
 export async function updateTopic(id, postedBy, dueDate, title, description, archived, activeTopic, notifyUsers, token) {
 
@@ -231,6 +235,26 @@ export async function updateTopic(id, postedBy, dueDate, title, description, arc
     console.log('Posted!')
     ret = true
   }
+<<<<<<< HEAD
+=======
+}
+
+export async function getPairs(token) {
+
+  var ret = false
+
+  console.log('Getting all Pairs...')
+  const res = await fetch(url + '/admin/all-pairs/'+token, {
+    method:'GET'
+  })
+
+  const payload = await res.json()
+
+  if (payload.length > 0) {
+    console.log('Pair data found!')
+    ret = payload
+  }
+>>>>>>> 85e8b6cb80c904ab806c021de396b0928c0b7d22
 
   return ret
 
@@ -294,28 +318,6 @@ export async function createPair(mentorId, menteeId, token) {
 
 }
 
-// export async function getPairs(userId, token) {
-
-//   var ret = []
-  
-//   console.log('Getting Pairs...')
-//   console.log('ID used:',userId)
-
-//   const res = await fetch(url + '/pair/'+userId+'/'+token, {
-//     method:'GET'
-//   })
-
-//   const payload = await res.json()
-
-//   if (payload.length > 0) {
-//     console.log('Pairs found!')
-//     ret = payload
-//   } else {
-//     console.log('Pairs NOT found!')
-//   }
-//   return ret
-// }
-
 export async function deletePair(Id, token) {
 
   var ret = false
@@ -362,26 +364,6 @@ export async function getTopics(token) {
     ret = payload
   } else {
     console.log('No topics found.')
-  }
-
-  return ret
-
-}
-
-export async function getPairs(token) {
-
-  var ret = []
-
-  console.log('Getting pairs...')
-  const res = await fetch(url + '/admin/all-pairs/'+token, {
-    method:'GET'
-  })
-
-  const payload = await res.json()
-
-  if (payload.length > 0) {
-    console.log('Pairs found!')
-    ret = payload
   }
 
   return ret
@@ -549,5 +531,5 @@ export async function unmarkUsersForDeletion(token, password, ids) {
   }
 
   return ret
+  }
 
-}
