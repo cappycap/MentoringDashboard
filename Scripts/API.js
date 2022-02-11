@@ -21,7 +21,7 @@ export function getTimezoneName() {
   const shortIndex = full.indexOf(short);
   if (shortIndex >= 0) {
     const trimmed = full.substring(0, shortIndex) + full.substring(shortIndex + short.length);
-    
+
     // by this time `trimmed` should be the timezone's name with some punctuation -
     // trim it from both sides
     return trimmed.replace(/^[\s,.\-:;]+|[\s,.\-:;]+$/g, '');
@@ -112,7 +112,7 @@ export function parseSimpleDateText(date) {
   const dateText = months[date.getMonth()] +
                           " " + date.getDate() +
                           ", " + date.getFullYear()
-  
+
   return dateText
 }
 
@@ -308,7 +308,7 @@ export async function getTopics(id, token) {
   var ret = []
 
   console.log('Getting topics...')
-  const res = await fetch(url + '/all-topics/admin/'+id+'/'+token, {
+  const res = await fetch(url + '/admin/all-topics/'+token, {
     method:'GET'
   })
 
@@ -316,6 +316,82 @@ export async function getTopics(id, token) {
 
   if (payload.length > 0) {
     console.log('Topics found!')
+    ret = payload
+  }
+
+  return ret
+
+}
+
+export async function getPairs(token) {
+
+  var ret = []
+
+  console.log('Getting pairs...')
+  const res = await fetch(url + '/admin/all-pairs/'+token, {
+    method:'GET'
+  })
+
+  const payload = await res.json()
+
+  if (payload.length > 0) {
+    console.log('Pairs found!')
+    ret = payload
+  }
+
+  return ret
+
+}
+
+export async function getSummaries(token) {
+  var ret = []
+
+  console.log('Getting summaries...')
+  const res = await fetch(url + '/all-summaries/'+token, {
+    method:'GET',
+  })
+
+  const payload = await res.json()
+
+  if (payload.length > 0) {
+    console.log('Summaries found!')
+    ret = payload
+  }
+
+  return ret
+}
+
+export async function getAppointments(token) {
+  var ret = []
+
+  console.log('Getting appointments...')
+  const res = await fetch(url + '/all-appointments/'+token, {
+    method:'GET'
+  })
+
+  const payload = await res.json()
+
+  if(payload.length > 0) {
+    console.log('Appointments found!')
+    ret = payload
+  }
+
+  return ret
+}
+
+export async function getUsers(token) {
+
+  var ret = false
+
+  console.log('Getting all users...')
+  const res = await fetch(url + '/all-users/'+token, {
+    method:'GET'
+  })
+
+  const payload = await res.json()
+
+  if (payload.length > 0) {
+    console.log('User data found!')
     ret = payload
   }
 

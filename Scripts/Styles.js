@@ -20,7 +20,7 @@ export const colors = {
   secondaryBackground: '#ebeef6',
   mainTextColor: '#1c2023',
   secondaryTextColor: '#667986',
-  mainBackground: '#ffffff', 
+  mainBackground: '#ffffff',
   header: '#FAFAFA',
   headerDarker: '#EDEDED',
   headerBorder: '#ebeef6',
@@ -302,6 +302,99 @@ export const welcome = StyleSheet.create({
     fontFamily:'Poppins',
     color:btnColors.primary,
     marginLeft:5,
+  }
+})
+
+
+export const summaries = StyleSheet.create({
+  container: {
+    flex:1,
+    margin:20
+  },
+  activityIndicatorContainer: {
+    padding:20
+  },
+  summaries: {
+    flex:1,
+    zIndex:1,
+  },
+  addSummaryContainer: {
+    borderRadius:10,
+    padding:20,
+    borderWidth:2,
+    borderStyle:'dashed',
+    borderColor:btnColors.primary,
+    marginBottom:20
+  },
+  addSummaryContainerText: {
+    fontSize:24,
+    color:btnColors.primary,
+    fontFamily:'Poppins',
+    textAlign: 'center',
+  },
+  summary: {
+    borderRadius:10,
+    padding:20,
+    marginBottom:20,
+    backgroundColor:colors.mainBackground,
+  },
+  summariesHeader: {
+    flexDirection:'row',
+    alignItems:'center',
+    justifyContent: 'space-between',
+    padding:20,
+    borderRadius:10,
+    marginBottom:20,
+    backgroundColor:colors.mainBackground,
+    zIndex:5,
+  },
+  summariesHeaderText: {
+    fontFamily:'PoppinsSemiBold',
+    fontSize:24,
+    color:colors.mainTextColor,
+  },
+  summariesHeaderButton: {
+    borderRadius:5,
+    width:'200px',
+    backgroundColor:btnColors.primary,
+  },
+  summaryHeader: {
+    flexDirection:'row',
+    alignItems:'flex-start',
+    justifyContent: 'space-between',
+    marginBottom:10
+  },
+  summaryHeaderText: {
+    fontFamily:'PoppinsSemiBold',
+    fontSize:22,
+    color:colors.mainTextColor,
+  },
+  summaryHeaderTime: {
+    fontFamily:'Poppins',
+    fontSize:16,
+    color:colors.secondaryTextColor,
+  },
+  summaryHeaderUsers: {
+    fontFamily:'Poppins',
+    fontSize:14,
+    color:colors.mainTextColor,
+  },
+  summaryBody: {
+
+  },
+  summaryBodyTopicText: {
+    fontFamily:'PoppinsSemiBold',
+    fontSize:16,
+    color:colors.mainTextColor,
+  },
+  summaryBodyText: {
+    fontFamily:'Poppins',
+    fontSize:16,
+    color:colors.mainTextColor,
+  },
+  summaryButton: {
+    alignItems:'end',
+    justifyContent: 'center'
   }
 })
 
