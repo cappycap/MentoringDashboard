@@ -208,25 +208,7 @@ export async function createTopic(postedBy, dueDate, title, description, archive
   return ret
 
 }
-export async function getUsers(token) {
 
-  var ret = false
-
-  console.log('Getting all users...')
-  const res = await fetch(url + '/all-users/'+token, {
-    method:'GET'
-  })
-
-  const payload = await res.json()
-
-  if (payload.length > 0) {
-    console.log('User data found!')
-    ret = payload
-  }
-
-  return ret
-
-}
 
 export async function updateTopic(id, postedBy, dueDate, title, description, archived, activeTopic, notifyUsers, token) {
 
@@ -250,6 +232,8 @@ export async function updateTopic(id, postedBy, dueDate, title, description, arc
     console.log('Posted!')
     ret = true
   }
+}
+
 export async function getPairs(token) {
 
   var ret = false
@@ -328,28 +312,6 @@ export async function createPair(mentorId, menteeId, token) {
 
 }
 
-// export async function getPairs(userId, token) {
-
-//   var ret = []
-  
-//   console.log('Getting Pairs...')
-//   console.log('ID used:',userId)
-
-//   const res = await fetch(url + '/pair/'+userId+'/'+token, {
-//     method:'GET'
-//   })
-
-//   const payload = await res.json()
-
-//   if (payload.length > 0) {
-//     console.log('Pairs found!')
-//     ret = payload
-//   } else {
-//     console.log('Pairs NOT found!')
-//   }
-//   return ret
-// }
-
 export async function deletePair(Id, token) {
 
   var ret = false
@@ -396,26 +358,6 @@ export async function getTopics(token) {
     ret = payload
   } else {
     console.log('No topics found.')
-  }
-
-  return ret
-
-}
-
-export async function getPairs(token) {
-
-  var ret = []
-
-  console.log('Getting pairs...')
-  const res = await fetch(url + '/admin/all-pairs/'+token, {
-    method:'GET'
-  })
-
-  const payload = await res.json()
-
-  if (payload.length > 0) {
-    console.log('Pairs found!')
-    ret = payload
   }
 
   return ret
@@ -583,5 +525,5 @@ export async function unmarkUsersForDeletion(token, password, ids) {
   }
 
   return ret
+  }
 
-}
