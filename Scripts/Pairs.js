@@ -302,8 +302,8 @@ export default function Pairs() {
                   /> */}
                     <Button
                       title={'Delete Pair'}
-                      buttonStyle={styles.createPairButton}
-                      containerStyle={styles.createPairButtonContainer}
+                      buttonStyle={styles.deletePairButton}
+                      containerStyle={styles.deletePairButtonContainer}
                       onPress={() => removePair(p)}
                     />
                   </View>

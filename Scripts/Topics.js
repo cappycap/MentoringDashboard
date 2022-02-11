@@ -144,9 +144,9 @@ const options = [
   }
 
   const submitUpdateTopicTrigger = async () => {
-    var upd = await updateTopic(newTopic.Id, newTopic.PostedBy, newTopic.DueDate, newTopic.Title, newTopic.Description, newTopic.Archived, newTopic.ActiveTopic, newTopic.NotifyUsers, user.Token)
-
-    if (upd) {
+    var updated = await updateTopic(newTopic.Id, newTopic.PostedBy, newTopic.DueDate, newTopic.Title, newTopic.Description, newTopic.Archived, newTopic.ActiveTopic, newTopic.NotifyUsers, user.Token)
+    console.log(updated)
+    if (updated) {
       setShowAddError(false)
       linkTo('/topics?success=true')
       setShowUpdateTopic(false)

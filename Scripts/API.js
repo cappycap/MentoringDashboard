@@ -208,25 +208,6 @@ export async function createTopic(postedBy, dueDate, title, description, archive
   return ret
 
 }
-export async function getUsers(token) {
-
-  var ret = false
-
-  console.log('Getting all users...')
-  const res = await fetch(url + '/all-users/'+token, {
-    method:'GET'
-  })
-
-  const payload = await res.json()
-
-  if (payload.length > 0) {
-    console.log('User data found!')
-    ret = payload
-  }
-
-  return ret
-
-}
 
 export async function updateTopic(id, postedBy, dueDate, title, description, archived, activeTopic, notifyUsers, token) {
 
@@ -249,21 +230,6 @@ export async function updateTopic(id, postedBy, dueDate, title, description, arc
   if (payload.success) {
     console.log('Posted!')
     ret = true
-  }
-export async function getPairs(token) {
-
-  var ret = false
-
-  console.log('Getting all Pairs...')
-  const res = await fetch(url + '/admin/all-pairs/'+token, {
-    method:'GET'
-  })
-
-  const payload = await res.json()
-
-  if (payload.length > 0) {
-    console.log('Pair data found!')
-    ret = payload
   }
 
   return ret

@@ -143,19 +143,22 @@ export default function Main() {
           )
         }}
       />
-      <Drawer.Screen name="Settings" component={Settings}
-        options={{
-          title:'Settings - WWU CS Mentoring',
-          drawerIcon: ({focused, size}) => (
-            <Icon
-              name='cog'
-              type='ionicon'
-              size={30}
-              color={focused ? userData.SecondaryHighlight : colors.mainBackground}
-            />
-          )
-        }}
-      />
     </Drawer.Navigator>
   </View>)}</>)
 }
+
+/*
+<Drawer.Screen name="Settings" component={Settings}
+  options={{
+    title:'Settings - WWU CS Mentoring',
+    drawerIcon: ({focused, size}) => (
+      <Icon
+        name='cog'
+        type='ionicon'
+        size={30}
+        color={focused ? userData.SecondaryHighlight : colors.mainBackground}
+      />
+    )
+  }}
+/>
+*/

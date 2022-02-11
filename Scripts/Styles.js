@@ -530,219 +530,8 @@ export const topics = StyleSheet.create({
   },
 })
 
-export const users = StyleSheet.create({
-  container: {
-    flex:1,
-    padding:20
-  },
-  text: {
-    fontSize:18,
-    color:colors.mainTextColor,
-    fontFamily:'Poppins',
-    textAlign: 'center'
-  },
-  searchBarWrapper: {
-    backgroundColor:colors.mainBackground,
-    paddingTop:10,
-    paddingBottom:10,
-    paddingLeft:15,
-    paddingRight:1,
-    borderRadius:20,
-    marginBottom:20,
-  },
-  searchBarInner: {
-    flexDirection: 'row',
-    alignItems:'center'
-  },
-  searchBar: {
-    padding:10,
-    backgroundColor:colors.secondaryBackground,
-    borderRadius:20,
-    width:'50%',
-    marginRight:10,
-  },
-  searchClearButton: {
-    color:btnColors.primary,
-    borderRadius:20,
-  },
-  searchClearButtonContainer: {
-  },
-  searchBarText: {
-    fontSize:18,
-    color:colors.mainTextColor,
-    fontFamily:'PoppinsSemiBold',
-    marginRight:5,
-  },
-  usersList: {
-    flexDirection: 'row',
-    flexWrap:'wrap'
-  },
-  userContainer: {
-    width:'25%',
-    paddingBottom:20
-  },
-  user: {
-    backgroundColor:colors.mainBackground,
-    borderRadius:20,
-    padding:20,
-    alignItems:'center',
-    borderWidth:2,
-  },
-  userAvatar: {
-    width:120,
-    height:120,
-    borderRadius:100,
-    borderWidth:4,
-    borderColor:colors.secondaryHighlight
-  },
-  userName: {
-    fontSize:22,
-    color:colors.mainTextColor,
-    fontFamily:'PoppinsSemiBold',
-    textAlign: 'center'
-  },
-  userStats: {
-    marginBottom:9
-  },
-  userButton: {
-    width:'100%',
-    flex:1,
-    borderRadius:20,
-    backgroundColor:colors.secondaryHighlight
-  },
-  userButtonContainer: {
-    width:'100%',
-    flex:1
-  },
-  upperRow: {
-    flexDirection: 'row',
-    alignItems:'center',
-    paddingBottom:20,
-    width:'100%',
-  },
-  deletionRow: {
-    flex:1,
-    flexDirection: 'column',
-    alignItems:'flex-end',
-    justifyContent: 'center'
-  },
-  innerDeletionRow: {
-    flexDirection:'row',
-    alignItems:'center',
-    justifyContent: 'flex-end'
-  },
-  deletionText: {
-    fontSize:16,
-    color:colors.mainTextColor,
-    fontFamily:'PoppinsSemiBold',
-  },
-  deletionInputPass: {
-    backgroundColor:colors.header,
-    padding:5,
-    borderRadius:5,
-    color:colors.mainTextColor,
-  },
-  selectedUserContainer: {
-    alignItems:'flex-start',
-  },
-  backRow: {
-    flexDirection:'row',
-    alignItems:'center',
-  },
-  goBack: {
-    fontSize:18,
-    color:colors.mainTextColor,
-    fontFamily:'PoppinsSemiBold',
-  },
-  selectedUser: {
-    backgroundColor:colors.mainBackground,
-    borderRadius:20,
-    padding:20,
-    flex:1,
-    width:'100%'
-  },
-  selectedUserHeaderRow: {
-    flexDirection:'row',
-    justifyContent:'space-between',
-    alignItems:'center',
-    width:'100%'
-  },
-  selectedUserHeaderRowLeft: {
-    flexDirection:'row',
-    alignItems:'center',
-  },
-  selectedUserHeaderRowRight: {
-    alignItems:'flex-end'
-  },
-  selectedUserHeaderRowRightText: {
-    fontSize:16,
-    color:colors.mainTextColor,
-    fontFamily:'Poppins'
-  },
-  selectedUserAvatar: {
-    width:75,
-    height:75,
-    borderRadius:150,
-    borderWidth:4,
-    borderColor:colors.secondaryHighlight,
-    marginRight:20
-  },
-  selectedUserName: {
-    fontSize:28,
-    fontFamily:'PoppinsSemiBold',
-    color:colors.mainTextColor,
-  },
-  selectedUserCreated: {
-    fontSize:16,
-    fontFamily:'Poppins',
-    color:colors.mainTextColor,
-  },
-  selectedUserDataSection: {
-    flexDirection:'row',
-    width:'100%',
-    marginTop:20,
-  },
-  selectedUserSummariesContainer: {
-    flex:3,
-    marginRight:20,
-  },
-  selectedUserSummary: {
-    backgroundColor:colors.mainBackground,
-    borderRadius:20,
-    padding:20,
-  },
-  selectedUserRelationships: {
-    backgroundColor:colors.mainBackground,
-    borderRadius:20,
-    padding:20,
-    flex:1,
-  },
-  noneText: {
-    fontSize:16,
-    color:colors.mainTextColor,
-    fontFamily:'Poppins',
-  },
-  selectedUserTitle: {
-    fontSize:22,
-    color:colors.mainTextColor,
-    fontFamily:'PoppinsSemiBold',
-  },
-  boldText: {
-    fontFamily:'PoppinsSemiBold',
-  },
-  summaryHeader: {
-    fontSize:22,
-    color:colors.mainTextColor,
-    fontFamily:'Poppins'
-  },
-  summaryText: {
-    fontSize:16,
-    color:colors.mainTextColor,
-    fontFamily:'Poppins'
-  },
-  
-})
-export const pairs= StyleSheet.create({
+
+export const pairs = StyleSheet.create({
   container: {
     flex:1,
     padding:20
@@ -838,12 +627,21 @@ export const pairs= StyleSheet.create({
     marginRight:10,
   },
   createPairButton: {
-    color:btnColors.primary,
+    backgroundColor:btnColors.primary,
     borderRadius:20,
     width:200,
   },
   createPairButtonContainer: {
     marginRight: 20,
+    marginTop:10,
+    marginBottom:10
+  },
+  deletePairButton: {
+    backgroundColor:btnColors.danger,
+    borderRadius:20,
+    width:250,
+  },
+  deletePairButtonContainer: {
   },
   searchBarText: {
     fontSize:18,
