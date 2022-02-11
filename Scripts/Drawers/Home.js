@@ -14,9 +14,10 @@ const Drawer = createDrawerNavigator()
 
 // Items.
 import Topics from '../Topics.js'
+import Summaries from '../Summaries.js'
 
 export default function Home() {
-  
+
   const [refreshing, setRefreshing] = useState(true)
   const [styles, setStyles] = useState(home)
 
@@ -72,6 +73,25 @@ export default function Home() {
           drawerLabel:({focused}) => {
             const color = focused ? colors.secondaryHighlight : colors.mainTextColor
             return (<Text style={{marginLeft:-25,fontSize:14,fontFamily:'Poppins',color:color}}>Topics</Text>)
+          }
+        }}
+      />
+
+      <Drawer.Screen name="Summaries" component={Summaries}
+        options={{
+          title:'Summaries - CS/M Dashboard',
+          drawerIcon: ({focused, size}) => (
+            <Icon
+              name='pencil'
+              type='ionicon'
+              size={20}
+              style={{backgroundColor:''}}
+              color={focused ? colors.secondaryHighlight : colors.mainTextColor}
+            />
+          ),
+          drawerLabel:({focused}) => {
+            const color = focused ? colors.secondaryHighlight : colors.mainTextColor
+            return (<Text style={{marginLeft:-25,fontSize:14,fontFamily:'Poppins',color:color}}>Summaries</Text>)
           }
         }}
       />

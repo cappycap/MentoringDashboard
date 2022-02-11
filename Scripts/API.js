@@ -21,7 +21,7 @@ export function getTimezoneName() {
   const shortIndex = full.indexOf(short);
   if (shortIndex >= 0) {
     const trimmed = full.substring(0, shortIndex) + full.substring(shortIndex + short.length);
-    
+
     // by this time `trimmed` should be the timezone's name with some punctuation -
     // trim it from both sides
     return trimmed.replace(/^[\s,.\-:;]+|[\s,.\-:;]+$/g, '');
@@ -116,7 +116,7 @@ export function parseSimpleDateText(date) {
   const dateText = months[date.getMonth()] +
                           " " + date.getDate() +
                           ", " + date.getFullYear()
-  
+
   return dateText
 }
 
@@ -208,6 +208,25 @@ export async function createTopic(postedBy, dueDate, title, description, archive
   return ret
 
 }
+export async function getUsers(token) {
+
+  var ret = false
+
+  console.log('Getting all users...')
+  const res = await fetch(url + '/all-users/'+token, {
+    method:'GET'
+  })
+
+  const payload = await res.json()
+
+  if (payload.length > 0) {
+    console.log('User data found!')
+    ret = payload
+  }
+
+  return ret
+
+}
 
 export async function updateTopic(id, postedBy, dueDate, title, description, archived, activeTopic, notifyUsers, token) {
 
@@ -230,6 +249,21 @@ export async function updateTopic(id, postedBy, dueDate, title, description, arc
   if (payload.success) {
     console.log('Posted!')
     ret = true
+  }
+export async function getPairs(token) {
+
+  var ret = false
+
+  console.log('Getting all Pairs...')
+  const res = await fetch(url + '/admin/all-pairs/'+token, {
+    method:'GET'
+  })
+
+  const payload = await res.json()
+
+  if (payload.length > 0) {
+    console.log('Pair data found!')
+    ret = payload
   }
 
   return ret
@@ -262,20 +296,84 @@ export async function deleteTopic(id, token) {
 
 }
 
-export async function getUsers(token) {
+export async function createPair(mentorId, menteeId, token) {
 
   var ret = false
 
-  console.log('Getting all users...')
-  const res = await fetch(url + '/all-users/'+token, {
-    method:'GET'
+  console.log('Creating Pair..')
+  var arr = {MentorId:mentorId, MenteeId:menteeId, Token:token}
+
+  console.log('Creation arr:',arr)
+  const res = await fetch(url + '/create-pair', {
+    method:'POST',
+    body: JSON.stringify(arr),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    }
   })
 
   const payload = await res.json()
 
-  if (payload.length > 0) {
-    console.log('User data found!')
+  console.log('Returning payload:',payload)
+  // if (payload.success) {
+    if (payload.affectedRows == 1) {
+    console.log('Pair Created!')
+    ret = true
+  } else {
+    console.log('Pair Creation Failed!')
+  }
+
+  return ret
+
+}
+
+// export async function getPairs(userId, token) {
+
+//   var ret = []
+  
+//   console.log('Getting Pairs...')
+//   console.log('ID used:',userId)
+
+//   const res = await fetch(url + '/pair/'+userId+'/'+token, {
+//     method:'GET'
+//   })
+
+//   const payload = await res.json()
+
+//   if (payload.length > 0) {
+//     console.log('Pairs found!')
+//     ret = payload
+//   } else {
+//     console.log('Pairs NOT found!')
+//   }
+//   return ret
+// }
+
+export async function deletePair(Id, token) {
+
+  var ret = false
+
+  console.log('Deleting Pair..')
+  var arr = {Id:Id, Token:token}
+
+  console.log('Deletion arr:',arr)
+  const res = await fetch(url + '/delete-pair', {
+    method:'POST',
+    body: JSON.stringify(arr),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    }
+  })
+
+  const payload = await res.json()
+  console.log('Returning payload:',payload)
+  if (payload.success != false) {
+    console.log('Pair Deleted!')
     ret = payload
+  } else {
+    console.log('Pair Deletion Failed!')
   }
 
   return ret
@@ -298,6 +396,82 @@ export async function getTopics(token) {
     ret = payload
   } else {
     console.log('No topics found.')
+  }
+
+  return ret
+
+}
+
+export async function getPairs(token) {
+
+  var ret = []
+
+  console.log('Getting pairs...')
+  const res = await fetch(url + '/admin/all-pairs/'+token, {
+    method:'GET'
+  })
+
+  const payload = await res.json()
+
+  if (payload.length > 0) {
+    console.log('Pairs found!')
+    ret = payload
+  }
+
+  return ret
+
+}
+
+export async function getSummaries(token) {
+  var ret = []
+
+  console.log('Getting summaries...')
+  const res = await fetch(url + '/all-summaries/'+token, {
+    method:'GET',
+  })
+
+  const payload = await res.json()
+
+  if (payload.length > 0) {
+    console.log('Summaries found!')
+    ret = payload
+  }
+
+  return ret
+}
+
+export async function getAppointments(token) {
+  var ret = []
+
+  console.log('Getting appointments...')
+  const res = await fetch(url + '/all-appointments/'+token, {
+    method:'GET'
+  })
+
+  const payload = await res.json()
+
+  if(payload.length > 0) {
+    console.log('Appointments found!')
+    ret = payload
+  }
+
+  return ret
+}
+
+export async function getUsers(token) {
+
+  var ret = false
+
+  console.log('Getting all users...')
+  const res = await fetch(url + '/all-users/'+token, {
+    method:'GET'
+  })
+
+  const payload = await res.json()
+
+  if (payload.length > 0) {
+    console.log('User data found!')
+    ret = payload
   }
 
   return ret
