@@ -179,12 +179,12 @@ export async function check() {
 
 */
 
-export async function getTopics(id, token) {
+export async function getTopics(token) {
 
   var ret = []
 
   console.log('Getting topics...')
-  const res = await fetch(url + '/all-topics/'+id+'/'+token, {
+  const res = await fetch(url + '/admin/all-topics/'+token, {
     method:'GET'
   })
 
@@ -199,12 +199,32 @@ export async function getTopics(id, token) {
 
 }
 
+export async function getPairs(token) {
+
+  var ret = []
+
+  console.log('Getting pairs...')
+  const res = await fetch(url + '/admin/all-pairs/'+token, {
+    method:'GET'
+  })
+
+  const payload = await res.json()
+
+  if (payload.length > 0) {
+    console.log('Pairs found!')
+    ret = payload
+  }
+
+  return ret
+
+}
+
 export async function getSummaries(token) {
   var ret = []
 
   console.log('Getting summaries...')
   const res = await fetch(url + '/all-summaries/'+token, {
-    method:'GET'
+    method:'GET',
   })
 
   const payload = await res.json()
@@ -236,21 +256,23 @@ export async function getAppointments(token) {
 }
 
 export async function getUsers(token) {
-  var ret = []
 
-  console.log('Getting users...')
+  var ret = false
+
+  console.log('Getting all users...')
   const res = await fetch(url + '/all-users/'+token, {
     method:'GET'
   })
 
   const payload = await res.json()
 
-  if(payload.length > 0) {
-    console.log('Users found!')
+  if (payload.length > 0) {
+    console.log('User data found!')
     ret = payload
   }
 
   return ret
+
 }
 
 export async function loginCheck(email, password) {
