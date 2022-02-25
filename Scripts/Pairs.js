@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState, useCallback, useContext } from 'react';
 import { Linking, Animated, Image, StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import { useLinkTo, Link } from '@react-navigation/native';
-import { users, pairs, colors } from './Styles.js';
+import { users, pairs, colors, btnColors } from './Styles.js';
 import { Button, Icon } from 'react-native-elements';
 import { TextInput } from 'react-native-web';
 import { createPair, getPairs, deletePair, getUsers, parseSimpleDateText, sqlToJsDate, } from './API.js';
@@ -27,9 +27,11 @@ export default function Pairs() {
   const [colors, setColors] = useState(colors)
   const [creationSuccess, setCreationSuccess] = useState(false)
   const [creationError, setCreationError] = useState(false)
+  const [newPairTrigger, setNewPairTrigger] = useState(1)
   const [deletionSuccess, setDeletionSuccess] = useState(false)
   const [deletionError, setDeletionError] = useState(false)
-  const [newPairTrigger, setNewPairTrigger] = useState(1)
+  const [deletionActive, setDeletionActive] = useState(false)
+  const [deleteConfirmDisabled, setDeleteConfirmDisabled] = useState(true)
 
   const [pass, setPass] = useState('')
   const [selectedMentor, setMentor] = useState('')
@@ -148,7 +150,9 @@ export default function Pairs() {
     if (create == true) {
       getData()
       setCreationSuccess(true)
+      setCreationError(false)
     } else {
+      setCreationSuccess(false)
       setCreationError(true)
     }
   }
@@ -158,8 +162,19 @@ export default function Pairs() {
     if (remove != false) {
       getData()
       setDeletionSuccess(true)
+      setDeletionError(false)
     } else {
       setDeletionError(true)
+      setDeletionSuccess(false)
+    }
+  }
+
+  const updatePass = (t) => {
+    setPass(t)
+    if (t.length > 4) {
+      setDeleteConfirmDisabled(false)
+    } else {
+      setDeleteConfirmDisabled(true)
     }
   }
 
@@ -300,12 +315,35 @@ export default function Pairs() {
                       style={{}}
                     />}
                   /> */}
-                    <Button
+                  <View style={styles.deletionRow}>
+            {(deletionActive != p.Id) && (<Button
                       title={'Delete Pair'}
                       buttonStyle={styles.deletePairButton}
                       containerStyle={styles.deletePairButtonContainer}
-                      onPress={() => removePair(p)}
-                    />
+                      onPress={() => setDeletionActive(p.Id)}
+                    />) ||
+            (deletionActive == p.Id) && (<View style={styles.innerDeletionRow}>
+              <View>
+                <Text style={styles.deletionText}>Enter your password to confirm:</Text>
+                <TextInput placeholder={'Pass...'} secureTextEntry={true} value={pass} style={styles.deletionInputPass}
+                  onChangeText={(t) => updatePass(t)} 
+                />
+                {deletionError && (<Text style={styles.deletionError}>Incorrect password, please try again.</Text>)}
+              </View>
+              <Button 
+                title={'Confirm'}
+                buttonStyle={{backgroundColor:btnColors.success,marginLeft:10,marginRight:10}}
+                onPress={() => removePair(p)}
+                disabled={deleteConfirmDisabled}
+              />
+              <Button 
+                title={'Cancel'}
+                buttonStyle={{backgroundColor:btnColors.primary}}
+                onPress={() => setDeletionActive(false)}
+              />
+            </View>)}
+          </View>
+                    
                   </View>
                   {<View style={styles.topicBody}>
                   </View>}
