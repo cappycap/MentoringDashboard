@@ -23,18 +23,14 @@ const linking = {
           Home: {
             screens: {
               Topics: 'topics',
+              Summaries: 'summaries',
+              Settings:'settings'
             }
           },
           UserManagement: {
             screens: {
               Pairs: 'pairs',
               Users: 'users',
-            }
-          },
-          Settings: {
-            screens: {
-              AppSettings: 'app-settings',
-              UserSettings: 'user-settings'
             }
           }
         }
