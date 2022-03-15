@@ -13,6 +13,7 @@ import { set, get, ttl } from '../Storage.js'
 // Sub Drawers.
 import Home from './Home.js'
 import UserManagement from './UserManagement.js'
+import Settings from './Settings.js'
 
 import userContext from '../Context.js'
 

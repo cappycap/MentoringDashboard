@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/display-name */
 import { StatusBar } from 'expo-status-bar'
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import { home, colors, innerDrawer } from '../Styles.js'
 import { useLinkTo } from '@react-navigation/native'
@@ -13,11 +13,11 @@ import { set, get, getTTL, ttl } from '../Storage.js'
 const Drawer = createDrawerNavigator()
 
 // Items.
-import Topics from '../Topics.js'
-import Summaries from '../Summaries.js'
+import AppSettings from '../AppSettings.js'
+import UserSettings from '../UserSettings.js'
 
-export default function Home() {
-
+export default function Settings() {
+  
   const [refreshing, setRefreshing] = useState(true)
   const [styles, setStyles] = useState(home)
 
@@ -29,7 +29,7 @@ export default function Home() {
 
   return (<View style={{height:'100%'}}>
     <View style={drawerStyles.drawerTop}>
-      <Text style={drawerStyles.drawerTopTitle}>Home</Text>
+      <Text style={drawerStyles.drawerTopTitle}>Settings</Text>
     </View>
     <Drawer.Navigator
       drawerType='permanent'
@@ -58,12 +58,12 @@ export default function Home() {
         }
       }}
     >
-      <Drawer.Screen name="Topics" component={Topics}
+      <Drawer.Screen name="AppSettings" component={AppSettings}
         options={{
-          title:'Topics - CS/M Dashboard',
+          title:'App Settings - CS/M Dashboard',
           drawerIcon: ({focused, size}) => (
             <Icon
-              name='albums'
+              name='phone-portrait'
               type='ionicon'
               size={20}
               style={{backgroundColor:''}}
@@ -72,17 +72,16 @@ export default function Home() {
           ),
           drawerLabel:({focused}) => {
             const color = focused ? colors.secondaryHighlight : colors.mainTextColor
-            return (<Text style={{marginLeft:-25,fontSize:14,fontFamily:'Poppins',color:color}}>Topics</Text>)
+            return (<Text style={{marginLeft:-25,fontSize:14,fontFamily:'Poppins',color:color}}>App Settings</Text>)
           }
         }}
       />
-
-      <Drawer.Screen name="Summaries" component={Summaries}
+      <Drawer.Screen name="UserSettings" component={UserSettings}
         options={{
-          title:'Summaries - CS/M Dashboard',
+          title:'User Settings - CS/M Dashboard',
           drawerIcon: ({focused, size}) => (
             <Icon
-              name='pencil'
+              name='cog'
               type='ionicon'
               size={20}
               style={{backgroundColor:''}}
@@ -91,7 +90,7 @@ export default function Home() {
           ),
           drawerLabel:({focused}) => {
             const color = focused ? colors.secondaryHighlight : colors.mainTextColor
-            return (<Text style={{marginLeft:-25,fontSize:14,fontFamily:'Poppins',color:color}}>Summaries</Text>)
+            return (<Text style={{marginLeft:-25,fontSize:14,fontFamily:'Poppins',color:color}}>User Settings</Text>)
           }
         }}
       />
