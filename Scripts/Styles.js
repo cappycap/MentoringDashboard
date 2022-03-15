@@ -688,6 +688,11 @@ export const pairs = StyleSheet.create({
     paddingBottom:20,
     width:'100%',
   },
+  innerDeletionRow: {
+    flexDirection:'row',
+    alignItems:'center',
+    justifyContent: 'flex-end'
+  },
 })
 export const users = StyleSheet.create({
   container: {

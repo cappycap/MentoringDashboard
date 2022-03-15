@@ -233,7 +233,7 @@ export default function Users() {
               <Button 
                 title={'Cancel'}
                 buttonStyle={{backgroundColor:btnColors.primary}}
-                onPress={() => etDeletionActive(false)}
+                onPress={() => setDeletionActive(false)}
               />
             </View>) || (<Button 
               title={'Unmark User for Deletion'}
@@ -258,7 +258,7 @@ export default function Users() {
               <Button 
                 title={'Cancel'}
                 buttonStyle={{backgroundColor:btnColors.primary}}
-                onPress={() => etDeletionActive(false)}
+                onPress={() => setDeletionActive(false)}
               />
             </View>) || (<Button 
               title={'Mark User for Deletion'}
