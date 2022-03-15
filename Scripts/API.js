@@ -183,6 +183,44 @@ export async function check() {
 
 */
 
+ 
+
+export async function changePasswordRequest(o, n, t) {
+
+  var ret = false
+
+  var old = await Crypto.digestStringAsync(
+    Crypto.CryptoDigestAlgorithm.SHA256,
+    o
+  )
+
+  var newPassword = await Crypto.digestStringAsync(
+    Crypto.CryptoDigestAlgorithm.SHA256,
+    n
+  )
+  var arr = {OldPassword:old, Password:newPassword, Token:t}
+  console.log(arr)
+
+  const res = await fetch(url + '/admin/update-password', {
+    method:'POST',
+    body: JSON.stringify(arr),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    }
+  })
+
+  const payload = await res.json()
+
+  if (payload.success) {
+    console.log('Password updated!')
+    ret = true
+  }
+
+  return ret
+
+}
+
 export async function createTopic(postedBy, dueDate, title, description, archived, activeTopic, notifyUsers, token) {
 
   var ret = false
@@ -293,55 +331,7 @@ export async function createPair(mentorId, menteeId, token) {
   return ret
 
 }
-/*
-export async function markPairForDeletion(token, password, ids) {
 
-  var ret = false
-
-  console.log('Marking Pair For Deletion..')
-  var arr = {Token:token, Password:pw, Ids:ids}
-
-  // Encrypt Password.
-  var pw = await Crypto.digestStringAsync(
-    Crypto.CryptoDigestAlgorithm.SHA256,
-    password
-  )
-
-  console.log('Deletion arr:',arr)
-  const res = await fetch(url + '/delete-pair', {
-    method:'POST',
-    body: JSON.stringify(arr),
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-    }
-  })
-*/
-
-/*
-export async function unmarkPairForDeletion(token, password, ids) {
-
-  var ret = false
-
-  console.log('Unmarking Pair For Deletion..')
-  var arr = {Token:token, Password:pw, Ids:ids}
-
-  // Encrypt Password.
-  var pw = await Crypto.digestStringAsync(
-    Crypto.CryptoDigestAlgorithm.SHA256,
-    password
-  )
-
-  console.log('Deletion arr:',arr)
-  const res = await fetch(url + '/undelete-pair', {
-    method:'POST',
-    body: JSON.stringify(arr),
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-    }
-  })
-*/
 export async function deletePair(Id, token) {
 
   var ret = false
