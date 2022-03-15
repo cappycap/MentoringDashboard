@@ -5,7 +5,7 @@ import { useLinkTo, Link } from '@react-navigation/native';
 import { users, pairs, colors, btnColors } from './Styles.js';
 import { Button, Icon } from 'react-native-elements';
 import { TextInput } from 'react-native-web';
-import { createPair, getPairs, deletePair, getUsers, parseSimpleDateText, sqlToJsDate, } from './API.js';
+import { createPair, getPairs, markPairForDeletion, unmarkPairForDeletion, getUsers, parseSimpleDateText, sqlToJsDate, } from './API.js';
 import { Dropdown } from 'semantic-ui-react'
 import ActivityIndicatorView from './ActivityIndicatorView.js'
 import './StyleSheets/topics.css'
@@ -135,17 +135,18 @@ export default function Pairs() {
     {
       var uniquePair = true
       pairsData.map((p, index) => {
-        if(p.MentorId == u.Id && p.MenteeId == i.Id) {
-           uniquePair = false;
-           console.log("HERE")
+        if (p.MentorId == u.Id && p.MenteeId == i.Id) {
+          uniquePair = false;
+          console.log("HERE")
         }
+      }
+      )
     }
-    )}
     console.log("Pair?:", uniquePair)
-    var create = false 
-    if(uniquePair == true && u.length != 0 && i.length != 0) {
+    var create = false
+    if (uniquePair == true && u.length != 0 && i.length != 0) {
       create = await createPair(u.Id, i.Id, admin.Token)
-    } 
+    }
 
     if (create == true) {
       getData()
@@ -157,15 +158,41 @@ export default function Pairs() {
     }
   }
 
-  const removePair = async (p) => {
-    var remove = await deletePair(p.Id, admin.Token)
-    if (remove != false) {
-      getData()
-      setDeletionSuccess(true)
-      setDeletionError(false)
+  // const removePair = async (p) => {
+  //   var remove = await deletePair(p.Id, admin.Token)
+  //   if (remove != false) {
+  //     getData()
+  //     setDeletionSuccess(true)
+  //     setDeletionError(false)
+  //   } else {
+  //     setDeletionError(true)
+  //     setDeletionSuccess(false)
+  //   }
+  // }
+  
+  const finalizeSingleDeletion = async (u) => {
+    console.log(pass)
+    var deletion = await markPairForDeletion(admin.Token, pass, [u.Id])
+    if (deletion.success) {
+      u.Type = 2
+      // Reset vars.
+      updatePass('')
+      setDeletionActive(false)
     } else {
       setDeletionError(true)
-      setDeletionSuccess(false)
+    }
+  }
+
+  const undoSingleDeletion = async (u) => {
+
+    var deletion = await unmarkPairForDeletion(admin.Token, pass, [u.Id])
+    if (deletion.success) {
+      u.Type = 0
+      // Reset vars.
+      updatePass('')
+      setDeletionActive(false)
+    } else {
+      setDeletionError(true)
     }
   }
 
@@ -262,26 +289,26 @@ export default function Pairs() {
           </View>)}
         </View>) || (<View>
           <View style={styles.searchBarWrapperPairs}>
-              <View style={styles.PairTopWrapper}>
-                {/* <Text style={styles.searchBarText}>Search Pairs:</Text> */}
-                {deletionSuccess && (<View>
-                  <Text style={styles.creationText}>Succesfully deleted pair!</Text>
-                </View>)}
-                {deletionError && (<View>
-                  <Text style={styles.creationText}>Error: Failed to delete pair!</Text>
-                </View>)}
-              </View>
-              <View style={styles.searchBarInner}>
-                {/* <TextInput value={searchContent} onChangeText={(t) => searchPairs(t)} style={styles.searchBar} /> */}
-                <Text style={styles.pairsHeaderText}>Pairs</Text>
-                <Button
-                  title={'Pair Creation'}
-                  buttonStyle={styles.createPairButton}
-                  containerStyle={styles.createPairButtonContainer}
-                  onPress={() => newPair(-1)}
-                />
-              </View>
+            <View style={styles.PairTopWrapper}>
+              {/* <Text style={styles.searchBarText}>Search Pairs:</Text> */}
+              {deletionSuccess && (<View>
+                <Text style={styles.creationText}>Succesfully deleted pair!</Text>
+              </View>)}
+              {deletionError && (<View>
+                <Text style={styles.creationText}>Error: Failed to delete pair!</Text>
+              </View>)}
             </View>
+            <View style={styles.searchBarInner}>
+              {/* <TextInput value={searchContent} onChangeText={(t) => searchPairs(t)} style={styles.searchBar} /> */}
+              <Text style={styles.pairsHeaderText}>Pairs</Text>
+              <Button
+                title={'Pair Creation'}
+                buttonStyle={styles.createPairButton}
+                containerStyle={styles.createPairButtonContainer}
+                onPress={() => newPair(-1)}
+              />
+            </View>
+          </View>
           <View style={styles.container}>
             {/* <View style={styles.pairsHeader}>
             <Text style={styles.pairsHeaderText}>Pairs</Text>
@@ -291,7 +318,7 @@ export default function Pairs() {
               onPress={() => newPair(-1)}
             />
           </View> */}
-            
+
             <View style={styles.selectedUserDataSection}>
 
               {pairsData.map((p, index) => {
@@ -315,35 +342,48 @@ export default function Pairs() {
                       style={{}}
                     />}
                   /> */}
-                  <View style={styles.deletionRow}>
-            {(deletionActive != p.Id) && (<Button
-                      title={'Delete Pair'}
-                      buttonStyle={styles.deletePairButton}
-                      containerStyle={styles.deletePairButtonContainer}
-                      onPress={() => setDeletionActive(p.Id)}
-                    />) ||
-            (deletionActive == p.Id) && (<View style={styles.innerDeletionRow}>
-              <View>
-                <Text style={styles.deletionText}>Enter your password to confirm:</Text>
-                <TextInput placeholder={'Pass...'} secureTextEntry={true} value={pass} style={styles.deletionInputPass}
-                  onChangeText={(t) => updatePass(t)} 
-                />
-                {deletionError && (<Text style={styles.deletionError}>Incorrect password, please try again.</Text>)}
-              </View>
-              <Button 
-                title={'Confirm'}
-                buttonStyle={{backgroundColor:btnColors.success,marginLeft:10,marginRight:10}}
-                onPress={() => removePair(p)}
-                disabled={deleteConfirmDisabled}
-              />
-              <Button 
-                title={'Cancel'}
-                buttonStyle={{backgroundColor:btnColors.primary}}
-                onPress={() => setDeletionActive(false)}
-              />
-            </View>)}
-          </View>
-                    
+                    <View style={styles.deletionRow}>
+                      {(deletionActive != p.Id) && (p.Type == 2) && (<Button
+                        title={'Unmark Pair For Deletion'}
+                        buttonStyle={styles.deletePairButton}
+                        containerStyle={styles.deletePairButtonContainer}
+                        onPress={() => setDeletionActive(p.Id)}
+                      />) ||
+                        (deletionActive != p.Id) && (<Button
+                          title={'Delete Pair'}
+                          buttonStyle={styles.deletePairButton}
+                          containerStyle={styles.deletePairButtonContainer}
+                          onPress={() => setDeletionActive(p.Id)}
+                        />) ||
+                        (deletionActive == p.Id) && (<View style={styles.innerDeletionRow}>
+                          <View>
+                            <Text style={styles.deletionText}>Enter your password to confirm:</Text>
+                            <TextInput placeholder={'Pass...'} secureTextEntry={true} value={pass} style={styles.deletionInputPass}
+                              onChangeText={(t) => updatePass(t)}
+                            />
+                            {deletionError && (<Text style={styles.deletionError}>Incorrect password, please try again.</Text>)}
+                          </View>
+                          {(p.Type == 2) && (
+                            <Button
+                              title={'Confirm unmark'}
+                              buttonStyle={{ backgroundColor: btnColors.success, marginLeft: 10, marginRight: 10 }}
+                              onPress={() => undoSingleDeletion(p)}
+                              disabled={deleteConfirmDisabled}
+                            />) ||
+                            (<Button
+                              title={'Confirm'}
+                              buttonStyle={{ backgroundColor: btnColors.success, marginLeft: 10, marginRight: 10 }}
+                              onPress={() => finalizeSingleDeletion(p)}
+                              disabled={deleteConfirmDisabled}
+                            />)}
+                          <Button
+                            title={'Cancel'}
+                            buttonStyle={{ backgroundColor: btnColors.primary }}
+                            onPress={() => setDeletionActive(false)}
+                          />
+                        </View>)}
+                    </View>
+
                   </View>
                   {<View style={styles.topicBody}>
                   </View>}

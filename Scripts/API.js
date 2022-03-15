@@ -183,8 +183,6 @@ export async function check() {
 
 */
 
- 
-
 export async function changePasswordRequest(o, n, t) {
 
   var ret = false
@@ -332,12 +330,24 @@ export async function createPair(mentorId, menteeId, token) {
 
 }
 
-export async function deletePair(Id, token) {
+export async function markPairForDeletion(token, password, ids) {
 
   var ret = false
 
-  console.log('Deleting Pair..')
-  var arr = {Id:Id, Token:token}
+  // Encrypt Password.
+  var pw = await Crypto.digestStringAsync(
+    Crypto.CryptoDigestAlgorithm.SHA256,
+    password
+  )
+
+  console.log('Marking Pair For Deletion..')
+  var arr = {Token:token, Password:pw, Ids:ids}
+
+  // Encrypt Password.
+  var pw = await Crypto.digestStringAsync(
+    Crypto.CryptoDigestAlgorithm.SHA256,
+    password
+  )
 
   console.log('Deletion arr:',arr)
   const res = await fetch(url + '/delete-pair', {
@@ -350,17 +360,85 @@ export async function deletePair(Id, token) {
   })
 
   const payload = await res.json()
-  console.log('Returning payload:',payload)
+
   if (payload.success != false) {
-    console.log('Pair Deleted!')
+    console.log('Pair Marked for Deletion!')
     ret = payload
   } else {
-    console.log('Pair Deletion Failed!')
+    console.log('Pair Mark for Deletion Failed!')
   }
-
   return ret
-
 }
+
+
+export async function unmarkPairForDeletion(token, password, ids) {
+
+  var ret = false
+
+  // Encrypt Password.
+  var pw = await Crypto.digestStringAsync(
+    Crypto.CryptoDigestAlgorithm.SHA256,
+    password
+  )
+  
+  console.log('Unmarking Pair For Deletion..')
+  var arr = {Token:token, Password:pw, Ids:ids}
+
+  // Encrypt Password.
+  var pw = await Crypto.digestStringAsync(
+    Crypto.CryptoDigestAlgorithm.SHA256,
+    password
+  )
+
+  console.log('Deletion arr:',arr)
+  const res = await fetch(url + '/undelete-pair', {
+    method:'POST',
+    body: JSON.stringify(arr),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    }
+  })
+
+  const payload = await res.json()
+
+  if (payload.success != false) {
+    console.log('Pair Unmarked for Deletion!')
+    ret = payload
+  } else {
+    console.log('Pair Unmark for Deletion Failed!')
+  }
+  return ret
+}
+// export async function deletePair(Id, token) {
+
+//   var ret = false
+
+//   console.log('Deleting Pair..')
+//   var arr = {Id:Id, Token:token}
+
+//   console.log('Deletion arr:',arr)
+//   const res = await fetch(url + '/delete-pair', {
+//     method:'POST',
+//     body: JSON.stringify(arr),
+//     headers: {
+//       'Accept': 'application/json',
+//       'Content-Type': 'application/json',
+//     }
+//   })
+
+//   const payload = await res.json()
+//   console.log('Returning payload:',payload)
+//   if (payload.success != false) {
+//     console.log('Pair Deleted!')
+//     ret = payload
+//   } else {
+//     console.log('Pair Deletion Failed!')
+//   }
+
+//   return ret
+
+// }
 
 export async function getPairs(token) {
 
