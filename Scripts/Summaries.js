@@ -22,6 +22,8 @@ export default function Summaries() {
   // Topics and user data.
   const [userData, setUserData] = useState(user)
   const [summData, setSummData] = useState([])
+  const [dataCSV, setDataCSV] = useState([])
+  const [headers, setHeaders] = useState([])
 
   // UI control.
   const [refreshing, setRefreshing] = useState(true)
@@ -39,7 +41,19 @@ export default function Summaries() {
   ]
 
   const getData = async () => {
-
+    var header = [
+      {label:"Id", key:"Id"},
+      {label:"Appointment Id", key:"AppointmentId"},
+      {label:"Uploaded by", key:"Uploader"},
+      {label:"Mentor", key:"MentorName"},
+      {label:"Mentee", key:"MenteeName"},
+      {label:"Topic Title", key:"Topic"},
+      {label:"Topic Description", key:"TopicDesc"},
+      {label:"Summary", key:"SummaryText"},
+      {label:"Status", key:"Status"},
+      {label:"Updated", key:"Date"}
+    ];
+    setHeaders(header)
     const summaryData = await getSummaries(user.Token)
     console.log(summaryData)
     const apptData = await getAppointments(user.Token)
@@ -50,6 +64,7 @@ export default function Summaries() {
     console.log(topicData)
     const userData = await getUsers(user.Token)
     console.log(userData)
+    let csvData = JSON.parse(JSON.stringify(summaryData))
 
     // Calculate created display time variable.
     for (var i = 0; i < summaryData.length; i++) {
@@ -103,6 +118,9 @@ export default function Summaries() {
 
       var curTime = new Date()
       var summTime = sqlToJsDate(summ.Created)
+      if(summ.Created < summ.LastUpdate){
+        summTime = sqlToJsDate(summ.LastUpdate)
+      }
        var diff = curTime - summTime
       //
        console.log('diff:',diff,'d1:',curTime,'d2:',summTime)
@@ -115,21 +133,25 @@ export default function Summaries() {
       }
 
 
-
-      summaryData[i].TimeString = summTimeStr
-
+      summaryData[i].Date = summTimeStr
+      delete(csvData[i].Created)
+      delete(csvData[i].LastUpdate)
+      csvData[i].Topic = summaryData[i].Topic
+      csvData[i].TopicDesc = summaryData[i].TopicDesc
+      csvData[i].MentorName = summaryData[i].MentorName
+      csvData[i].MenteeName = summaryData[i].MenteeName
+      csvData[i].Date = summaryData[i].Date
+      csvData[i].Uploader = summaryData[i].Uploader
     }
 
     if (summaryData.length > 0) {
       setSummData(summaryData)
+      setDataCSV(csvData)
       setRefreshing(false)
     }
 
   }
 
-  const makeLink = () => {
-    return <CSVLink data={summData} filename={'my-file.csv'} className='btn btn-primary' target='blank'>Download</CSVLink>
-  }
 
   useEffect(() => {
 
@@ -179,7 +201,7 @@ export default function Summaries() {
         <View style={styles.summaryHeader}>
           <View>
             <Text style={styles.summaryHeaderText}>{summ.Topic}</Text>
-            <Text style={styles.summaryHeaderTime}>{'Uploaded by ' + summ.Uploader + summ.TimeString}</Text>
+            <Text style={styles.summaryHeaderTime}>{'Uploaded by ' + summ.Uploader + summ.Date}</Text>
           </View>
         </View>
         <View style={styles.summarBody}>
@@ -224,7 +246,7 @@ export default function Summaries() {
           <View style={styles.summaryHeader}>
             <View>
               <Text style={styles.summaryHeaderText}>{summData[summIndex].Topic}</Text>
-              <Text style={styles.summaryHeaderTime}>{"Uploaded by " + summData[summIndex].Uploader + summData[summIndex].TimeString}</Text>
+              <Text style={styles.summaryHeaderTime}>{"Uploaded by " + summData[summIndex].Uploader + summData[summIndex].Date}</Text>
               <Text style={styles.summaryHeaderUsers}>{'Mentor: ' + summData[summIndex].MentorName}</Text>
               <Text style={styles.summaryHeaderUsers}>{'Mentee: ' + summData[summIndex].MenteeName}</Text>
             </View>
@@ -275,7 +297,7 @@ export default function Summaries() {
           buttonStyle={styles.summariesHeaderButton}
           onPress={download}
         />
-        <CSVLink data={summData} filename={'summary-data.csv'} className='btn btn-primary' ref={csvLink} target='blank'/>
+        <CSVLink data={dataCSV} headers={headers} filename={'summary-data.csv'} className='btn btn-primary' ref={csvLink} target='blank'/>
       </div>
     </View>
     <View style={styles.summaries}>
