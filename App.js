@@ -15,6 +15,7 @@ const linking = {
   config: {
     screens: {
       Welcome: 'welcome',
+      Logout: 'logout',
       ForgotPassword: 'forgot-password',
       UpdatePassword: 'update-password',
       Main: {
@@ -22,18 +23,14 @@ const linking = {
           Home: {
             screens: {
               Topics: 'topics',
+              Summaries: 'summaries',
+              Settings:'settings'
             }
           },
           UserManagement: {
             screens: {
               Pairs: 'pairs',
               Users: 'users',
-            }
-          },
-          Settings: {
-            screens: {
-              AppSettings: 'app-settings',
-              UserSettings: 'user-settings'
             }
           }
         }
@@ -47,6 +44,7 @@ import Main from './Scripts/Drawers/Main.js'
 
 // Import auth flow.
 import Welcome from './Scripts/Welcome.js'
+import Logout from './Scripts/Logout.js'
 import ForgotPassword from './Scripts/ForgotPassword.js'
 import UpdatePassword from './Scripts/UpdatePassword.js'
 
@@ -78,6 +76,7 @@ export default function App() {
     <NavigationContainer linking={linking} theme={MyTheme}>
       <Stack.Navigator headerMode='none' initialRouteName="Main">
         <Stack.Screen name="Welcome" component={Welcome} options={{title:'Welcome - CS/M Dashboard'}} />
+        <Stack.Screen name="Logout" component={Logout} options={{title:'Logout - CS/M Dashboard'}} />
         <Stack.Screen name="Main" component={Main} options={{title:'Main - CS/M Dashboard'}} />
         <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{title:'Forgot Password - CS/M Dashboard'}} />
         <Stack.Screen name="UpdatePassword" component={UpdatePassword} options={{title:'Update Password - CS/M Dashboard'}} />

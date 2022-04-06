@@ -5,6 +5,12 @@ export const windowWidth = Dimensions.get('window').width;
 export const windowHeight = Dimensions.get('window').height;
 export const logo = require('../assets/logo.png');
 
+export const empty = StyleSheet.create({
+  container: {
+    flex:1
+  }
+})
+
 export const btnColors = {
   primary:'#007ac8',
   caution:'#f1c40f',
@@ -34,6 +40,7 @@ export const boxColors = {
   info:'#003f87',
   default:'#FAFAFA'
 }
+
 
 export const messageBox = StyleSheet.create({
   errorBox: {
@@ -423,6 +430,36 @@ export const topics = StyleSheet.create({
     fontFamily:'Poppins',
     textAlign: 'center',
   },
+  noneText: {
+    fontSize:24,
+    color:colors.mainTextColor,
+    fontFamily:'Poppins',
+    textAlign: 'center',
+  },
+  successBox: {
+    backgroundColor:btnColors.success,
+    padding:10,
+    borderRadius:10,
+    marginBottom:20
+  },
+  successBoxText: {
+    fontSize:18,
+    color:colors.mainTextColor,
+    fontFamily:'Poppins',
+    textAlign: 'center',
+  },
+  activSig: {
+    fontSize:16,
+    color:btnColors.success,
+    fontFamily:'PoppinsSemiBold',
+    marginTop:10
+  },
+  errorText: {
+    fontSize:16,
+    color:btnColors.danger,
+    fontFamily:'Poppins',
+    marginRight:10
+  },
   topic: {
     borderRadius:10,
     padding:20,
@@ -475,9 +512,38 @@ export const topics = StyleSheet.create({
     fontFamily:'Poppins',
     fontSize:16,
     color:colors.mainTextColor,
-  }
+  },
+  entryTitle: {
+    fontFamily:'PoppinsSemiBold',
+    fontSize:16,
+    color:colors.mainTextColor,
+  },
+  input: {
+    padding:10,
+    backgroundColor:colors.secondaryBackground,
+    borderRadius:10,
+    marginBottom:10
+  },
+  submitButton: {
+    borderRadius:10,
+    backgroundColor:btnColors.primary,
+  },
+  submitButtonRow: {
+    flexDirection:'row',
+    marginTop:20
+  },
+  otherRow: {
+    flexDirection:'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  otherOption: {
+    flex:1,
+  },
 })
-export const pairs= StyleSheet.create({
+
+
+export const pairs = StyleSheet.create({
   container: {
     flex:1,
     padding:20
@@ -573,12 +639,21 @@ export const pairs= StyleSheet.create({
     marginRight:10,
   },
   createPairButton: {
-    color:btnColors.primary,
+    backgroundColor:btnColors.primary,
     borderRadius:20,
     width:200,
   },
   createPairButtonContainer: {
     marginRight: 20,
+    marginTop:10,
+    marginBottom:10
+  },
+  deletePairButton: {
+    backgroundColor:btnColors.danger,
+    borderRadius:20,
+    width:250,
+  },
+  deletePairButtonContainer: {
   },
   searchBarText: {
     fontSize:18,
@@ -617,6 +692,11 @@ export const pairs= StyleSheet.create({
     alignItems:'center',
     paddingBottom:20,
     width:'100%',
+  },
+  innerDeletionRow: {
+    flexDirection:'row',
+    alignItems:'center',
+    justifyContent: 'flex-end'
   },
 })
 export const users = StyleSheet.create({
@@ -832,8 +912,127 @@ export const users = StyleSheet.create({
 
 })
 
-export const empty = StyleSheet.create({
-  container: {
-    flex:1
+export const settings = StyleSheet.create({
+  body: {
+    flex:1,
+    borderWidth:0,
+    justifyContent:'center',
+    alignItems:'center',
+    backgroundColor:colors.secondaryBackground,
+    borderLeftWidth:10,
+    borderLeftColor:colors.secondaryHighlight,
+    borderRightWidth:10,
+    borderRightColor:colors.secondaryHighlight,
+  },
+  logo: {
+    width:240,
+    height:120,
+    marginTop:40,
+    marginBottom:20
+  },
+  infoBox: {
+    width:'100%',
+    padding:20,
+    borderRadius:10,
+    justifyContent: 'center',
+    alignItems:'center',
+    marginTop:20,
+  },
+  infoBoxText: {
+    color:'#fff',
+    fontSize:16,
+    fontFamily:'Poppins',
+    textAlign:'center',
+  },
+  bodyContainer: {
+    backgroundColor:colors.mainBackground,
+    borderRadius:10,
+    padding:20,
+    width:'50%',
+    marginTop:20,
+    marginBottom:100,
+    marginLeft:'25%'
+  },
+  bodyHeader: {
+    flexDirection:'row',
+    justifyContent:'space-between',
+    alignItems:'center',
+    padding:20,
+    borderRadius:10,
+    backgroundColor:colors.mainBackground,
+    marginBottom:20,
+  },
+  bodyTitleGroup: {
+    flexDirection:'row',
+    alignItems:'center',
+    justifyContent:'center'
+  },
+  bodyTitle: {
+    color:colors.darkGray,
+    fontSize:26,
+    marginRight:10,
+    fontFamily:'PoppinsSemiBold',
+    textAlign:'center',
+  },
+  bodyDesc: {
+    color:colors.darkGray,
+    fontSize:16,
+    lineHeight:14,
+    fontFamily:'Poppins',
+    textAlign:'center',
+  },
+  form: {
+    marginLeft:20,
+    marginRight:20,
+    marginTop:0,
+    marginBottom:20
+  },
+  inputLabel: {
+    fontFamily:'PoppinsSemiBold',
+    fontSize:20,
+    marginTop:20,
+    color:colors.secondaryTextColor
+  },
+  inputStyle: {
+    color:colors.mainTextColor,
+    backgroundColor:colors.secondaryBackground,
+    borderRadius:10,
+    padding:10,
+    height:38,
+    width:'100%',
+    fontFamily:'Poppins',
+    fontSize:18,
+    marginTop:5,
+    marginBottom:30
+  },
+  forgotPasswordButton: {
+    backgroundColor:btnColors.primary,
+    borderRadius:10,
+  },
+  link: {
+    color:btnColors.primary,
+    fontSize:18,
+    textDecorationLine: 'underline',
+  },
+  subtitle: {
+    color:colors.mainTextColor,
+    fontSize:18,
+    width:'100%',
+    marginBottom:15,
+    marginTop:35,
+    textAlign:'right'
+  },
+  confirmBox: {
+    backgroundColor: colors.secondaryHighlight,
+    padding:20,
+    borderRadius:10,
+    width:'40%',
+  },
+  confirmBoxText: {
+    color:'#fff',
+    fontFamily:'Poppins',
+    fontSize:18,
+    textAlign:'center'
   }
 })
+

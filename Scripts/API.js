@@ -265,7 +265,7 @@ export async function updateTopic(id, postedBy, dueDate, title, description, arc
     console.log('Posted!')
     ret = true
   }
-
+  
   return ret
 
 }
@@ -378,7 +378,7 @@ export async function unmarkPairForDeletion(token, password, ids) {
     Crypto.CryptoDigestAlgorithm.SHA256,
     password
   )
-
+  
   console.log('Unmarking Pair For Deletion..')
   var arr = {Token:token, Password:pw, Ids:ids}
 
@@ -408,35 +408,35 @@ export async function unmarkPairForDeletion(token, password, ids) {
   }
   return ret
 }
-export async function deletePair(Id, token) {
+// export async function deletePair(Id, token) {
 
-  var ret = false
+//   var ret = false
 
-  console.log('Deleting Pair..')
-  var arr = {Id:Id, Token:token}
+//   console.log('Deleting Pair..')
+//   var arr = {Id:Id, Token:token}
 
-  console.log('Deletion arr:',arr)
-  const res = await fetch(url + '/delete-pair', {
-    method:'POST',
-    body: JSON.stringify(arr),
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-    }
-  })
+//   console.log('Deletion arr:',arr)
+//   const res = await fetch(url + '/delete-pair', {
+//     method:'POST',
+//     body: JSON.stringify(arr),
+//     headers: {
+//       'Accept': 'application/json',
+//       'Content-Type': 'application/json',
+//     }
+//   })
 
-  const payload = await res.json()
-  console.log('Returning payload:',payload)
-  if (payload.success != false) {
-    console.log('Pair Deleted!')
-    ret = payload
-  } else {
-    console.log('Pair Deletion Failed!')
-  }
+//   const payload = await res.json()
+//   console.log('Returning payload:',payload)
+//   if (payload.success != false) {
+//     console.log('Pair Deleted!')
+//     ret = payload
+//   } else {
+//     console.log('Pair Deletion Failed!')
+//   }
 
-  return ret
+//   return ret
 
-}
+// }
 
 export async function getPairs(token) {
 
