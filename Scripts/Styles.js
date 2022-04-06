@@ -500,6 +500,11 @@ export const topics = StyleSheet.create({
     fontSize:16,
     color:colors.secondaryTextColor,
   },
+  topicHeaderDueTime: {
+    fontFamily:'PoppinsSemiBold',
+    fontSize:16,
+    color:colors.mainTextColor,
+  },
   topicBody: {
 
   },
@@ -904,7 +909,7 @@ export const users = StyleSheet.create({
     color:colors.mainTextColor,
     fontFamily:'Poppins'
   },
-  
+
 })
 
 export const settings = StyleSheet.create({
