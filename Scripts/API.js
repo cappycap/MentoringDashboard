@@ -56,6 +56,17 @@ export function sqlToJsDate(sqlDate) {
   return new Date(Date.UTC(t[0], t[1]-1, t[2], t[3], t[4], t[5], t[6]))
 }
 
+export function jsToSqlDate(jsDate) {
+  return jsDate.toISOString().slice(0, 19).replace('T', ' ')
+}
+
+export function jsToSqlDatePST(jsDate) {
+  jsDate.setTime(jsDate.getTime() - (8 * 60 * 60 * 1000))
+  var pstTime = jsDate.toISOString()
+  console.log(pstTime)
+  return pstTime.slice(0, 19).replace('T', ' ')
+}
+
 export function parseDateText(date) {
 
     var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
@@ -149,27 +160,56 @@ export function dateToSql(str) {
 }
 
 /* Example API call.
-
     method:'POST',
     body: JSON.stringify(arr),
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
     }
-
 export async function check() {
-
   var ret = false
-
   console.log('')
   const res = await fetch(url + '', {
     method:'GET'
   })
+  const payload = await res.json()
+  if (payload) {
+    console.log('')
+    ret = true
+  }
+  return ret
+}
+*/
+
+export async function changePasswordRequest(o, n, t) {
+
+  var ret = false
+
+  var old = await Crypto.digestStringAsync(
+    Crypto.CryptoDigestAlgorithm.SHA256,
+    o
+  )
+
+  var newPassword = await Crypto.digestStringAsync(
+    Crypto.CryptoDigestAlgorithm.SHA256,
+    n
+  )
+  var arr = {OldPassword:old, Password:newPassword, Token:t}
+  console.log(arr)
+
+  const res = await fetch(url + '/admin/update-password', {
+    method:'POST',
+    body: JSON.stringify(arr),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    }
+  })
 
   const payload = await res.json()
 
-  if (payload) {
-    console.log('')
+  if (payload.success) {
+    console.log('Password updated!')
     ret = true
   }
 
@@ -177,42 +217,79 @@ export async function check() {
 
 }
 
-*/
-
-export async function getUsers(token) {
+export async function createTopic(postedBy, dueDate, title, description, archived, activeTopic, notifyUsers, token) {
 
   var ret = false
+  var arr = {Archived:archived, ActiveTopic:activeTopic, NotifyUsers:notifyUsers, PostedBy:postedBy, DueDate:dueDate, Title:title, Description:description, Token:token}
 
-  console.log('Getting all users...')
-  const res = await fetch(url + '/all-users/'+token, {
-    method:'GET'
+  console.log('Creating topic...')
+  const res = await fetch(url + '/create-topic', {
+    method:'POST',
+    body: JSON.stringify(arr),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    }
   })
 
   const payload = await res.json()
 
-  if (payload.length > 0) {
-    console.log('User data found!')
-    ret = payload
+  if (payload.success) {
+    console.log('Posted!')
+    ret = true
   }
 
   return ret
 
 }
 
-export async function getPairs(token) {
+export async function updateTopic(id, postedBy, dueDate, title, description, archived, activeTopic, notifyUsers, token) {
 
   var ret = false
-
-  console.log('Getting all Pairs...')
-  const res = await fetch(url + '/admin/all-pairs/'+token, {
-    method:'GET'
+  var arr = {ActiveTopic:activeTopic, NotifyUsers:notifyUsers, Id:id, PostedBy:postedBy, DueDate:dueDate, Title:title, Description:description, Token:token, Archived:archived}
+  console.log(arr)
+  console.log('Updating topic...')
+  const res = await fetch(url + '/update-topic', {
+    method:'POST',
+    body: JSON.stringify(arr),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    }
   })
 
   const payload = await res.json()
 
-  if (payload.length > 0) {
-    console.log('Pair data found!')
-    ret = payload
+  console.log(payload)
+  if (payload.success) {
+    console.log('Posted!')
+    ret = true
+  }
+
+  return ret
+
+}
+
+export async function deleteTopic(id, token) {
+
+  var ret = false
+  var arr = {Id:id, Token:token}
+
+  console.log('Deleting topic...')
+  const res = await fetch(url + '/delete-topic', {
+    method:'POST',
+    body: JSON.stringify(arr),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    }
+  })
+
+  const payload = await res.json()
+
+  if (Array.isArray(payload)) {
+    console.log('Deleted!')
+    ret = true
   }
 
   return ret
@@ -237,6 +314,7 @@ export async function createPair(mentorId, menteeId, token) {
   })
 
   const payload = await res.json()
+
   console.log('Returning payload:',payload)
   // if (payload.success) {
     if (payload.affectedRows == 1) {
@@ -250,28 +328,86 @@ export async function createPair(mentorId, menteeId, token) {
 
 }
 
-// export async function getPairs(userId, token) {
+export async function markPairForDeletion(token, password, ids) {
 
-//   var ret = []
-  
-//   console.log('Getting Pairs...')
-//   console.log('ID used:',userId)
+  var ret = false
 
-//   const res = await fetch(url + '/pair/'+userId+'/'+token, {
-//     method:'GET'
-//   })
+  // Encrypt Password.
+  var pw = await Crypto.digestStringAsync(
+    Crypto.CryptoDigestAlgorithm.SHA256,
+    password
+  )
 
-//   const payload = await res.json()
+  console.log('Marking Pair For Deletion..')
+  var arr = {Token:token, Password:pw, Ids:ids}
 
-//   if (payload.length > 0) {
-//     console.log('Pairs found!')
-//     ret = payload
-//   } else {
-//     console.log('Pairs NOT found!')
-//   }
-//   return ret
-// }
+  // Encrypt Password.
+  var pw = await Crypto.digestStringAsync(
+    Crypto.CryptoDigestAlgorithm.SHA256,
+    password
+  )
 
+  console.log('Deletion arr:',arr)
+  const res = await fetch(url + '/delete-pair', {
+    method:'POST',
+    body: JSON.stringify(arr),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    }
+  })
+
+  const payload = await res.json()
+
+  if (payload.success != false) {
+    console.log('Pair Marked for Deletion!')
+    ret = payload
+  } else {
+    console.log('Pair Mark for Deletion Failed!')
+  }
+  return ret
+}
+
+
+export async function unmarkPairForDeletion(token, password, ids) {
+
+  var ret = false
+
+  // Encrypt Password.
+  var pw = await Crypto.digestStringAsync(
+    Crypto.CryptoDigestAlgorithm.SHA256,
+    password
+  )
+
+  console.log('Unmarking Pair For Deletion..')
+  var arr = {Token:token, Password:pw, Ids:ids}
+
+  // Encrypt Password.
+  var pw = await Crypto.digestStringAsync(
+    Crypto.CryptoDigestAlgorithm.SHA256,
+    password
+  )
+
+  console.log('Deletion arr:',arr)
+  const res = await fetch(url + '/undelete-pair', {
+    method:'POST',
+    body: JSON.stringify(arr),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    }
+  })
+
+  const payload = await res.json()
+
+  if (payload.success != false) {
+    console.log('Pair Unmarked for Deletion!')
+    ret = payload
+  } else {
+    console.log('Pair Unmark for Deletion Failed!')
+  }
+  return ret
+}
 export async function deletePair(Id, token) {
 
   var ret = false
@@ -302,8 +438,23 @@ export async function deletePair(Id, token) {
 
 }
 
+export async function getPairs(token) {
 
-export async function getTopics(id, token) {
+  var ret = false
+  console.log('Getting all Pairs...')
+  const res = await fetch(url + '/admin/all-pairs/'+token, {
+    method:'GET'
+  })
+  const payload = await res.json()
+  if (payload.length > 0) {
+    console.log('Pair data found!')
+    ret = payload
+  }
+  return ret
+
+}
+
+export async function getTopics(token) {
 
   var ret = []
 
@@ -317,26 +468,8 @@ export async function getTopics(id, token) {
   if (payload.length > 0) {
     console.log('Topics found!')
     ret = payload
-  }
-
-  return ret
-
-}
-
-export async function getPairs(token) {
-
-  var ret = []
-
-  console.log('Getting pairs...')
-  const res = await fetch(url + '/admin/all-pairs/'+token, {
-    method:'GET'
-  })
-
-  const payload = await res.json()
-
-  if (payload.length > 0) {
-    console.log('Pairs found!')
-    ret = payload
+  } else {
+    console.log('No topics found.')
   }
 
   return ret
@@ -504,5 +637,4 @@ export async function unmarkUsersForDeletion(token, password, ids) {
   }
 
   return ret
-
-}
+  }
