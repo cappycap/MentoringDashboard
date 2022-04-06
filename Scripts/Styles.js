@@ -559,6 +559,13 @@ export const pairs = StyleSheet.create({
   pairsMap: {
     flex:1
   },
+  pairContainer: {
+    backgroundColor:colors.mainBackground,
+    borderRadius:20,
+    padding:20,
+    alignItems:'center',
+    marginLeft: 10,marginTop:10
+  },
   pairsHeader: {
     width: '100%',
     flexDirection:'row',

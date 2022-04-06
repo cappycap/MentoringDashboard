@@ -24,7 +24,6 @@ export default function Pairs() {
   const [searchContent, setSearchContent] = useState('')
   const [refreshing, setRefreshing] = useState(true)
   const [styles, setStyles] = useState(pairs)
-  const [colors, setColors] = useState(colors)
   const [creationSuccess, setCreationSuccess] = useState(false)
   const [creationError, setCreationError] = useState(false)
   const [newPairTrigger, setNewPairTrigger] = useState(1)
@@ -251,13 +250,9 @@ export default function Pairs() {
 
             {usersData.map((u, i) => {
               console.log('u:', u)
-              var paddingStyle = { paddingRight: 20 }
-              if (i + 1 % 4 == 0) {
-                paddingStyle = {}
-              }
               if (u.visible) {
 
-                return (<View style={[styles.pairContainer, paddingStyle]} key={'user_' + i}>
+                return (<View style={[styles.pairContainer]} key={'user_' + i}>
                   <View style={[styles.user]}>
                     <Text style={styles.text}>{u.FirstName + ' ' + u.LastName}</Text>
                     <View style={styles.userStats}>

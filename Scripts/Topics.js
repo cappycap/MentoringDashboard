@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar'
 import React, { useEffect, useState, useCallback, useContext } from 'react'
-import { Linking, Animated, Image, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { Linking, Animated, Image, StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native'
 import { useLinkTo, Link } from '@react-navigation/native'
 import { topics, colors, btnColors } from './Styles.js'
 import { Button, Icon, CheckBox } from 'react-native-elements'
@@ -220,7 +220,7 @@ const options = [
     setActiveIndex(i)
   }
 
-  return (<View>
+  return (<ScrollView>
     {refreshing && (<View style={styles.activityIndicatorContainer}>
       <ActivityIndicatorView />
     </View>) || (<View style={styles.container}>
@@ -410,5 +410,5 @@ const options = [
         </View>)}
       </View>)}
     </View>)}
-  </View>)
+  </ScrollView>)
 }
