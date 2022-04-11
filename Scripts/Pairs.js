@@ -216,7 +216,7 @@ export default function Pairs() {
                   <Text style={styles.creationText}>Succesfully created pair!</Text>
                 </View>)}
                 {creationError && (<View>
-                  <Text style={styles.creationText}>Error: Failed to create pair!</Text>
+                  <Text style={[styles.creationText,{color:btnColors.danger,marginRight:20}]}>Pair already exists.</Text>
                 </View>)}
 
               </View>
