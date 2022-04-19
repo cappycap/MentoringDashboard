@@ -361,7 +361,7 @@ export const summaries = StyleSheet.create({
     color:colors.mainTextColor,
   },
   summariesHeaderButton: {
-    borderRadius:5,
+    borderRadius:20,
     width:'200px',
     backgroundColor:btnColors.primary,
   },
@@ -481,7 +481,7 @@ export const topics = StyleSheet.create({
     color:colors.mainTextColor,
   },
   topicsHeaderButton: {
-    borderRadius:10,
+    borderRadius:20,
     backgroundColor:btnColors.primary,
   },
   topicHeader: {
@@ -525,7 +525,7 @@ export const topics = StyleSheet.create({
     marginBottom:10
   },
   submitButton: {
-    borderRadius:10,
+    borderRadius:20,
     backgroundColor:btnColors.primary,
   },
   submitButtonRow: {
@@ -790,6 +790,10 @@ export const users = StyleSheet.create({
     width:'100%',
     flex:1
   },
+  userButtonContainerMent: {
+    width:175,
+    flex:1,
+  },
   upperRow: {
     flexDirection: 'row',
     alignItems:'center',
@@ -837,6 +841,12 @@ export const users = StyleSheet.create({
     flex:1,
     width:'100%'
   },
+  selectedUserMent: {
+    backgroundColor:colors.mainBackground,
+    borderRadius:10,
+    padding:20,
+    width:'100%'
+  },
   selectedUserHeaderRow: {
     flexDirection:'row',
     justifyContent:'space-between',
@@ -848,7 +858,12 @@ export const users = StyleSheet.create({
     alignItems:'center',
   },
   selectedUserHeaderRowRight: {
-    alignItems:'flex-end'
+    alignItems:'Center'
+  },
+  selectedUserHeaderRowRightText: {
+    fontSize:16,
+    color:colors.mainTextColor,
+    fontFamily:'Poppins'
   },
   selectedUserHeaderRowRightText: {
     fontSize:16,
@@ -863,8 +878,21 @@ export const users = StyleSheet.create({
     borderColor:colors.secondaryHighlight,
     marginRight:20
   },
+  selectedUserMentAvatar: {
+    width:50,
+    height:50,
+    borderRadius:150,
+    borderWidth:4,
+    borderColor:colors.secondaryHighlight,
+    marginRight:20
+  },
   selectedUserName: {
     fontSize:28,
+    fontFamily:'PoppinsSemiBold',
+    color:colors.mainTextColor,
+  },
+  selectedUserNameMent: {
+    fontSize:18,
     fontFamily:'PoppinsSemiBold',
     color:colors.mainTextColor,
   },
@@ -877,6 +905,7 @@ export const users = StyleSheet.create({
     flexDirection:'row',
     width:'100%',
     marginTop:20,
+    alignItems:'flex-start',
   },
   selectedUserSummariesContainer: {
     flex:3,
@@ -886,12 +915,18 @@ export const users = StyleSheet.create({
     backgroundColor:colors.mainBackground,
     borderRadius:20,
     padding:20,
+    marginBottom:20,
   },
   selectedUserRelationships: {
     backgroundColor:colors.mainBackground,
     borderRadius:20,
     padding:20,
     flex:1,
+  },
+  selectedUserRelationshipsMent: {
+    backgroundColor:colors.mainBackground,
+    borderRadius:20,
+    padding:5,
   },
   noneText: {
     fontSize:16,
@@ -909,7 +944,12 @@ export const users = StyleSheet.create({
   summaryHeader: {
     fontSize:22,
     color:colors.mainTextColor,
-    fontFamily:'Poppins'
+    fontFamily:'PoppinsSemiBold',
+  },
+  summarySubHeader: {
+    fontSize:18,
+    color:colors.secondaryTextColor,
+    fontFamily:'PoppinsSemiBold',
   },
   summaryText: {
     fontSize:16,
@@ -1042,4 +1082,3 @@ export const settings = StyleSheet.create({
     textAlign:'center'
   }
 })
-
