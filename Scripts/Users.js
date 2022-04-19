@@ -10,12 +10,12 @@ import ActivityIndicatorView from './ActivityIndicatorView.js'
 import userContext from './Context.js';
 
 export default function Users() {
-    
+
   const user = useContext(userContext)
   const linkTo = useLinkTo()
 
   const [admin, setAdmin] = useState(user)
-  
+
   const [refreshing, setRefreshing] = useState(true)
   const [styles, setStyles] = useState(users)
 
@@ -54,6 +54,18 @@ export default function Users() {
     }, 300)
   }
 
+  const selectUserMent = (id) => {
+    setRefreshing(true)
+    setTimeout(() => {
+      setRefreshing(false)
+      for(var i = 0; i < usersData.length; i++){
+          if(usersData[i].Id == id){
+            setSelectedUser(i)
+          }
+      }
+    }, 300)
+  }
+
   const searchUsers = (t) => {
     if (t.length > 0) {
       var data = JSON.parse(JSON.stringify(usersData))
@@ -85,9 +97,9 @@ export default function Users() {
 
     var profile = {Id:-1}
 
-    for (var item in usersData) {
-      if (item.Id == id) {
-        profile = item
+    for (var i = 0; i < usersData.length; i++) {
+      if (usersData[i].Id == id) {
+        profile = usersData[i]
         break
       }
     }
@@ -152,7 +164,7 @@ export default function Users() {
           <Text style={styles.searchBarText}>Search Users:</Text>
           <View style={styles.searchBarInner}>
             <TextInput value={searchContent} onChangeText={(t) => searchUsers(t)} style={styles.searchBar} />
-            <Button 
+            <Button
               title={'Clear'}
               buttonStyle={styles.searchClearButton}
               containerStyle={styles.searchClearButtonContainer}
@@ -183,15 +195,15 @@ export default function Users() {
                   <View style={styles.userStats}>
                     <Text style={styles.text}>{u.Summaries.length} Summar{u.Summaries.length == 1 && 'y' || 'ies'} Written</Text>
                     <Text style={styles.text}>
-                      {u.MentorPairs.length} Mentee{u.MentorPairs.length != 1 && 's'}
-                      <Text style={styles.boldText}> - </Text>
                       {u.MenteePairs.length} Mentor{u.MenteePairs.length != 1 && 's'}
+                      <Text style={styles.boldText}> - </Text>
+                      {u.MentorPairs.length} Mentee{u.MentorPairs.length != 1 && 's'}
                     </Text>
                   </View>
-                  <Button 
-                    title={'View'} 
-                    buttonStyle={styles.userButton} 
-                    containerStyle={styles.userButtonContainer} 
+                  <Button
+                    title={'View'}
+                    buttonStyle={styles.userButton}
+                    containerStyle={styles.userButtonContainer}
                     onPress={() => selectUser(i)}
                   />
                 </View>
@@ -207,7 +219,7 @@ export default function Users() {
       </View>) || (<View style={styles.selectedUserContainer}>
         <View style={styles.upperRow}>
           <TouchableOpacity style={styles.backRow} onPress={() => selectUser(-1)}>
-            <Icon 
+            <Icon
               name='chevron-back'
               type='ionicon'
               size={32}
@@ -220,22 +232,22 @@ export default function Users() {
               <View>
                 <Text style={styles.deletionText}>Enter your password to confirm:</Text>
                 <TextInput placeholder={'Pass...'} secureTextEntry={true} value={pass} style={styles.deletionInputPass}
-                  onChangeText={(t) => updatePass(t)} 
+                  onChangeText={(t) => updatePass(t)}
                 />
                 {deletionError && (<Text style={styles.deletionError}>Incorrect password, please try again.</Text>)}
               </View>
-              <Button 
+              <Button
                 title={'Confirm'}
                 buttonStyle={{backgroundColor:btnColors.success,marginLeft:10,marginRight:10}}
                 onPress={() => finalizeSingleUnmark(usersData[selectedUser])}
                 disabled={deleteConfirmDisabled}
               />
-              <Button 
+              <Button
                 title={'Cancel'}
                 buttonStyle={{backgroundColor:btnColors.primary}}
                 onPress={() => setDeletionActive(false)}
               />
-            </View>) || (<Button 
+            </View>) || (<Button
               title={'Unmark User for Deletion'}
               buttonStyle={{backgroundColor:btnColors.success}}
               onPress={() => setDeletionActive(true)}
@@ -245,22 +257,22 @@ export default function Users() {
               <View>
                 <Text style={styles.deletionText}>Enter your password to confirm:</Text>
                 <TextInput placeholder={'Pass...'} secureTextEntry={true} value={pass} style={styles.deletionInputPass}
-                  onChangeText={(t) => updatePass(t)} 
+                  onChangeText={(t) => updatePass(t)}
                 />
                 {deletionError && (<Text style={styles.deletionError}>Incorrect password, please try again.</Text>)}
               </View>
-              <Button 
+              <Button
                 title={'Confirm'}
                 buttonStyle={{backgroundColor:btnColors.danger,marginLeft:10,marginRight:10}}
                 onPress={() => finalizeSingleDeletion(usersData[selectedUser])}
                 disabled={deleteConfirmDisabled}
               />
-              <Button 
+              <Button
                 title={'Cancel'}
                 buttonStyle={{backgroundColor:btnColors.primary}}
                 onPress={() => setDeletionActive(false)}
               />
-            </View>) || (<Button 
+            </View>) || (<Button
               title={'Mark User for Deletion'}
               buttonStyle={{backgroundColor:btnColors.danger}}
               onPress={() => setDeletionActive(true)}
@@ -286,7 +298,7 @@ export default function Users() {
             <Text style={[styles.selectedUserTitle,{marginBottom:10}]}>Summaries</Text>
             {usersData[selectedUser].Summaries.length > 0 && (<View style={styles.selectedUserSummaries}>
               {usersData[selectedUser].Summaries.map((s, i) => {
-
+                console.log(s)
                 return(<View style={styles.selectedUserSummary} key={'summary_'+i}>
                   <Text style={styles.summaryHeader}>{parseSimpleDateText(sqlToJsDate(s.Created))}</Text>
                   <Text style={styles.summaryText}>{s.SummaryText}</Text>
@@ -299,28 +311,65 @@ export default function Users() {
           </View>
           <View style={styles.selectedUserRelationships}>
             <Text style={styles.selectedUserTitle}>Mentors</Text>
-            {usersData[selectedUser].MentorPairs.length > 0 && (<View style={styles.selectedUserRelationships}>
+            {usersData[selectedUser].MenteePairs.length > 0 && (<View style={styles.selectedUserRelationshipsMent}>
+              {usersData[selectedUser].MenteePairs.map((s, i) => {
+
+                var relationshipData = getRelationshipData(s.MentorId)
+                console.log('Relations')
+                console.log(relationshipData)
+                return(<View style={styles.selectedUserMent}>
+                          <View style={styles.selectedUserHeaderRow}>
+                            <View style={styles.selectedUserHeaderRowLeft}>
+                              <Image source={relationshipData.Avatar} style={styles.selectedUserMentAvatar} />
+                              <View>
+                                <Text style={styles.selectedUserNameMent}>{relationshipData.FirstName + ' ' + relationshipData.LastName}</Text>
+                                <Text style={styles.selectedUserCreated}>Joined {parseSimpleDateText(sqlToJsDate(relationshipData.Created))}</Text>
+                              </View>
+                            </View>
+                            <View style={styles.selectedUserHeaderRowRight}>
+                              <Button
+                                title={'View'}
+                                buttonStyle={styles.userButton}
+                                containerStyle={styles.userButtonContainerMent}
+                                onPress={() => selectUserMent(relationshipData.Id)}
+                              />
+                              <Text style={styles.selectedUserHeaderRowRightText}>{relationshipData.Summaries.length} Summar{relationshipData.Summaries.length == 1 && 'y' || 'ies'} Written</Text>
+                            </View>
+                          </View>
+                        </View>)
+              })}
+            </View>) || (<View>
+              <Text style={styles.noneText}>No mentees yet.</Text>
+            </View>)}
+            <Text style={styles.selectedUserTitle}>Mentees</Text>
+            {usersData[selectedUser].MentorPairs.length > 0 && (<View style={styles.selectedUserRelationshipsMent}>
               {usersData[selectedUser].MentorPairs.map((s, i) => {
 
                 var relationshipData = getRelationshipData(s.MenteeId)
 
-                return(<View style={styles.selectedUserMentorPair} key={'mentorpair_'+i}></View>)
-
+                return(<View style={styles.selectedUserMent}>
+                          <View style={styles.selectedUserHeaderRow}>
+                            <View style={styles.selectedUserHeaderRowLeft}>
+                              <Image source={relationshipData.Avatar} style={styles.selectedUserMentAvatar} />
+                              <View>
+                                <Text style={styles.selectedUserNameMent}>{relationshipData.FirstName + ' ' + relationshipData.LastName}</Text>
+                                <Text style={styles.selectedUserCreated}>Joined {parseSimpleDateText(sqlToJsDate(relationshipData.Created))}</Text>
+                              </View>
+                            </View>
+                            <View style={styles.selectedUserHeaderRowRight}>
+                              <Button
+                                title={'View'}
+                                buttonStyle={styles.userButton}
+                                containerStyle={styles.userButtonContainerMent}
+                                onPress={() => selectUserMent(relationshipData.Id)}
+                              />
+                              <Text style={styles.selectedUserHeaderRowRightText}>{relationshipData.Summaries.length} Summar{relationshipData.Summaries.length == 1 && 'y' || 'ies'} Written</Text>
+                            </View>
+                          </View>
+                        </View>)
               })}
             </View>) || (<View>
               <Text style={styles.noneText}>No mentors yet.</Text>
-            </View>)}
-            <Text style={styles.selectedUserTitle}>Mentees</Text>
-            {usersData[selectedUser].MenteePairs.length > 0 && (<View style={styles.selectedUserRelationships}>
-              {usersData[selectedUser].MenteePairs.map((s, i) => {
-
-                var relationshipData = getRelationshipData(s.MentorId)
-
-                return(<View style={styles.selectedUserMenteePair} key={'menteepair_'+i}></View>)
-
-              })}
-            </View>) || (<View>
-              <Text style={styles.noneText}>No mentees yet.</Text>
             </View>)}
           </View>
         </View>
