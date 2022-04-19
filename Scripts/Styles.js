@@ -847,6 +847,25 @@ export const users = StyleSheet.create({
     padding:20,
     width:'100%'
   },
+  selectedUserMentUserPage: {
+    backgroundColor:colors.mainBackground,
+    borderRadius:10,
+    marginBottom:20,
+    width:'100%'
+  },
+  userButtonUserPage: {
+    width:'100%',
+    flex:1,
+    borderRadius:20,
+    backgroundColor:colors.secondaryHighlight
+  },
+  userButtonContainerMentUserPage: {
+  },
+  selectedUserHeaderColumn: {
+    flexDirection:'row',
+    justifyContent:'space-between',
+    alignItems:'flex-start',
+  },
   selectedUserHeaderRow: {
     flexDirection:'row',
     justifyContent:'space-between',
@@ -858,7 +877,7 @@ export const users = StyleSheet.create({
     alignItems:'center',
   },
   selectedUserHeaderRowRight: {
-    alignItems:'Center'
+    alignItems:'center'
   },
   selectedUserHeaderRowRightText: {
     fontSize:16,

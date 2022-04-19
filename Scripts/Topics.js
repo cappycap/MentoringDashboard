@@ -415,6 +415,7 @@ const options = [
           {topicsData.length > 0 && (<View style={styles.topics}>
             {topicsData.map((topic, index) => {
 
+              console.log('topic:',topic)
               var activeHighlight = {borderWidth:3,borderColor:colors.mainBackground,true:false}
 
               if (topic.ActiveTopic == 1) {

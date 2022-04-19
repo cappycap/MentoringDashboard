@@ -317,8 +317,8 @@ export default function Users() {
                 var relationshipData = getRelationshipData(s.MentorId)
                 console.log('Relations')
                 console.log(relationshipData)
-                return(<View style={styles.selectedUserMent}>
-                          <View style={styles.selectedUserHeaderRow}>
+                return(<View style={styles.selectedUserMentUserPage}>
+                          <View style={styles.selectedUserHeaderColumn}>
                             <View style={styles.selectedUserHeaderRowLeft}>
                               <Image source={relationshipData.Avatar} style={styles.selectedUserMentAvatar} />
                               <View>
@@ -329,11 +329,10 @@ export default function Users() {
                             <View style={styles.selectedUserHeaderRowRight}>
                               <Button
                                 title={'View'}
-                                buttonStyle={styles.userButton}
-                                containerStyle={styles.userButtonContainerMent}
+                                buttonStyle={styles.userButtonUserPage}
+                                containerStyle={styles.userButtonContainerMentUserPage}
                                 onPress={() => selectUserMent(relationshipData.Id)}
                               />
-                              <Text style={styles.selectedUserHeaderRowRightText}>{relationshipData.Summaries.length} Summar{relationshipData.Summaries.length == 1 && 'y' || 'ies'} Written</Text>
                             </View>
                           </View>
                         </View>)
@@ -347,8 +346,8 @@ export default function Users() {
 
                 var relationshipData = getRelationshipData(s.MenteeId)
 
-                return(<View style={styles.selectedUserMent}>
-                          <View style={styles.selectedUserHeaderRow}>
+                return(<View style={styles.selectedUserMentUserPage}>
+                          <View style={styles.selectedUserHeaderColumn}>
                             <View style={styles.selectedUserHeaderRowLeft}>
                               <Image source={relationshipData.Avatar} style={styles.selectedUserMentAvatar} />
                               <View>
@@ -359,11 +358,10 @@ export default function Users() {
                             <View style={styles.selectedUserHeaderRowRight}>
                               <Button
                                 title={'View'}
-                                buttonStyle={styles.userButton}
-                                containerStyle={styles.userButtonContainerMent}
+                                buttonStyle={styles.userButtonUserPage}
+                                containerStyle={styles.userButtonContainerMentUserPage}
                                 onPress={() => selectUserMent(relationshipData.Id)}
                               />
-                              <Text style={styles.selectedUserHeaderRowRightText}>{relationshipData.Summaries.length} Summar{relationshipData.Summaries.length == 1 && 'y' || 'ies'} Written</Text>
                             </View>
                           </View>
                         </View>)
