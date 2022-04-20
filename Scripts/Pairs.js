@@ -5,8 +5,7 @@ import { useLinkTo, Link } from '@react-navigation/native';
 import { users, pairs, colors, btnColors } from './Styles.js';
 import { Button, Icon } from 'react-native-elements';
 import { TextInput } from 'react-native-web';
-import { createPair, getPairs, markPairForDeletion, unmarkPairForDeletion, getUsers, parseSimpleDateText, sqlToJsDate, } from './API.js';
-import { Dropdown } from 'semantic-ui-react'
+import { createPair, getPairs, markPairForDeletion, unmarkPairForDeletion, getUsers, } from './API.js';
 import ActivityIndicatorView from './ActivityIndicatorView.js'
 import './StyleSheets/topics.css'
 
@@ -32,9 +31,22 @@ export default function Pairs() {
   const [deletionActive, setDeletionActive] = useState(false)
   const [deleteConfirmDisabled, setDeleteConfirmDisabled] = useState(true)
 
+  const [undoPair, setUndoPair] = useState([])
+  const [undoIds, setUndoIds] = useState([])
+  const [deletionPair, setDeletionPair] = useState([])
+  const [deletionIds, setDeletionIds] = useState([])
+
   const [pass, setPass] = useState('')
   const [selectedMentor, setMentor] = useState('')
   const [selectedMentee, setMentee] = useState('')
+
+  // Popup Variables
+  const [fadeAnim] = useState(new Animated.Value(0))
+  const [imageFade] = useState(new Animated.Value(0))
+  const [overviewOpacity] = useState(new Animated.Value(0))
+  const [overviewBoxOpacity] = useState(new Animated.Value(0))
+  const [showOverview, setShowOverview] = useState(false)
+  var { height, width } = 500
 
   // const options = [
   //   { key: 'delete', icon: 'delete', text: 'Delete Pair', value: 'delete' },
@@ -59,6 +71,7 @@ export default function Pairs() {
 
   useEffect(() => {
     console.log('admin:', admin)
+    fadeIn()
     if (admin == null) {
       linkTo('/welcome')
     } else {
@@ -66,6 +79,52 @@ export default function Pairs() {
     }
 
   }, [])
+
+  // Animation functions.
+  const fadeIn = () => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 500,
+      useNativeDriver: false
+    }).start()
+  }
+
+  const fadeInImages = () => {
+    Animated.timing(imageFade, {
+      toValue: 1,
+      duration: 1000,
+      useNativeDriver: false
+    }).start()
+  }
+
+  // Button controls.
+  const connectClick = async (n) => {
+    if (n == 0) {
+      setShowOverview(true)
+      Animated.timing(overviewOpacity, {
+        toValue: 0.5,
+        duration: 500,
+        useNativeDriver: false
+      }).start()
+      Animated.timing(overviewBoxOpacity, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: false
+      }).start()
+    } else {
+      Animated.timing(overviewOpacity, {
+        toValue: 0,
+        duration: 500,
+        useNativeDriver: false
+      }).start()
+      Animated.timing(overviewBoxOpacity, {
+        toValue: 0,
+        duration: 500,
+        useNativeDriver: false
+      }).start()
+      setShowOverview(false)
+    }
+  }
 
   const newPair = (i) => {
     setRefreshing(true)
@@ -157,39 +216,80 @@ export default function Pairs() {
     }
   }
 
-  // const removePair = async (p) => {
-  //   var remove = await deletePair(p.Id, admin.Token)
-  //   if (remove != false) {
-  //     getData()
-  //     setDeletionSuccess(true)
-  //     setDeletionError(false)
-  //   } else {
-  //     setDeletionError(true)
-  //     setDeletionSuccess(false)
-  //   }
-  // }
-  
-  const finalizeSingleDeletion = async (u) => {
+  const selectForRestore = async (u) => {
+    console.log(u)
+    setDeletionActive(u.Id)
+    var newRestorePair = undoPair
+    newRestorePair.push(u)
+    setUndoPair(newRestorePair)
+  }
+
+  const unselectForRestore = async (u) => {
+    console.log(u)
+    setDeletionActive(u.Id)
+    var newRestorePair = undoPair.filter((item) => item.Id !== u.Id)
+    setUndoPair(newRestorePair)
+    setDeletionActive()
+  }
+
+  const selectForDeletion = async (u) => {
+    console.log(u)
+    setDeletionActive(u.Id)
+    var newDeletionPair = deletionPair
+    newDeletionPair.push(u)
+    setDeletionPair(newDeletionPair)
+  }
+
+  const unselectForDeletion = async (u) => {
+    console.log(u)
+    setDeletionActive(u.Id)
+    var newDeletionPair = deletionPair.filter((item) => item.Id !== u.Id)
+    setDeletionPair(newDeletionPair)
+    setDeletionActive()
+  }
+
+  const finalizeChanges = async () => {
+    if (deletionPair.length > 0) {
+      finalizeDeletion()
+      setDeletionPair([])
+      setDeletionIds([])
+    } 
+    if (undoPair.length > 0) {
+      finalizeRestore()
+      setUndoPair([])
+      setUndoIds([])
+    }
+    updatePass('')
+    setDeletionActive(false)
+  }
+
+  const finalizeDeletion = async () => {
     console.log(pass)
-    var deletion = await markPairForDeletion(admin.Token, pass, [u.Id])
+    deletionPair.forEach(element => {
+      deletionIds.push(element.Id)
+      console.log('Deleting:', element.Id)
+    });
+    var deletion = await markPairForDeletion(admin.Token, pass, deletionIds)
     if (deletion.success) {
-      u.Type = 2
-      // Reset vars.
-      updatePass('')
-      setDeletionActive(false)
+      deletionPair.forEach(element => {
+        element.Type = 2
+      });
     } else {
       setDeletionError(true)
     }
   }
 
-  const undoSingleDeletion = async (u) => {
-
-    var deletion = await unmarkPairForDeletion(admin.Token, pass, [u.Id])
+  const finalizeRestore = async () => {
+    console.log(pass)
+    undoPair.forEach(element => {
+      undoIds.push(element.Id)
+      console.log('Restoring:', element.Id)
+    });
+    var deletion = await unmarkPairForDeletion(admin.Token, pass, undoIds)
     if (deletion.success) {
-      u.Type = 0
-      // Reset vars.
-      updatePass('')
-      setDeletionActive(false)
+      undoPair.forEach(element => {
+        element.Type = 0
+      });
     } else {
       setDeletionError(true)
     }
@@ -197,115 +297,130 @@ export default function Pairs() {
 
   const updatePass = (t) => {
     setPass(t)
-    if (t.length > 4) {
+    if (t.length > 4 && (deletionPair.length > 0 || undoPair.length > 0)) {
       setDeleteConfirmDisabled(false)
     } else {
       setDeleteConfirmDisabled(true)
     }
   }
 
-  return (<ScrollView>
-    <View style={styles.container}>
-      {refreshing && (<ActivityIndicatorView />) || (<View style={styles.pairsWrapper}>
-        {newPairTrigger == -1 && (<View>
-          <ScrollView>
+  return (<View style={styles.container}>
+    <ScrollView>
+      <View style={styles.container}>
+        {refreshing && (<ActivityIndicatorView />) || (<View style={styles.pairsWrapper}>
+          {newPairTrigger == -1 && (<View>
+            <ScrollView>
+              <View style={styles.searchBarWrapperPairs}>
+                <View style={styles.PairTopWrapper}>
+                  <Text style={styles.searchBarText}>Search Users:</Text>
+                  {creationSuccess && (<View>
+                    <Text style={styles.creationText}>Succesfully created pair!</Text>
+                  </View>)}
+                  {creationError && ((selectedMentee.length == 0 || selectedMentor.length == 0) && (<View>
+                    <Text style={styles.errorText}>Error: No Mentor or Mentee Selected</Text>
+                  </View>) || (<View>
+                    <Text style={styles.errorText}>Error: Pair Already Exists</Text>
+                  </View>))}
+
+                </View>
+                <View style={styles.searchBarInner}>
+                  <TextInput value={searchContent} onChangeText={(t) => searchUsers(t)} style={styles.searchBar} />
+                  <Text style={styles.selectMentText}>Mentor: {selectedMentor.FirstName} {selectedMentor.LastName}</Text>
+                  <Text style={styles.selectMentText}>Mentee: {selectedMentee.FirstName} {selectedMentee.LastName}</Text>
+
+                  <Button
+                    title={'Create New Pair'}
+                    buttonStyle={styles.createPairButton}
+                    containerStyle={styles.createPairButtonContainer}
+                    onPress={() => createNewPair(selectedMentor, selectedMentee)}
+                  />
+                </View>
+              </View>
+            </ScrollView>
+            <View style={styles.upperRow}>
+              <TouchableOpacity style={styles.backRow} onPress={() => newPair(1)}>
+                <Icon
+                  name='chevron-back'
+                  type='ionicon'
+                  size={32}
+                />
+                <Text style={styles.goBack}>Go Back</Text>
+              </TouchableOpacity>
+            </View>
+            {pairsData.length > 0 && (<View style={styles.pairsList}>
+            </View>)}
+            {usersData.length > 0 && (<View style={styles.pairsList}>
+
+              {usersData.map((u, i) => {
+                console.log('u:', u)
+                var paddingStyle = { paddingRight: 20 }
+                if (i + 1 % 4 == 0) {
+                  paddingStyle = {}
+                }
+                if (u.visible) {
+
+                  return (<View style={[styles.pairsContainer, paddingStyle]} key={'user_' + i}>
+                    <View style={[styles.user]}>
+                      <Text style={styles.text}>{u.FirstName + ' ' + u.LastName}</Text>
+                      <View style={styles.userStats}>
+                        <Text style={styles.text}>
+                          {u.MentorPairs.length} Mentee{u.MentorPairs.length != 1 && 's'}
+                          <Text style={styles.boldText}> - </Text>
+                          {u.MenteePairs.length} Mentor{u.MenteePairs.length != 1 && 's'}
+                        </Text>
+                      </View>
+                      <Button
+                        title={'Mentor'}
+                        buttonStyle={styles.pairsButtonMentor}
+                        containerStyle={styles.pairsButtonContainer}
+                        onPress={() => setMentor(u)}
+                      />
+                      <Button
+                        title={'Mentee'}
+                        buttonStyle={styles.pairsButtonMentee}
+                        containerStyle={styles.pairsButtonContainer}
+                        onPress={() => setMentee(u)}
+                      />
+                    </View>
+                  </View>)
+                }
+              })}
+
+            </View>) || (<View>
+              <Text style={styles.text}>No users have signed up yet.</Text>
+            </View>)}
+          </View>) || (<View>
             <View style={styles.searchBarWrapperPairs}>
               <View style={styles.PairTopWrapper}>
-                <Text style={styles.searchBarText}>Search Users:</Text>
-                {creationSuccess && (<View>
-                  <Text style={styles.creationText}>Succesfully created pair!</Text>
+                {/* <Text style={styles.searchBarText}>Search Pairs:</Text> */}
+                {deletionSuccess && (<View>
+                  <Text style={styles.creationText}>Succesfully deleted pair!</Text>
                 </View>)}
                 {creationError && (<View>
                   <Text style={[styles.creationText,{color:btnColors.danger,marginRight:20}]}>Pair already exists.</Text>
                 </View>)}
-
               </View>
               <View style={styles.searchBarInner}>
-                <TextInput value={searchContent} onChangeText={(t) => searchUsers(t)} style={styles.searchBar} />
-                <Text style={styles.selectMentText}>Mentor: {selectedMentor.FirstName} {selectedMentor.LastName}</Text>
-                <Text style={styles.selectMentText}>Mentee: {selectedMentee.FirstName} {selectedMentee.LastName}</Text>
-
-                <Button
-                  title={'Create New Pair'}
-                  buttonStyle={styles.createPairButton}
-                  containerStyle={styles.createPairButtonContainer}
-                  onPress={() => createNewPair(selectedMentor, selectedMentee)}
-                />
+                {/* <TextInput value={searchContent} onChangeText={(t) => searchPairs(t)} style={styles.searchBar} /> */}
+                <Text style={styles.pairsHeaderText}>Pairs</Text>
+                <View style={styles.pairBarInner}>
+                  <Button
+                    title={'Confirm Changes'}
+                    buttonStyle={styles.confirmButton}
+                    containerStyle={styles.createPairButtonContainer}
+                    onPress={() => connectClick(0)}
+                  />
+                  <Button
+                    title={'Pair Creation'}
+                    buttonStyle={styles.createPairButton}
+                    containerStyle={styles.createPairButtonContainer}
+                    onPress={() => newPair(-1)}
+                  />
+                </View>
               </View>
             </View>
-          </ScrollView>
-          <View style={styles.upperRow}>
-            <TouchableOpacity style={styles.backRow} onPress={() => newPair(1)}>
-              <Icon
-                name='chevron-back'
-                type='ionicon'
-                size={32}
-              />
-              <Text style={styles.goBack}>Go Back</Text>
-            </TouchableOpacity>
-          </View>
-          {pairsData.length > 0 && (<View style={styles.pairsList}>
-          </View>)}
-          {usersData.length > 0 && (<View style={styles.pairsList}>
-
-            {usersData.map((u, i) => {
-              console.log('u:', u)
-              if (u.visible) {
-
-                return (<View style={[styles.pairContainer]} key={'user_' + i}>
-                  <View style={[styles.user]}>
-                    <Text style={styles.text}>{u.FirstName + ' ' + u.LastName}</Text>
-                    <View style={styles.userStats}>
-                      <Text style={styles.text}>
-                        {u.MentorPairs.length} Mentee{u.MentorPairs.length != 1 && 's'}
-                        <Text style={styles.boldText}> - </Text>
-                        {u.MenteePairs.length} Mentor{u.MenteePairs.length != 1 && 's'}
-                      </Text>
-                    </View>
-                    <Button
-                      title={'Mentor'}
-                      buttonStyle={styles.pairsButtonMentor}
-                      containerStyle={styles.parisButtonContainer}
-                      onPress={() => setMentor(u)}
-                    />
-                    <Button
-                      title={'Mentee'}
-                      buttonStyle={styles.pairsButtonMentee}
-                      containerStyle={styles.parisButtonContainer}
-                      onPress={() => setMentee(u)}
-                    />
-                  </View>
-                </View>)
-              }
-            })}
-
-          </View>) || (<View>
-            <Text style={styles.text}>No users have signed up yet.</Text>
-          </View>)}
-        </View>) || (<View>
-          <View style={styles.searchBarWrapperPairs}>
-            <View style={styles.PairTopWrapper}>
-              {/* <Text style={styles.searchBarText}>Search Pairs:</Text> */}
-              {deletionSuccess && (<View>
-                <Text style={styles.creationText}>Succesfully deleted pair!</Text>
-              </View>)}
-              {deletionError && (<View>
-                <Text style={styles.creationText}>Error: Failed to delete pair!</Text>
-              </View>)}
-            </View>
-            <View style={styles.searchBarInner}>
-              {/* <TextInput value={searchContent} onChangeText={(t) => searchPairs(t)} style={styles.searchBar} /> */}
-              <Text style={styles.pairsHeaderText}>Pairs</Text>
-              <Button
-                title={'Pair Creation'}
-                buttonStyle={styles.createPairButton}
-                containerStyle={styles.createPairButtonContainer}
-                onPress={() => newPair(-1)}
-              />
-            </View>
-          </View>
-          <View style={styles.container}>
-            {/* <View style={styles.pairsHeader}>
+            <View style={styles.container}>
+              {/* <View style={styles.pairsHeader}>
             <Text style={styles.pairsHeaderText}>Pairs</Text>
             <Button
               title='Add new Pair'
@@ -314,81 +429,90 @@ export default function Pairs() {
             />
           </View> */}
 
-            <View style={styles.selectedUserDataSection}>
+              <View style={styles.selectedUserDataSection}>
 
-              {pairsData.map((p, index) => {
-                console.log('p:', p)
-                return (<View key={'pairs_' + index}>
-                  <View style={styles.pairsHeader}>
-                    <View>
-                      <Text style={styles.pairsBodyText}>{'Mentor: ' + p.MentorName[0].FirstName + ' ' + p.MentorName[0].LastName}</Text>
-                      <Text style={styles.pairsBodyText}>{'Mentee: ' + p.MenteeName[0].FirstName + ' ' + p.MenteeName[0].LastName}</Text>
-                    </View>
-                    {/* <Dropdown
-                    className='topicDropdown'
-                    floating
-                    pointing='right'
-                    direction='left'
-                    options={options}
-                    trigger={<Icon
-                      name='ellipsis-horizontal-outline'
-                      type='ionicon'
-                      size={28}
-                      style={{}}
-                    />}
-                  /> */}
-                    <View style={styles.deletionRow}>
-                      {(deletionActive != p.Id) && (p.Type == 2) && (<Button
-                        title={'Unmark Pair For Deletion'}
-                        buttonStyle={styles.deletePairButton}
-                        containerStyle={styles.deletePairButtonContainer}
-                        onPress={() => setDeletionActive(p.Id)}
-                      />) ||
-                        (deletionActive != p.Id) && (<Button
-                          title={'Delete Pair'}
-                          buttonStyle={styles.deletePairButton}
-                          containerStyle={styles.deletePairButtonContainer}
-                          onPress={() => setDeletionActive(p.Id)}
-                        />) ||
-                        (deletionActive == p.Id) && (<View style={styles.innerDeletionRow}>
-                          <View>
-                            <Text style={styles.deletionText}>Enter your password to confirm:</Text>
-                            <TextInput placeholder={'Pass...'} secureTextEntry={true} value={pass} style={styles.deletionInputPass}
-                              onChangeText={(t) => updatePass(t)}
-                            />
-                            {deletionError && (<Text style={styles.deletionError}>Incorrect password, please try again.</Text>)}
-                          </View>
-                          {(p.Type == 2) && (
-                            <Button
-                              title={'Confirm unmark'}
-                              buttonStyle={{ backgroundColor: btnColors.success, marginLeft: 10, marginRight: 10 }}
-                              onPress={() => undoSingleDeletion(p)}
-                              disabled={deleteConfirmDisabled}
-                            />) ||
+                {pairsData.map((p, index) => {
+
+                  console.log('p:', p)
+                  return (<View key={'pairs_' + index}>
+                    <View style={styles.pairsHeader}>
+                      <View>
+                        <Text style={styles.pairsBodyText}>{'Mentor: ' + p.MentorName[0].FirstName + ' ' + p.MentorName[0].LastName}</Text>
+                        <Text style={styles.pairsBodyText}>{'Mentee: ' + p.MenteeName[0].FirstName + ' ' + p.MenteeName[0].LastName}</Text>
+                      </View>
+                      <View style={styles.deletionRow}>
+                        {
+                          (p.Type == 2) && ((undoPair.includes(p)) && (<Button
+                            title={'Unselect For Restore'}
+                            buttonStyle={styles.createPairButton}
+                            containerStyle={styles.deletePairButtonContainer}
+                            onPress={() => { unselectForRestore(p) }}
+                          />) ||
                             (<Button
-                              title={'Confirm'}
-                              buttonStyle={{ backgroundColor: btnColors.success, marginLeft: 10, marginRight: 10 }}
-                              onPress={() => finalizeSingleDeletion(p)}
-                              disabled={deleteConfirmDisabled}
-                            />)}
-                          <Button
-                            title={'Cancel'}
-                            buttonStyle={{ backgroundColor: btnColors.primary }}
-                            onPress={() => setDeletionActive(false)}
-                          />
-                        </View>)}
+                              title={'Select For Restore'}
+                              buttonStyle={styles.restorePairButton}
+                              containerStyle={styles.deletePairButtonContainer}
+                              onPress={() => { selectForRestore(p) }}
+                            />)) ||
+                          (deletionPair.includes(p)) && (<Button
+                            title={'Unselect For Deletion'}
+                            buttonStyle={styles.createPairButton}
+                            containerStyle={styles.deletePairButtonContainer}
+                            onPress={() => { unselectForDeletion(p) }}
+                          />) ||
+                          (<Button
+                            title={'Select For Deletion'}
+                            buttonStyle={styles.deletePairButton}
+                            containerStyle={styles.deletePairButtonContainer}
+                            onPress={() => { selectForDeletion(p) }}
+                          />) ||
+                          (deletionActive == p.Id) && (<View style={styles.innerDeletionRow}>
+                            <View>
+                              <Text style={styles.deletionText}>Enter your password to confirm:</Text>
+                              <TextInput placeholder={'Pass...'} secureTextEntry={true} value={pass} style={styles.deletionInputPass}
+                                onChangeText={(t) => updatePass(t)}
+                              />
+                              {deletionError && (<Text style={styles.deletionError}>Incorrect password, please try again.</Text>)}
+                            </View>
+                          </View>)}
+                      </View>
                     </View>
-
-                  </View>
-                  {<View style={styles.topicBody}>
-                  </View>}
-                </View>)
-              })}
+                    {<View style={styles.topicBody}>
+                    </View>}
+                  </View>)
+                })}
+              </View>
             </View>
-          </View>
-
+          </View>)}
         </View>)}
-      </View>)}
-    </View>
-  </ScrollView>)
+      </View>
+    </ScrollView>
+    {refreshing || (showOverview && newPairTrigger != -1 && (<Animated.View style={[styles.overlayContainer]}>
+      <Animated.View style={[styles.overlayBox, { opacity: overviewBoxOpacity }]}>
+        <Text style={styles.overlayTitle}>Enter Password to Confirm Changes</Text>
+        <Text style={styles.pairsBodyText}>{'Selected Pairs For Deletion: ' + deletionPair.length}</Text>
+        <Text style={styles.pairsBodyText}>{'Selected Pairs For Restore: ' + undoPair.length}</Text>
+        <TextInput placeholder={'Pass...'} secureTextEntry={true} value={pass} style={styles.deletionInputPass}
+          onChangeText={(t) => updatePass(t)}
+        />
+        {deletionError && (<Text style={styles.deletionError}>Incorrect password, please try again.</Text>)}
+
+        <View style={styles.deletionPopup}>
+            <Button
+              title={'Confirm'}
+              buttonStyle={{ backgroundColor: btnColors.success, marginLeft: 10, marginRight: 10 }}
+              onPress={() => finalizeChanges()}
+              disabled={deleteConfirmDisabled}
+            />
+          <Button
+            title={'Cancel'}
+            buttonStyle={{ backgroundColor: btnColors.primary }}
+            onPress={() => connectClick(1)}
+          />
+        </View>
+      </Animated.View>
+    </Animated.View>))}
+  </View>)
+
+
 }
