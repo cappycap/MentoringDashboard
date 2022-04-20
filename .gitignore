@@ -1,0 +1,6 @@
+
+.expo/settings.json
+.expo/README.md
+.expo/packager-info.json
+.expo/web/cache
+node_modules
