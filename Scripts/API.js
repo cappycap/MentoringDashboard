@@ -60,6 +60,13 @@ export function jsToSqlDate(jsDate) {
   return jsDate.toISOString().slice(0, 19).replace('T', ' ')
 }
 
+export function jsToSqlDatePST(jsDate) {
+  jsDate.setTime(jsDate.getTime() - (8 * 60 * 60 * 1000))
+  var pstTime = jsDate.toISOString()
+  console.log(pstTime)
+  return pstTime.slice(0, 19).replace('T', ' ')
+}
+
 export function parseDateText(date) {
 
     var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
@@ -153,34 +160,25 @@ export function dateToSql(str) {
 }
 
 /* Example API call.
-
     method:'POST',
     body: JSON.stringify(arr),
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
     }
-
 export async function check() {
-
   var ret = false
-
   console.log('')
   const res = await fetch(url + '', {
     method:'GET'
   })
-
   const payload = await res.json()
-
   if (payload) {
     console.log('')
     ret = true
   }
-
   return ret
-
 }
-
 */
 
 export async function changePasswordRequest(o, n, t) {
@@ -640,4 +638,3 @@ export async function unmarkUsersForDeletion(token, password, ids) {
 
   return ret
   }
-

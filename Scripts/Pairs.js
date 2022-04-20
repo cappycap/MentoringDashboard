@@ -23,7 +23,6 @@ export default function Pairs() {
   const [searchContent, setSearchContent] = useState('')
   const [refreshing, setRefreshing] = useState(true)
   const [styles, setStyles] = useState(pairs)
-  const [colors, setColors] = useState(colors)
   const [creationSuccess, setCreationSuccess] = useState(false)
   const [creationError, setCreationError] = useState(false)
   const [newPairTrigger, setNewPairTrigger] = useState(1)
@@ -397,8 +396,8 @@ export default function Pairs() {
                 {deletionSuccess && (<View>
                   <Text style={styles.creationText}>Succesfully deleted pair!</Text>
                 </View>)}
-                {deletionError && (<View>
-                  <Text style={styles.errorText}>Error: Failed to delete pair!</Text>
+                {creationError && (<View>
+                  <Text style={[styles.creationText,{color:btnColors.danger,marginRight:20}]}>Pair already exists.</Text>
                 </View>)}
               </View>
               <View style={styles.searchBarInner}>

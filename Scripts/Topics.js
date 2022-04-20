@@ -1,12 +1,12 @@
 import { StatusBar } from 'expo-status-bar'
 import React, { useEffect, useState, useCallback, useContext } from 'react'
-import { Linking, Animated, Image, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { Linking, Animated, Image, StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native'
 import { useLinkTo, Link } from '@react-navigation/native'
 import { topics, colors, btnColors } from './Styles.js'
 import { Button, Icon, CheckBox } from 'react-native-elements'
 import { TextInput } from 'react-native-web'
 import ActivityIndicatorView from './ActivityIndicatorView.js'
-import { getTopics, createTopic, updateTopic, deleteTopic, getTimeSince, sqlToJsDate, jsToSqlDate, parseSimpleDateText } from './API.js'
+import { getTopics, createTopic, updateTopic, deleteTopic, getTimeSince, sqlToJsDate, jsToSqlDate, jsToSqlDatePST, parseSimpleDateText } from './API.js'
 import { Dropdown } from 'semantic-ui-react'
 import 'semantic-ui-css/semantic.min.css'
 import './StyleSheets/topics.css'
@@ -16,7 +16,7 @@ import userContext from './Context.js'
 const now = jsToSqlDate(new Date())
 
 export default function Topics(props) {
-    
+
   const user = useContext(userContext)
   const linkTo = useLinkTo()
 
@@ -45,16 +45,15 @@ export default function Topics(props) {
   const [successBox, setSuccessBox] = useState(false)
   const [showAddError, setShowAddError] = useState(false)
 
-  
+
 
   /* Consider implementing:
-    
+
 const options = [
     { key: 'edit', icon: 'edit', text: 'Edit Post', value: 'edit' },
     { key: 'archive', icon: 'hide', text: 'Archive Post', value: 'archive' },
     { key: 'delete', icon: 'delete', text: 'Remove Post', value: 'delete' },
   ]
-
     <Dropdown
                     className='topicDropdown'
                     floating
@@ -95,7 +94,7 @@ const options = [
         if (diff >= 259200*1000) {
           topicTimeStr = parseSimpleDateText(topicTime)
         } else {
-          topicTimeStr = getTimeSince(diff) + ' ago' 
+          topicTimeStr = getTimeSince(diff) + ' ago'
         }
 
         newData[i].TimeString = topicTimeStr
@@ -103,7 +102,7 @@ const options = [
       }
 
       setTopicsData(newData)
-      
+
     }
 
     setRefreshing(false)
@@ -143,7 +142,40 @@ const options = [
 
   }
 
+  const convertTime = (date) => {
+    var topicTimeStr = ''
+
+    var curTime = new Date()
+    var topicTime = sqlToJsDate(date)
+    var diff = curTime - topicTime
+
+    console.log('diff:',diff,'d1:',curTime,'d2:',topicTime)
+
+    // Is this post over 3 days old? seconds*ms
+    if (diff >= 259200*1000) {
+      topicTimeStr = parseSimpleDateText(topicTime)
+    } else {
+      topicTimeStr = getTimeSince(diff) + ' ago'
+    }
+    return topicTimeStr
+  }
+
+  const getTimeFromDate = (date) => {
+    var jsDate = new Date(date)
+    var pstTime = jsDate.toLocaleTimeString('en-US', {timeZone: 'America/Los_Angeles',});
+    var pstTimeSplit = pstTime.split(":")
+    var pstTimeSimple = pstTimeSplit[0] + ":" + pstTimeSplit[1]
+    console.log(pstTimeSplit[2])
+    if(pstTimeSplit[2].includes("PM")){
+      pstTimeSimple = pstTimeSimple + " pm"
+    } else if(pstTimeSplit[2].includes("AM")){
+      pstTimeSimple = pstTimeSimple + " am"
+    }
+    return pstTimeSimple;
+  }
+
   const submitUpdateTopicTrigger = async () => {
+    newTopic.DueDate = jsToSqlDatePST(sqlToJsDate(newTopic.DueDate))
     var updated = await updateTopic(newTopic.Id, newTopic.PostedBy, newTopic.DueDate, newTopic.Title, newTopic.Description, newTopic.Archived, newTopic.ActiveTopic, newTopic.NotifyUsers, user.Token)
     console.log(updated)
     if (updated) {
@@ -187,8 +219,11 @@ const options = [
         break
       case 2:
         // DueDate
+        console.log(data)
         setJsDueDate(data)
         updated.DueDate = jsToSqlDate(data)
+        console.log("here is the stored date: ")
+        console.log(updated.DueDate)
         break
       case 3:
         // ActiveTopic
@@ -220,7 +255,7 @@ const options = [
     setActiveIndex(i)
   }
 
-  return (<View>
+  return (<ScrollView>
     {refreshing && (<View style={styles.activityIndicatorContainer}>
       <ActivityIndicatorView />
     </View>) || (<View style={styles.container}>
@@ -238,16 +273,16 @@ const options = [
         </View>
         <View style={styles.topic}>
           <Text style={styles.entryTitle}>Title</Text>
-          <TextInput 
-            placeholder={'Enter title here...'} 
+          <TextInput
+            placeholder={'Enter title here...'}
             style={styles.input}
             value={newTopic.Title}
             onChangeText={(t) => updateTopicData(t, 0)}
           />
           <Text style={styles.entryTitle}>Description</Text>
           <TextInput
-            placeholder={'Enter description here...'} 
-            style={[styles.input,{height:addTopicHeight}]} 
+            placeholder={'Enter description here...'}
+            style={[styles.input,{height:addTopicHeight}]}
             value={newTopic.Description}
             onChangeText={(t) => updateTopicData(t, 1)}
             multiline={true}
@@ -286,7 +321,7 @@ const options = [
             <View style={{flex:1,alignItems:'flex-end',justifyContent:'center'}}>
               {showAddError && (<Text style={styles.errorText}>Error submitting, please try again.</Text>)}
             </View>
-            <Button 
+            <Button
               title={'Submit'}
               buttonStyle={styles.submitButton}
               onPress={() => createTopicTrigger()}
@@ -309,16 +344,16 @@ const options = [
           </View>
           <View style={styles.topic}>
             <Text style={styles.entryTitle}>Title</Text>
-            <TextInput 
-              placeholder={'Enter title here...'} 
+            <TextInput
+              placeholder={'Enter title here...'}
               style={styles.input}
               value={newTopic.Title}
               onChangeText={(t) => updateTopicData(t, 0)}
             />
             <Text style={styles.entryTitle}>Description</Text>
             <TextInput
-              placeholder={'Enter description here...'} 
-              style={[styles.input,{height:addTopicHeight}]} 
+              placeholder={'Enter description here...'}
+              style={[styles.input,{height:addTopicHeight}]}
               value={newTopic.Description}
               onChangeText={(t) => updateTopicData(t, 1)}
               multiline={true}
@@ -357,7 +392,7 @@ const options = [
               <View style={{flex:1,alignItems:'flex-end',justifyContent:'center'}}>
                 {showAddError && (<Text style={styles.errorText}>Error submitting, please try again.</Text>)}
               </View>
-              <Button 
+              <Button
                 title={'Update'}
                 buttonStyle={styles.submitButton}
                 onPress={() => submitUpdateTopicTrigger()}
@@ -368,7 +403,7 @@ const options = [
         </View>) || (<View>
           <View style={styles.topicsHeader}>
             <Text style={styles.topicsHeaderText}>Topics</Text>
-            <Button 
+            <Button
               title='Add New Topic'
               buttonStyle={styles.topicsHeaderButton}
               onPress={addNewTopicTrigger}
@@ -380,6 +415,7 @@ const options = [
           {topicsData.length > 0 && (<View style={styles.topics}>
             {topicsData.map((topic, index) => {
 
+              console.log('topic:',topic)
               var activeHighlight = {borderWidth:3,borderColor:colors.mainBackground,true:false}
 
               if (topic.ActiveTopic == 1) {
@@ -390,12 +426,13 @@ const options = [
                 <View style={styles.topicHeader}>
                   <View>
                     <Text style={styles.topicHeaderText}>{topic.Title}</Text>
-                    <Text style={styles.topicHeaderTime}>{topic.TimeString}</Text>
+                    <Text style={styles.topicHeaderDueTime}>{"Due: " + convertTime(topic.DueDate) + " at " + getTimeFromDate(topic.DueDate)}</Text>
+                    <Text style={styles.topicHeaderTime}>{"Created: " + topic.TimeString + ", Last Updated: " + (convertTime(topic.LastUpdate))}</Text>
                   </View>
-                  <Button 
+                  <Button
                     title={'Edit'}
                     onPress={() => updateTopicTrigger("edit", index)}
-                    style={styles.topicsHeaderButton} 
+                    style={styles.topicsHeaderButton}
                     />
                 </View>
                 <View style={styles.topicBody}>
@@ -410,5 +447,5 @@ const options = [
         </View>)}
       </View>)}
     </View>)}
-  </View>)
+  </ScrollView>)
 }
