@@ -390,7 +390,7 @@ export async function unmarkPairForDeletion(token, password, ids) {
     password
   )
 
-  console.log('Deletion arr:',arr)
+  console.log('Restore arr:',arr)
   const res = await fetch(url + '/undelete-pair', {
     method:'POST',
     body: JSON.stringify(arr),
