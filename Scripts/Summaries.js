@@ -156,7 +156,7 @@ export default function Summaries() {
   useEffect(() => {
 
     if (userData == null) {
-      linkTo('/dash/welcome')
+      linkTo('/welcome')
     } else {
       getData()
     }

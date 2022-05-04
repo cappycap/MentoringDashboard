@@ -34,7 +34,7 @@ export default function Empty() {
 
   useEffect(() => {
     if (coach == null) {
-        linkTo('/dash/welcome')
+        linkTo('/welcome')
     }
   })
 

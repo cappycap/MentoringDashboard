@@ -22,7 +22,7 @@ export default function Empty() {
 
   useEffect(() => {
     set('User', null, ttl)
-    linkTo('/dash/welcome')
+    linkTo('/welcome')
   })
 
   return (<View style={styles.container}>
