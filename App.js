@@ -11,7 +11,7 @@ import userContext from './Scripts/Context.js'
 
 // URL linking configuration.
 const linking = {
-  prefixes: ['http://mentorship.cs.wwu.edu'],
+  prefixes: ['http://mentorship.cs.wwu.edu/dash/'],
   config: {
     screens: {
       Welcome: 'welcome',
