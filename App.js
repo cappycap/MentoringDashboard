@@ -29,8 +29,8 @@ const linking = {
           },
           UserManagement: {
             screens: {
-              Pairs: 'pairs',
-              Users: 'users',
+              Pairs: 'dash/pairs',
+              Users: 'dash/users',
             }
           }
         }
