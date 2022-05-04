@@ -39,7 +39,7 @@ export default function Users() {
   useEffect(() => {
     console.log('admin:',admin)
     if (admin == null) {
-      linkTo('/welcome')
+      linkTo('/dash/welcome')
     } else {
       getData()
     }

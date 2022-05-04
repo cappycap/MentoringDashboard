@@ -22,7 +22,7 @@ export default function AppSettings() {
   useEffect(() => {
     document.title = 'MentoringDashboard';
     if (coach == null) {
-        linkTo('/welcome')
+        linkTo('/dash/welcome')
     }
   })
 

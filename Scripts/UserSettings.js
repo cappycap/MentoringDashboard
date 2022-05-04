@@ -22,7 +22,7 @@ export default function Empty() {
   useEffect(() => {
     document.title = 'MentoringDashboard';
     if (coach == null) {
-        linkTo('/welcome')
+        linkTo('/dash/welcome')
     }
   })
 

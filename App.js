@@ -14,7 +14,7 @@ const linking = {
   prefixes: ['http://mentorship.cs.wwu.edu/dash/'],
   config: {
     screens: {
-      Welcome: 'welcome',
+      Welcome: 'dash/welcome',
       Logout: 'logout',
       ForgotPassword: 'forgot-password',
       UpdatePassword: 'update-password',
