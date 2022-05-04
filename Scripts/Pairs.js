@@ -73,7 +73,7 @@ export default function Pairs() {
     console.log('admin:', admin)
     fadeIn()
     if (admin == null) {
-      linkTo('/welcome')
+      linkTo('/dash/welcome')
     } else {
       getData()
     }

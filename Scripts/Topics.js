@@ -112,7 +112,7 @@ const options = [
   useEffect(() => {
     console.log('props:',props)
     if (userData == null) {
-      linkTo('/welcome')
+      linkTo('/dash/welcome')
     } else {
       getData()
     }

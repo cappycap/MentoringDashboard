@@ -34,7 +34,7 @@ export default function Welcome() {
       console.log('userData welcome:',userData)
       if (userData != null) {
         console.log('made it here')
-        linkTo('/topics')
+        linkTo('/dash/topics')
       }
     }, 100)
   })
@@ -56,7 +56,7 @@ export default function Welcome() {
       console.log('User:',check.Admin)
       set('User', check.Admin, ttl)
       setTimeout(() => {
-        linkTo('/topics')
+        linkTo('/dash/topics')
         window.location.reload()
       }, 100)
     } else {
@@ -98,7 +98,7 @@ export default function Welcome() {
           disabled={email.length == 0 || password.length < 8}
         />
         <Text style={styles.forgotPasswordText}>Forgot password?
-        <Link to={'/forgot-password'} style={styles.forgotPasswordLink}>No problem!</Link>
+        <Link to={'/dash/forgot-password'} style={styles.forgotPasswordLink}>No problem!</Link>
         </Text>
       </View>
       <View style={styles.logInStripeBottom}></View>

@@ -49,7 +49,7 @@ export default function Main() {
         setUserName(name)
         setMain(true)
       } else {
-        linkTo('/welcome')
+        linkTo('/dash/welcome')
       }
 
     }, 100)
@@ -60,7 +60,7 @@ export default function Main() {
 
     set('User',null,ttl)
     setUserData(null)
-    linkTo('/welcome')
+    linkTo('/dash/welcome')
     window.location.reload();
 
   }
