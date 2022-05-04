@@ -4,7 +4,7 @@ const { DateTime } = require("luxon")
 import { View, Text, StyleSheet } from 'react-native'
 
 // API information.
-export const url = 'https://mentorsapp.cs.wwu.edu'
+export const url = 'https://mentorsapp.cs.wwu.edu/api'
 export const key = '364ec08dac33889d5ee1e15c86c0194bf91916938c5b64ea5055ac2fe6f281b5'
 
 // Helper functions
