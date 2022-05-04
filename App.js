@@ -23,8 +23,8 @@ const linking = {
           Home: {
             screens: {
               Topics: 'dash/topics',
-              Summaries: 'summaries',
-              Settings:'settings'
+              Summaries: 'dash/summaries',
+              Settings:'dash/settings'
             }
           },
           UserManagement: {
