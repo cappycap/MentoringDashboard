@@ -19,7 +19,7 @@ This use case details how to download all summary data collected from users usin
 2. Navigate to the Summaries page from the home tab.
 3. Click the 'Download All' button in the top right hand corner of the page.
 4. Enter a name for the CSV file.
-	- Optionally, Navigate to the location you would like the file to be saved.
+	- Optionally, navigate to the location you would like the file to be saved.
 5. Press the 'Save' button to save your csv file.
 
 ## Creating pairs using the Dashboard.
