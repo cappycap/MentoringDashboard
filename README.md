@@ -7,8 +7,8 @@ Guide on how to use the Summaries page to view user summary data
 1) Login to the dashboard
 2) Navigate to the summaries page from the home tab
 3) View Summary Data
-	a) Click on the 'View Summary' button on the bottom right corner of an individual summary to view more details about a specific summary.
-		i) Click the 'Back' button on the bottom right hand of the viewed summary to return to the 'all summaries' view.
+    a) Click on the 'View Summary' button on the bottom right corner of an individual summary to view more details about a specific summary.
+        i) Click the 'Back' button on the bottom right hand of the viewed summary to return to the 'all summaries' view.
 	b) Click on the 'Filter by' Drop down menu and select a sorting option to sort by newest or oldest submitted summaries.
 	c) Click on the Search bar and type in the name of a user or a keyword from the summary title, topic, or summary body.
 
