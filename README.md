@@ -7,10 +7,10 @@ Guide on how to use the Summaries page to view user summary data
 1) Login to the dashboard
 2) Navigate to the summaries page from the home tab
 3) View Summary Data
-	3a) Click on the 'View Summary' button on the bottom right corner of an individual summary to view more details about a specific summary.
-		3ai) Click the 'Back' button on the bottom right hand of the viewed summary to return to the 'all summaries' view.
-	3b) Click on the 'Filter by' Drop down menu and select a sorting option to sort by newest or oldest submitted summaries.
-	3c) Click on the Search bar and type in the name of a user or a keyword from the summary title, topic, or summary body.
+	a) Click on the 'View Summary' button on the bottom right corner of an individual summary to view more details about a specific summary.
+		i) Click the 'Back' button on the bottom right hand of the viewed summary to return to the 'all summaries' view.
+	b) Click on the 'Filter by' Drop down menu and select a sorting option to sort by newest or oldest submitted summaries.
+	c) Click on the Search bar and type in the name of a user or a keyword from the summary title, topic, or summary body.
 
 ## Downloading User Summaries Data to a CSV
 This use case details how to download all summary data collected from users using the Summaries page of the dashboard.
@@ -19,7 +19,7 @@ This use case details how to download all summary data collected from users usin
 2) Navigate to the Summaries page from the home tab.
 3) Click the 'Download All' button in the top right hand corner of the page.
 4) Enter a name for the CSV file.
-	4a) Optionally, Navigate to the location you would like the file to be saved.
+	a) Optionally, Navigate to the location you would like the file to be saved.
 5) Press the 'Save' button to save your csv file.
 
 ## Creating pairs using the Dashboard.
