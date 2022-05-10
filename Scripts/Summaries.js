@@ -164,6 +164,7 @@ export default function Summaries() {
   }, [])
 
   const changeDisplay = (index) => {
+    setSearch('')
     setSummIndex(index)
     setDisplaying(true)
   }
