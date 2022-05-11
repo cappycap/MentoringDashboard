@@ -3,12 +3,37 @@ Small guides for how to accomplish certain tasks.
 
 Last updated - May 11th, 2022
 
+# Table of Contents  
+1. [Logging in](#login)  
+2. [Settings](#settings)  
+	- [Changing Password](#password)
+3. [Topics](#topics)
+	- [Creating Topics](#crtopics)
+	- [Editing Topics](#edtopics)
+4. [Summaries](#summaries)
+	- [View User Summary data](#visummaries)
+	- [Downloading User Summaries Data to a CSV](#dlsummaries)
+4. [Pairs](#pairs)
+	- [Creating Pairs](#crpairs)
+	- [Marking Pairs for deletion](#dlpairs)
+	- [Unmarking Pairs for deletion](#repairs)
+4. [Users](#users)
+	- [Marking Users for deletion](#dlusers)
+	- [Unmarking Users for deletion](#reusers)
+	
+
+<a name="login"/>
+
 ## Logging in
 This use case will detail how to login to the dashboard
 
 1. Navigate to mentorsapp.cs.wwu.edu/dash.
 2. Enter your administration login credentials then click the login button.
 2b. If you have forgotten your credentials, click the blue text saying 'No Problem' and follow the provided steps.
+
+<a name="settings"/>
+
+<a name="password"/>
 
 ## Changing Password
 This use case will detail how to change your admin password.
@@ -18,6 +43,10 @@ This use case will detail how to change your admin password.
 3)  Enter your current password.
 4)  Enter your new password in both 'New Password' and 'Confirm Password'.
 5)  Click the 'Submit' button.
+
+<a name="topics"/>
+
+<a name="crtopics"/>
 
 ## Creating Topics
 This use case will detail how to create new topics.
@@ -31,6 +60,8 @@ This use case will detail how to create new topics.
 5)  Click the 'Update' button at the bottom right to finalize creating the topic.
 5b) todo - The topic will not be immediately shown, refresh the page to show the topic.
 
+<a name="edtopics"/>
+
 ## Editing Topics
 This use case will detail how to edit topics.
 
@@ -43,6 +74,10 @@ This use case will detail how to edit topics.
 5)  Click the 'Update' button at the bottom right to finalize editing the topic.
 5b) todo - The edits will not be immediately shown, refresh the page to show the edits.
 
+<a name="summaries"/>
+
+<a name="visummaries"/>
+
 ## View User Summary data
 Guide on how to use the Summaries page to view user summary data
 
@@ -54,6 +89,8 @@ Guide on how to use the Summaries page to view user summary data
    - Click on the 'Filter by' Drop down menu and select a sorting option to sort by newest or oldest submitted summaries.
    - Click on the Search bar and type in the name of a user or a keyword from the summary title, topic, or summary body.
 
+<a name="dlsummaries"/>
+
 ## Downloading User Summaries Data to a CSV
 This use case details how to download all summary data collected from users using the Summaries page.
 
@@ -64,6 +101,10 @@ This use case details how to download all summary data collected from users usin
 	- Optionally, navigate to the location you would like the file to be saved.
 5. Press the 'Save' button to save your csv file.
 
+<a name="pairs"/>
+
+<a name="crpairs"/>
+
 ## Creating Pairs
 This use case will detail how to create new pairs.
 
@@ -73,6 +114,8 @@ This use case will detail how to create new pairs.
 4)  Choose a mentor/mentee by clicking the a user's corresponding Mentor/Mentee button to select a user for the chosen position.
 4a) Optionally use the search bar to find specific users.
 5)  Click the 'Create New Pair' button at the top right to finalize creating the pair.
+
+<a name="dlpairs"/>
 
 ## Marking Pairs for deletion
 This use case will detail how to mark one or more pairs for deletion.
@@ -89,6 +132,8 @@ This use case will detail how to mark one or more pairs for deletion.
 5)  Review the amount of pairs selected for deletion, then enter your credentials and click the 'Confirm' button.
 - Pairs can be selected for deletion and restore at the same time.
 
+<a name="repairs"/>
+
 ## Unmarking Pairs for deletion
 This use case will detail how to mark one or more pairs for restore.
 
@@ -98,6 +143,10 @@ This use case will detail how to mark one or more pairs for restore.
 4)  Click the 'Confirm Changes' Button at the top bar.
 5)  Review the amount of pairs selected for restore, then enter your credentials and click the 'Confirm' button.
 NOTE 1: Pairs can be selected for deletion and restore at the same time.
+
+<a name="users"/>
+
+<a name="dlusers"/>
 
 ## Marking Users for deletion
 This use case will detail how to a user for deletion.
@@ -110,6 +159,8 @@ This use case will detail how to a user for deletion.
 3)  Click the 'View' button on the user you wish to mark for deletion.
 4)  Click the 'Mark User for Deletion' button at the top right.
 5)  Enter your password and click the 'Confirm' button to finish marking the pair for deletion.
+
+<a name="reusers"/>
 
 ## Unmarking Users for deletion
 This use case will detail how to unmark a user for deletion.
