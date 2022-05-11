@@ -1,6 +1,7 @@
 # Use Cases
 Small guides for how to accomplish certain tasks.
-May 11th, 2022
+
+Last updated - May 11th, 2022
 
 ## Logging in
 This use case will detail how to login to the dashboard
@@ -97,3 +98,24 @@ This use case will detail how to mark one or more pairs for restore.
 4)  Click the 'Confirm Changes' Button at the top bar.
 5)  Review the amount of pairs selected for restore, then enter your credentials and click the 'Confirm' button.
 NOTE 1: Pairs can be selected for deletion and restore at the same time.
+
+## Marking Users for deletion
+This use case will detail how to a user for deletion.
+- These steps WILL NOT delete users.
+- Users will be deleted 30 days after being marked for deletion (UNIMPLEMENTED).
+- Alternatively, follow the 'Deleting Users using MYSQL' use case in MentoringAPI's Readme to manually delete users (UNIMPLEMENTED).
+
+1)  Login to the dashboard.
+2)  Navigate to the Users page: At the left bar, select Students -> Users.
+3)  Click the 'View' button on the user you wish to mark for deletion.
+4)  Click the 'Mark User for Deletion' button at the top right.
+5)  Enter your password and click the 'Confirm' button to finish marking the pair for deletion.
+
+## Unmarking Users for deletion
+This use case will detail how to unmark a user for deletion.
+
+1)  Login to the dashboard.
+2)  Navigate to the Users page: At the left bar, select Students -> Users.
+3)  Click the 'View' button on the user you wish to unmark for deletion.
+4)  Click the 'Unmark User for Deletion' button at the top right.
+5)  Enter your password and click the 'Confirm' button to finish unmarking the pair for deletion.
